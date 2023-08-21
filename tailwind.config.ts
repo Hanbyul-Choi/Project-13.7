@@ -31,20 +31,20 @@ const config: Config = {
       },
       translate: {
         center: '50%',
-        },
-        fontSize: {
+      },
+      fontSize: {
         xs: '0.75rem',
         sm: '0.875rem',
         base: '1rem',
         lg: '1.125rem',
-        },
-        fontWeight: {
+      },
+      fontWeight: {
         regular: '400',
         medium: '500',
         semibold: '600',
         bold: '700',
         bolder: '800',
-        },
+      },
     },
   },
   plugins: [],
