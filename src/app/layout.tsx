@@ -21,6 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Header />
           {children}
         </Providers>
+        <div id="modal-portal"></div>
       </body>
     </html>
   );
