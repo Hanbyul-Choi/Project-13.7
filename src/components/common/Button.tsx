@@ -1,6 +1,6 @@
 import React from 'react';
 
-type Props = {
+type ButtonProps = {
   children: string;
   btnType: string;
   size: string;
@@ -8,7 +8,7 @@ type Props = {
   type?: 'button' | 'submit' | 'reset';
 };
 
-const Button: React.FC<Props> = ({ children, btnType, size, onClick }) => {
+const Button: React.FC<ButtonProps> = ({ children, btnType, size, onClick }) => {
   let buttonSize = '';
   let buttonType = '';
 
