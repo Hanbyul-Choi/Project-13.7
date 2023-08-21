@@ -5,6 +5,8 @@ import React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 
+import { OverlayProvider } from '@/components/common/Dialog';
+
 type Props = {
   children: React.ReactNode;
 };
@@ -24,7 +26,7 @@ function Providers({ children }: Props) {
 
   return (
     <QueryClientProvider client={client}>
-      {children}
+      <OverlayProvider>{children}</OverlayProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
