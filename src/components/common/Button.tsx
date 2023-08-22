@@ -7,12 +7,14 @@ type ButtonProps = {
   onClick?: (event: React.MouseEvent<HTMLElement>) => void;
   type?: 'button' | 'submit' | 'reset';
   rounded?: boolean;
+  buttonStyle?: string;
 };
 
-const Button: React.FC<ButtonProps> = ({ children, btnType, size, onClick, rounded }) => {
+const Button: React.FC<ButtonProps> = ({ children, btnType, size, onClick, rounded, buttonStyle }) => {
   let buttonSize = '';
   let buttonType = '';
   let buttonRounded = 'rounded-lg';
+  const buttonDefault = 'cursor-pointer flex gap-1 items-center box-border font-semibold transition ease-in-out duration-300 hover:box-border';
 
   if (rounded) buttonRounded = 'rounded-full';
 
@@ -41,7 +43,7 @@ const Button: React.FC<ButtonProps> = ({ children, btnType, size, onClick, round
   }
 
   return (
-    <button onClick={onClick} className={`cursor-pointer flex gap-1 items-center box-border font-semibold transition ease-in-out duration-300 hover:box-border ${buttonSize} ${buttonRounded} ${buttonType}`}>
+    <button onClick={onClick} className={`${buttonDefault} ${buttonSize} ${buttonRounded} ${buttonType} ${buttonStyle}`}>
       {children}
     </button>
   );
