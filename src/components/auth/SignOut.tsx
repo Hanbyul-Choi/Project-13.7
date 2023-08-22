@@ -2,7 +2,6 @@
 import React from 'react';
 
 import { supabase } from '../../../supabase/supabaseConfig';
-import Button from '../common/Button';
 
 export const SignOut = () => {
   const signOutHandler = async () => {
@@ -12,7 +11,7 @@ export const SignOut = () => {
 
   return (
     <div>
-      <Button onClick={signOutHandler}>로그아웃</Button>
+      <button onClick={signOutHandler}>로그아웃</button>
     </div>
   );
 };
