@@ -8,8 +8,12 @@ const config: Config = {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      fontFamily: {
+        montserrat: ['var(--font-montserrat)'],
+      },
       colors: {
         navy: '#101828',
+        lightnavy: 'rgba(16, 24, 40, 0.15)',
         sky: '#3F80FF',
         blue: '#004EEB',
         lightblue: 'rgba(0, 78, 235, 0.15)',

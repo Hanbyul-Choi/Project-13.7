@@ -1,11 +1,20 @@
 import './globals.css';
 
+import { Montserrat } from 'next/font/google';
+import localFont from 'next/font/local';
+
 import Header from '@/components/Header';
 import Providers from '@/provider/Provider';
 
-import { inter } from './font';
-
 import type { Metadata } from 'next';
+
+const montserrat = Montserrat({ subsets: ['latin'], display: 'swap', variable: '--font-montserrat' });
+// const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter' });
+
+const myFont = localFont({
+  src: './fonts/PretendardVariable.woff2',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -15,7 +24,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${myFont.className} ${montserrat.variable}`}>
         <Providers>
           <Header />
           {children}
