@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { supabase } from '../../../supabase/supabaseConfig';
 import Button from '../common/Button';
 import { Input } from '../common/Input';
+import { Label } from '../common/Label';
 import Modal from '../common/Modal';
 
 type SignUpModalProps = {
@@ -43,8 +44,22 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ onClose }) => {
 
   return (
     <Modal>
-      <form onSubmit={signUpHandler}>
-        <label>이메일</label>
+      <h1 className="mb-10">Sign Up 👋</h1>
+      <form onSubmit={signUpHandler} className="flex flex-col gap-y-4">
+        <Label name={'nickname'} size={'base'}>
+          닉네임
+        </Label>
+        <Input
+          type="text"
+          value={nickname}
+          onChange={e => {
+            setNickname(e.target.value);
+          }}
+          _size="sm"
+        />
+        <Label name={'email'} size={'base'}>
+          이메일
+        </Label>
         <Input
           type="text"
           value={email}
@@ -54,23 +69,26 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ onClose }) => {
           autoFocus
           _size={'sm'}
         />
-        <label>비밀번호</label>
+        <Label name={'password'} size={'base'}>
+          비밀번호
+        </Label>
         <Input
           type="password"
           value={password}
+          placeholder="비밀번호"
           onChange={e => {
             setPassword(e.target.value);
           }}
-          _size={'sm'}
+          _size="sm"
         />
-        <label>닉네임</label>
         <Input
-          type="text"
-          value={nickname}
+          type="password"
+          value={password}
+          placeholder="비밀번호 확인"
           onChange={e => {
-            setNickname(e.target.value);
+            setPassword(e.target.value);
           }}
-          _size={'sm'}
+          _size="sm"
         />
         <Button type="submit" btnType={'primary'} size="full">
           회원가입
