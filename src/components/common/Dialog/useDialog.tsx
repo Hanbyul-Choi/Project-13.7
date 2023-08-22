@@ -25,7 +25,7 @@ export const useDialog = () => {
     });
   };
 
-  const Alert = async (mainText: string, subText?: string, animal?: string) => {
+  const Alert = async (mainText: string, subText?: string) => {
     return await new Promise(resolve => {
       _mount(
         'Alert',
@@ -37,7 +37,6 @@ export const useDialog = () => {
           }}
           mainText={mainText}
           subText={subText}
-          animal={animal}
         />,
       );
     });
