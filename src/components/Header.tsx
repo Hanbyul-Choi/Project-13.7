@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 export default function Header() {
   return (
-    <div className="w-full sticky top-0 h-20 bg-gray-400 flex gap-10 items-center">
+    <div className="w-full sticky top-0 h-20 bg-gray-400 flex gap-10 items-center z-10">
       <Link href="/">Home</Link>
       <Link href="/idea">Idea</Link>
       <Link href="/idea/post">IdeaPost</Link>
