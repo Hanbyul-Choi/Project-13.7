@@ -3,6 +3,8 @@ import { type MouseEvent } from 'react';
 
 import { useLockBodyScroll } from '@/hooks';
 
+import Button from '../Button';
+
 interface DiologProps {
   onClose: () => void;
   onSuccess?: (event: MouseEvent<HTMLElement>) => void;
@@ -32,19 +34,19 @@ export const Dialog = ({ onClose, onSuccess, type, mainText, subText, animal }: 
         <h3>{mainText}</h3>
         <p className="text-lg font-medium text-black opacity-50 text-center">{subText}</p>
         {type === 'Confirm' && onSuccess != undefined ? (
-          <div className="flex items-center justify-center">
-            <button className="py-2 px-8 bg-white text-navy rounded-lg" onClick={onClose}>
+          <div className="flex items-center justify-center gap-6">
+            <Button btnType="black" size="small" onClick={onClose}>
               취소
-            </button>
-            <button className="py-2 px-8 bg-navy text-white rounded-lg" onClick={onSuccess}>
+            </Button>
+            <Button btnType="primary" size="small" onClick={onSuccess}>
               확인
-            </button>
+            </Button>
           </div>
         ) : (
           <div className="flex items-center justify-center">
-            <button className="py-2 px-8 bg-navy text-white rounded-lg" onClick={close}>
+            <Button btnType="black" size="small" onClick={close}>
               확인
-            </button>
+            </Button>
           </div>
         )}
       </div>
