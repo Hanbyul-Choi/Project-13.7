@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { montserrat } from '@/app/font';
+
 const data = [
   {
     userName: 'hannah.G',
@@ -31,7 +33,7 @@ const data = [
 export default function Ranking() {
   return (
     <div className="border-b-2 mt-20 pb-20">
-      <p className="text-xl">Ranking</p>
+      <p className={`text-xl ${montserrat.className}`}>Ranking</p>
       <h2 className="mt-4">베스트 챌린저 랭킹</h2>
       <div className="flex gap-1 overflow-hidden mt-10">
         {data.map((item, i) => (
