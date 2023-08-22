@@ -3,14 +3,14 @@ import React from 'react';
 type ButtonProps = {
   children: string | React.ReactNode;
   btnType: string;
-  size: string;
+  size?: string;
   onClick?: (event: React.MouseEvent<HTMLElement>) => void;
   type?: 'button' | 'submit' | 'reset';
   rounded?: boolean;
   buttonStyle?: string;
 };
 
-const Button: React.FC<ButtonProps> = ({ children, btnType, size, onClick, rounded, buttonStyle }) => {
+const Button: React.FC<ButtonProps> = ({ children, btnType, size = 'medium', onClick, rounded, buttonStyle }) => {
   let buttonSize = '';
   let buttonType = '';
   let buttonRounded = 'rounded-lg';
@@ -25,8 +25,11 @@ const Button: React.FC<ButtonProps> = ({ children, btnType, size, onClick, round
     case 'large':
       buttonSize = 'px-8 py-2 text-xl';
       break;
-    case 'small':
+    case 'medium':
       buttonSize = 'px-6 py-2 text-base';
+      break;
+    case 'small':
+      buttonSize = 'px-6 py-1 text-base';
       break;
   }
 
@@ -37,8 +40,14 @@ const Button: React.FC<ButtonProps> = ({ children, btnType, size, onClick, round
     case 'green':
       buttonType = 'bg-green text-white border border-green hover:bg-[#dbf1e9] hover:border hover:border-solid hover:border-green hover:text-green ';
       break;
+    case 'borderBlack':
+      buttonType = 'bg-black bg-white border border-black hover:bg-black hover:text-white';
+      break;
     case 'black':
-      buttonType = 'bg-white border border-black hover:bg-black hover:text-white';
+      buttonType = 'bg-black border border-black text-white hover:bg-lightblack hover:text-black';
+      break;
+    case 'cancel':
+      buttonType = 'bg-white text-blue';
       break;
   }
 
