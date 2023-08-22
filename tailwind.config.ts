@@ -12,6 +12,7 @@ const config: Config = {
         navy: '#101828',
         sky: '#3F80FF',
         blue: '#004EEB',
+        lightblue: 'rgba(0, 78, 235, 0.15)',
         green: '#34C184',
         orange: '#FF9A30',
         sub1: '#F4F6F8',
