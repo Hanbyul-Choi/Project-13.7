@@ -38,14 +38,14 @@ const Button: React.FC<ButtonProps> = ({ children, btnType, size = 'medium', onC
     case 'green':
       buttonType = 'bg-green text-white border border-green hover:bg-[#dbf1e9] hover:border hover:border-solid hover:border-green hover:text-green ';
       break;
-    case 'borderNavy':
-      buttonType = 'bg-navy border border-black hover:bg-black hover:text-white';
+    case 'borderBlack':
+      buttonType = 'bg-black bg-white border border-black hover:bg-black hover:text-white';
       break;
-    case 'navy':
-      buttonType = 'bg-navy border border-black text-white hover:bg-lightnavy hover:text-navy';
+    case 'black':
+      buttonType = 'bg-black border border-black text-white hover:bg-lightblack hover:text-black';
       break;
     case 'cancel':
-      buttonType = 'bg-white text-blue hover:border border-navy';
+      buttonType = 'bg-white text-blue';
       break;
   }
 

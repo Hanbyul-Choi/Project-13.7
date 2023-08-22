@@ -37,13 +37,13 @@ export const Dialog = ({ onClose, onSuccess, type, mainText, subText }: DiologPr
             <Button btnType="cancel" size="small" onClick={onClose}>
               취소
             </Button>
-            <Button btnType="navy" size="small" onClick={onSuccess}>
+            <Button btnType="black" size="small" onClick={onSuccess}>
               확인
             </Button>
           </div>
         ) : (
           <div className="flex items-center justify-end">
-            <Button btnType="navy" size="small" onClick={close}>
+            <Button btnType="black" size="small" onClick={close}>
               확인
             </Button>
           </div>

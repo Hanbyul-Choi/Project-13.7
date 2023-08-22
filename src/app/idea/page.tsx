@@ -5,7 +5,6 @@ import Link from 'next/link';
 import Button from '@/components/common/Button';
 import Layout from '@/components/common/Layout';
 import IdeaList from '@/components/ideaPage/IdeaList';
-import Test from '@/components/Test';
 export default function IdeaPage() {
   return (
     <Layout>
@@ -15,11 +14,10 @@ export default function IdeaPage() {
         </div>
         <div className="w-full flex justify-end mt-10 pb-6 border-b-2 border-opacityblack">
           <Link href="/idea/post">
-            <Button btnType="navy" size="large">
+            <Button btnType="black" size="large">
               챌린지 제안하기
             </Button>
           </Link>
-          <Test />
         </div>
       </div>
       <IdeaList />
