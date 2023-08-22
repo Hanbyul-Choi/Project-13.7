@@ -25,18 +25,12 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ onClose }) => {
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email,
       password,
-      options: {
-        data: {
-          nickname,
-          point: 25,
-        },
-      },
     });
 
     let uid = authData.user?.id;
 
     // database
-    const { error: dbError } = await supabase.from('users').insert({ id: uid, email, nickname });
+    const { error: dbError } = await supabase.from('users').insert({ user_id: uid, email, nickname, point: 25 });
 
     if (authError) {
       if (authError?.message === 'invalid format') return alert('이메일 형태가 올바르지 않습니다.');
@@ -58,6 +52,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ onClose }) => {
             setEmail(e.target.value);
           }}
           autoFocus
+          _size={'sm'}
         />
         <label>비밀번호</label>
         <Input
@@ -66,6 +61,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ onClose }) => {
           onChange={e => {
             setPassword(e.target.value);
           }}
+          _size={'sm'}
         />
         <label>닉네임</label>
         <Input
@@ -74,8 +70,11 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ onClose }) => {
           onChange={e => {
             setNickname(e.target.value);
           }}
+          _size={'sm'}
         />
-        <Button type="submit">회원가입</Button>
+        <Button type="submit" btnType={'primary'} size="full">
+          회원가입
+        </Button>
       </form>
     </Modal>
   );
