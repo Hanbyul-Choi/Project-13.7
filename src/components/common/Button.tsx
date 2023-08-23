@@ -14,8 +14,8 @@ const Button: React.FC<ButtonProps> = ({ children, btnType, size = 'medium', onC
   let buttonSize = '';
   let buttonType = '';
   let buttonRounded = 'rounded-lg';
-  const buttonDefault = 'cursor-pointer gap-1 items-center box-border font-semibold transition ease-in-out duration-300 font-regular hover:box-border';
-  // ㄴ버튼 텍스트 가운데 정렬위해서 기존 flex 삭제!
+  const buttonDefault = 'cursor-pointer flex gap-1 items-center box-border font-semibold transition ease-in-out duration-300 hover:box-border';
+
   if (rounded) buttonRounded = 'rounded-full';
 
   switch (size) {
