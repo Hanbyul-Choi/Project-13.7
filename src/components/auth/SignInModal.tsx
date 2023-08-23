@@ -1,7 +1,9 @@
+'use client';
 import React, { useState } from 'react';
 
 import { supabase } from '../../../supabase/supabaseConfig';
 import Button from '../common/Button';
+import { useDialog } from '../common/Dialog';
 import { Input } from '../common/Input';
 import { Label } from '../common/Label';
 import Modal from '../common/Modal';
@@ -11,6 +13,7 @@ type SignInModalProps = {
 };
 
 const SignInModal: React.FC<SignInModalProps> = ({ onClose }) => {
+  const { Alert } = useDialog();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -28,8 +31,9 @@ const SignInModal: React.FC<SignInModalProps> = ({ onClose }) => {
       email: email,
       password: password,
     });
-    if (error) alert('아이디 또는 비밀번호가 일치하지 않습니다.');
-    else alert('로그인 성공');
+    console.log(data);
+    if (error) Alert('아이디 또는 비밀번호가 일치하지 않습니다.');
+    else Alert('로그인 성공');
     onClose();
   };
 
