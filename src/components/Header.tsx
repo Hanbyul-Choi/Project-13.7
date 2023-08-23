@@ -1,10 +1,28 @@
-import React from 'react';
+'use client';
+import React, { useEffect } from 'react';
 
 import Link from 'next/link';
 
-import { Auth } from './auth';
+import useSessionStore from '@/store';
+
+import { Auth, SignOut } from './auth';
+import { supabase } from '../../supabase/supabaseConfig';
 
 export default function Header() {
+  const session = useSessionStore(state => state.session);
+  const setSession = useSessionStore(state => state.setSession);
+
+  // console.log(session);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+  }, [setSession]);
+
   return (
     <div className="w-full sticky top-0 h-20 bg-white text-black flex items-center justify-evenly px-10 text-lg">
       <div className="flex gap-8">
@@ -18,8 +36,14 @@ export default function Header() {
       </div>
 
       <div className="flex gap-4 text-base">
-        <Link href="/mypage">마이페이지</Link>
-        <Auth />
+        {session ? (
+          <>
+            <Link href="/mypage">마이페이지</Link>
+            <SignOut />
+          </>
+        ) : (
+          <Auth />
+        )}
       </div>
     </div>
   );
