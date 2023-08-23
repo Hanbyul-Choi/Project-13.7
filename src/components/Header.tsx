@@ -12,7 +12,7 @@ export default function Header() {
   const session = useSessionStore(state => state.session);
   const setSession = useSessionStore(state => state.setSession);
 
-  console.log(session);
+  // console.log(session);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -37,10 +37,10 @@ export default function Header() {
 
       <div className="flex gap-4 text-base">
         {session ? (
-          <div>
+          <>
             <Link href="/mypage">마이페이지</Link>
             <SignOut />
-          </div>
+          </>
         ) : (
           <>
             <SignIn />
