@@ -6,24 +6,22 @@ import { useModalStore } from '@/store/modalStore';
 import AuthModal from './AuthModal';
 
 export const Auth: React.FC = () => {
-  const [modalType, setModalType] = useState('');
-  const { openModal } = useModalStore(state => state);
+  const { openModal, isOpen } = useModalStore(state => state);
 
+  const [modalType, setModalType] = useState('');
   const onClickSignIn = () => {
     setModalType('signIn');
     openModal();
   };
 
-  const onClickSignUp = () => {
-    setModalType('signUp');
-    openModal();
+  const switchHandler = (type: 'signIn' | 'signUp') => {
+    setModalType(type);
   };
 
   return (
-    <div className="flex gap-2">
+    <div className={`${isOpen ? 'text-black' : 'text-sub6'} flex gap-2 text-lg font-medium`}>
       <button onClick={onClickSignIn}>로그인</button>
-      <button onClick={onClickSignUp}>회원가입</button>
-      <AuthModal type={modalType} />
+      <AuthModal modalType={modalType} switchHandler={switchHandler} />
     </div>
   );
 };

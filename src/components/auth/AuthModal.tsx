@@ -1,8 +1,13 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
+import Image from 'next/image';
 
 import { useModalStore } from '@/store/modalStore';
 
+import googleSignin from '../../../public/social/google.svg';
+import kakaoSignin from '../../../public/social/kakao.svg';
+import naverSignin from '../../../public/social/naver.svg';
 import { supabase } from '../../../supabase/supabaseConfig';
 import Button from '../common/Button';
 import { useDialog } from '../common/Dialog';
@@ -11,16 +16,33 @@ import { Label } from '../common/Label';
 import Modal from '../common/Modal';
 
 type SignUpModalProps = {
-  type: string;
+  switchHandler: (type: 'signIn' | 'signUp') => void;
+  modalType: string;
 };
 
-const AuthModal: React.FC<SignUpModalProps> = ({ type }) => {
+const AuthModal: React.FC<SignUpModalProps> = ({ switchHandler, modalType }) => {
   const { Alert } = useDialog();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [nickname, setNickname] = useState('');
   const { closeModal } = useModalStore(state => state);
+  let disabled = true;
+
+  useEffect(() => {
+    setEmail('');
+    setPassword('');
+    setPasswordConfirm('');
+    setNickname('');
+  }, [modalType]);
+  if (email.replaceAll(' ', '') !== '' && password.replaceAll(' ', '') !== '') {
+    if (modalType === 'signIn') {
+      disabled = false;
+    } else if (passwordConfirm.replaceAll(' ', '') !== '' && nickname.replaceAll(' ', '') !== '') {
+      disabled = false;
+    }
+  }
+
   const handleEmailChange = (event: { target: { value: React.SetStateAction<string> } }) => {
     setEmail(event.target.value);
   };
@@ -71,24 +93,24 @@ const AuthModal: React.FC<SignUpModalProps> = ({ type }) => {
     });
     console.log(data);
     if (error) Alert('아이디 또는 비밀번호가 일치하지 않습니다.');
-    else Alert('로그인 성공');
+    else Alert('로그인 되었습니다.');
     closeModal();
   };
 
   return (
     <Modal>
-      {type === 'signUp' ? (
+      {modalType === 'signUp' ? (
         <>
           <h1 className="mb-10">Sign Up 👋</h1>
           <form onSubmit={signUpHandler} className="flex flex-col gap-y-4">
             <Label name={'nickname'} size={'base'}>
               닉네임
             </Label>
-            <Input type="text" value={nickname} onChange={handleNicknameChange} _size="sm" />
+            <Input type="text" value={nickname} autoFocus onChange={handleNicknameChange} _size="sm" placeholder="닉네임을 입력하세요" />
             <Label name={'email'} size={'base'}>
               이메일
             </Label>
-            <Input type="text" value={email} onChange={handleEmailChange} autoFocus _size={'sm'} />
+            <Input type="text" value={email} onChange={handleEmailChange} _size={'sm'} placeholder="example@email.com" />
             <Label name={'password'} size={'base'}>
               비밀번호
             </Label>
@@ -97,31 +119,59 @@ const AuthModal: React.FC<SignUpModalProps> = ({ type }) => {
               비밀번호 확인
             </Label>
             <Input type="password" id="passwordConfirm" value={passwordConfirm} placeholder="비밀번호 확인" onChange={handlePasswordConfirmChange} _size="sm" />
-            <Button type="submit" btnType={'primary'} size="full">
+            <Button type="submit" btnType={'primary'} size="full" buttonStyle="mt-8" disabled={disabled}>
               회원가입
             </Button>
           </form>
+          <p className="text-lg mx-auto mt-12">
+            이미 회원이신가요?
+            <button className="text-blue" onClick={() => switchHandler('signIn')}>
+              &nbsp; 로그인
+            </button>
+          </p>
         </>
       ) : (
         <>
           <form onSubmit={signInHandler} className="flex flex-col gap-y-4">
             <h1 className="mb-10">Log In 👋</h1>
             <Label name={'id'} size={'base'}>
-              아이디
+              이메일
             </Label>
-            <Input _size="sm" type="text" value={email} onChange={handleEmailChange} />
+            <Input _size="sm" type="text" value={email} onChange={handleEmailChange} placeholder="example@email.com" />
             <Label name={'password'} size={'base'}>
               비밀번호
             </Label>
-            <Input _size="sm" type="password" value={password} onChange={handlePasswordChange} />
+            <Input _size="sm" type="password" value={password} onChange={handlePasswordChange} placeholder="비밀번호" />
             <div className="flex justify-end py-2 text-base text-sub6">
               <p>아이디 찾기</p> <p className="px-2">|</p>
               <p>비밀번호 찾기</p>
             </div>
-            <Button type="submit" btnType={'primary'} size={'full'}>
+            <Button type="submit" btnType={'primary'} size={'full'} disabled={disabled}>
               로그인
             </Button>
           </form>
+          <div className="flex items-center gap-4 w-full mt-12">
+            <div className="h-[1px] w-full bg-sub4" />
+            <p className="text-sm min-w-fit text-sub6">SNS 계정으로 간편로그인</p>
+            <div className="h-[1px] w-full bg-sub4" />
+          </div>
+          <div className="flex gap-6 rounded-lg items-center mx-auto mt-[34px]">
+            <div className="p-[12px] bg-sub3 rounded-lg">
+              <Image src={googleSignin} alt="Google login" />
+            </div>
+            <div className="p-[10px] bg-[#FFEB3B] rounded-lg">
+              <Image src={kakaoSignin} alt="Kakao login" />
+            </div>
+            <div className="px-[14px] pt-[14.5px] pb-[14.5px] bg-[#06BE34] rounded-lg flex items-center">
+              <Image src={naverSignin} alt="Naver login" />
+            </div>
+          </div>
+          <p className="text-lg mx-auto mt-12">
+            아직 회원이 아니신가요?
+            <button className="text-blue" onClick={() => switchHandler('signUp')}>
+              &nbsp; 회원가입
+            </button>
+          </p>
         </>
       )}
     </Modal>
