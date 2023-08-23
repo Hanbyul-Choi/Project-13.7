@@ -14,16 +14,8 @@ type SignInModalProps = {
 
 const SignInModal: React.FC<SignInModalProps> = ({ onClose }) => {
   const { Alert } = useDialog();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleEmailChange = (event: { target: { value: React.SetStateAction<string> } }) => {
-    setEmail(event.target.value);
-  };
-
-  const handlePasswordChange = (event: { target: { value: React.SetStateAction<string> } }) => {
-    setPassword(event.target.value);
-  };
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
 
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
@@ -44,11 +36,25 @@ const SignInModal: React.FC<SignInModalProps> = ({ onClose }) => {
         <Label name={'id'} size={'base'}>
           아이디
         </Label>
-        <Input _size="sm" type="text" value={email} onChange={handleEmailChange} />
+        <Input
+          _size="sm"
+          type="text"
+          value={email}
+          onChange={e => {
+            setEmail(e.target.value);
+          }}
+        />
         <Label name={'password'} size={'base'}>
           비밀번호
         </Label>
-        <Input _size="sm" type="password" value={password} onChange={handlePasswordChange} />
+        <Input
+          _size="sm"
+          type="password"
+          value={password}
+          onChange={e => {
+            setPassword(e.target.value);
+          }}
+        />
         <div className="flex justify-end py-2 text-base text-sub6">
           <p>아이디 찾기</p> <p className="px-2">|</p>
           <p>비밀번호 찾기</p>
