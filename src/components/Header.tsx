@@ -2,7 +2,7 @@ import React from 'react';
 
 import Link from 'next/link';
 
-import { SignIn, SignOut, SingUp } from './auth';
+import { Auth } from './auth';
 
 export default function Header() {
   return (
@@ -19,21 +19,8 @@ export default function Header() {
 
       <div className="flex gap-4 text-base">
         <Link href="/mypage">마이페이지</Link>
-        <SignOut />
-        <SignIn />
-        <SingUp />
+        <Auth />
       </div>
     </div>
   );
-}
-
-{
-  /* <Link href="/">Home</Link>
-<Link href="/idea">Idea</Link>
-<Link href="/idea/post">IdeaPost</Link>
-<Link href="/idea/1">IdeaDetail</Link>
-<Link href="/challenge/1">Main Challenge Detail</Link>
-<Link href="/challenge/certify">Challenge Certify</Link>
-<Link href="/challenge/certify/1">Challenge Certify Detail</Link>
-<Link href="/challenge/certify/post">Challenge Certify post</Link> */
 }
