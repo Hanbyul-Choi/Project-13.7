@@ -5,7 +5,7 @@ import { useModalStore } from '@/store/modalStore';
 
 import SignInModal from './SignInModal';
 
-export const SignIn = () => {
+export const SignIn: React.FC = () => {
   const [showSignInModal, setShowSignInModal] = useState(false);
   const { openModal } = useModalStore(state => state);
 
