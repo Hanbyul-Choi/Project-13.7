@@ -37,7 +37,7 @@ export default function Header() {
           </div>
           <div className="flex gap-8">
             <Link href="/challenge" className="text-sub6">
-              <h5 className={`${params === '/' ? 'text-black' : ''} font-semibold `}>이달의 챌린지</h5>
+              <h5 className={`${params === '/challenge' ? 'text-black' : ''} font-semibold `}>이달의 챌린지</h5>
             </Link>
             <Link href="/idea" className="text-sub6 font-semibold">
               <h5 className={`${params === '/idea' ? 'text-black' : ''} font-semibold `}>다음 챌린지</h5>

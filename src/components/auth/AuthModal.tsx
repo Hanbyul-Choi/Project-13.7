@@ -5,8 +5,8 @@ import Image from 'next/image';
 
 import { useModalStore } from '@/store/modalStore';
 
-import googleSignin from '../../../public/social/google.svg';
-import kakaoSignin from '../../../public/social/kakao.svg';
+import GoogleSignIn from './social/GoogleSignIn';
+import KakaoSignIn from './social/KakaoSignIn';
 import naverSignin from '../../../public/social/naver.svg';
 import { supabase } from '../../../supabase/supabaseConfig';
 import Button from '../common/Button';
@@ -156,12 +156,8 @@ const AuthModal: React.FC<SignUpModalProps> = ({ switchHandler, modalType }) => 
             <div className="h-[1px] w-full bg-sub4" />
           </div>
           <div className="flex gap-6 rounded-lg items-center mx-auto mt-[34px]">
-            <div className="p-[12px] bg-sub3 rounded-lg">
-              <Image src={googleSignin} alt="Google login" />
-            </div>
-            <div className="p-[10px] bg-[#FFEB3B] rounded-lg">
-              <Image src={kakaoSignin} alt="Kakao login" />
-            </div>
+            <GoogleSignIn />
+            <KakaoSignIn />
             <div className="px-[14px] pt-[14.5px] pb-[14.5px] bg-[#06BE34] rounded-lg flex items-center">
               <Image src={naverSignin} alt="Naver login" />
             </div>
