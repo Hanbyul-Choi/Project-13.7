@@ -11,7 +11,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 export const Input = ({ _size, onChange, type, inputStyle, ...props }: InputProps) => {
   let inputSize: string = '';
-
+  // 추가필요? background-color style (login modal input bg -> sub3)
   const inputDefault = 'rounded-lg font-normal text-base border border-opacityblack outline-none ';
   const sizeFunc = () => {
     switch (_size) {
