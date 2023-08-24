@@ -2,6 +2,7 @@ import React from 'react';
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { AiOutlineArrowRight } from 'react-icons/ai';
 
 import heartIcon from '../../../public/heart.svg';
 import Button from '../common/Button';
@@ -84,7 +85,7 @@ const data = [
 export default function IdeaList() {
   return (
     <div className="flex flex-col items-center gap-[7.5rem] mb-20">
-      <div className="grid grid-cols-4 mt-20 gap-x-4 gap-y-10">
+      <div className="grid md:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 mt-20 gap-x-4 gap-y-10">
         {data.map(({ id, userName, date, title, desc, animal, likes }) => (
           <Link href={`/idea/${id}`} className="flex flex-col w-72 " key={id}>
             <div className="bg-sub2 rounded-t-lg text-center relative h-[250px]">
@@ -108,8 +109,9 @@ export default function IdeaList() {
           </Link>
         ))}
       </div>
-      <Button btnType="borderBlack" size="small" rounded>
+      <Button btnType="borderBlack" size="small" buttonStyle="py-2 px-8 text-xl" rounded>
         더보기
+        <AiOutlineArrowRight size={20} />
       </Button>
     </div>
   );
