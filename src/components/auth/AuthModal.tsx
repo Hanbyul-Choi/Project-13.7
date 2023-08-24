@@ -1,13 +1,10 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 
-import Image from 'next/image';
-
 import { useModalStore } from '@/store/modalStore';
 
-import GoogleSignIn from './social/GoogleSignIn';
-import KakaoSignIn from './social/KakaoSignIn';
-import naverSignin from '../../../public/social/naver.svg';
+import NaverSignIn from './naverSignIn';
+import SocialSignIn from './SocialSignIn';
 import { supabase } from '../../../supabase/supabaseConfig';
 import Button from '../common/Button';
 import { useDialog } from '../common/Dialog';
@@ -74,15 +71,18 @@ const AuthModal: React.FC<SignUpModalProps> = ({ switchHandler, modalType }) => 
     let uid = authData.user?.id;
 
     // database
-    const { error: dbError } = await supabase.from('users').insert({ user_id: uid, email, nickname, point: 25 });
+    const { error: dbError } = await supabase.from('users').insert({ user_id: uid, email, nickname });
 
     if (authError) {
-      if (authError?.message === 'invalid format') return alert('이메일 형태가 올바르지 않습니다.');
-      else if (authError?.message === 'user already exist') return alert('일치하는 회원이 존재합니다.');
+      if (authError?.message === 'invalid format') return Alert('이메일 형태가 올바르지 않습니다.');
+      else if (authError?.message === 'user already exist') return Alert('일치하는 회원이 존재합니다.');
     }
-    if (dbError) return alert('database error');
+    if (dbError) {
+      console.log(dbError);
+      return Alert('오류가 발생했습니다.', '잠시후 다시 시도해주세요.');
+    }
     closeModal();
-    return alert('회원가입이 정상적으로 처리되었습니다.');
+    return Alert('회원가입이 정상적으로 처리되었습니다.');
   };
 
   const signInHandler = async (event: { preventDefault: () => void }) => {
@@ -156,11 +156,9 @@ const AuthModal: React.FC<SignUpModalProps> = ({ switchHandler, modalType }) => 
             <div className="h-[1px] w-full bg-sub4" />
           </div>
           <div className="flex gap-6 rounded-lg items-center mx-auto mt-[34px]">
-            <GoogleSignIn />
-            <KakaoSignIn />
-            <div className="px-[14px] pt-[14.5px] pb-[14.5px] bg-[#06BE34] rounded-lg flex items-center">
-              <Image src={naverSignin} alt="Naver login" />
-            </div>
+            <SocialSignIn social="google" />
+            <SocialSignIn social="kakao" />
+            <NaverSignIn />
           </div>
           <p className="text-lg mx-auto mt-12">
             아직 회원이 아니신가요?
