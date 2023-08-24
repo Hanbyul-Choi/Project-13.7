@@ -16,7 +16,7 @@ export const Input = ({ _size, onChange, type, inputStyle, ...props }: InputProp
   const sizeFunc = () => {
     switch (_size) {
       case 'sm':
-        return (inputSize = 'w-[388px] h-[3rem]');
+        return (inputSize = 'w-[388px] h-[3rem] py-3 px-4');
       case 'md':
         return (inputSize = 'w-[473px] h-[51px] py-[12px] px-[40px]');
       case 'lg':
