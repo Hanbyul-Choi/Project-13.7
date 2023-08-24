@@ -15,11 +15,16 @@ export default function Header() {
   const setSession = useSessionStore(state => state.setSession);
   const params = usePathname();
 
-  console.log(params);
-
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       setSession(session);
+      if (!session) return;
+      const user_id = session?.user.id;
+      const { email, name: nickname, avatar_url: profile_img } = session?.user.user_metadata;
+      const { error } = await supabase.from('users').insert({ user_id, email, nickname, profile_img });
+      if (error) {
+        console.log(error);
+      }
     });
     supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
@@ -35,7 +40,7 @@ export default function Header() {
               LOGO
             </Link>
           </div>
-          <div className="flex gap-8">
+          <nav className="flex gap-8">
             <Link href="/challenge" className="text-sub6">
               <h5 className={`${params === '/challenge' ? 'text-black' : ''} font-semibold `}>이달의 챌린지</h5>
             </Link>
@@ -45,15 +50,16 @@ export default function Header() {
             <Link href="/challenge/certify" className="text-sub6 font-semibold">
               <h5 className={`${params === '/challenge/certify' ? 'text-black' : ''} font-semibold `}>참여 인증</h5>
             </Link>
-            <Link href="/" className="text-sub6 font-semibold">
+            <Link href="/naturestory" className="text-sub6 font-semibold">
               <h5 className={`${params === '/column' ? 'text-black' : ''} font-semibold `}>환경 이야기</h5>
             </Link>
-          </div>
-
+          </nav>
           <div className="flex gap-4 text-base">
             {session ? (
               <>
-                <Link href="/mypage">마이페이지</Link>
+                <Link href="/mypage" className={`${params === '/mypage' ? 'text-black' : 'text-sub6'} flex gap-2 text-lg font-medium`}>
+                  마이페이지
+                </Link>
                 <SignOut />
               </>
             ) : (
