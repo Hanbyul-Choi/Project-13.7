@@ -1,15 +1,15 @@
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 interface Props {
   onClick?: (event: React.MouseEvent) => void;
-  type: "prev" | "next"
+  direction: "prev" | "next"
 }
 
-export default function SlideBtn({ onClick, type }: Props) {
+export default function SlideBtn({ onClick, direction }: Props) {
   return (
     <button onClick={onClick} className="flex justify-center items-center w-[5.25rem] h-[5.25rem] border rounded-full border-black">
 
       {
-        type == "prev" ? <AiOutlineArrowLeft size={24} /> : <AiOutlineArrowRight size={24} />
+        direction == "prev" ? <AiOutlineArrowLeft size={24} /> : <AiOutlineArrowRight size={24} />
       }
 
     </button>

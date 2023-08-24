@@ -1,6 +1,8 @@
 'use client'
 import React, { useEffect, useRef, useState } from 'react'
 
+
+import IdeaSlideCard from './IdeaSlideCard';
 import SlideBtn from './slideBtn';
 
 import type { Suggestion } from '@/types/dataType';
@@ -10,24 +12,52 @@ import type { Suggestion } from '@/types/dataType';
 
 interface Props {
   showContentNum: number;
-  space: number;
+  type: "idea" | "column"
   contents: Suggestion[]
-  contentWidth: number;
   onClickHandler?: () => void
 }
 
+type innerMatch = {
+  size: number[]
+  containerWidth: string;
+  gap: string;
+  contentWidth: string;
+  contentHeight: string;
+}
+
+type Match = Record<string, innerMatch>;
 
 export default function Slide({
   showContentNum = 3,
-  space = 1,
   contents,
-  contentWidth = 100,
+  type
 }: Props) {
+
+  const slideObj: Match = {
+    idea: {
+      size: [343, 85.5],
+      containerWidth: 'w-[1199px]',
+      gap: 'gap-[85.5px]',
+      contentWidth: 'w-[343px]',
+      contentHeight: 'h-[463px]'
+    },
+    column: {
+      size: [228, 24],
+      containerWidth: 'w-[983px]',
+      gap: 'gap-[24px]',
+      contentWidth: 'w-[228px]',
+      contentHeight: 'h-[192px]'
+    }
+  }
+
+
 
   let overContents = true;
   if (contents.length <= showContentNum) {
     overContents = false;
   }
+
+
 
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -41,9 +71,8 @@ export default function Slide({
   const slideRef = useRef<HTMLDivElement | null>(null);
 
   const TOTAL_SLIDES = cloneContents.length - 1;
-  const sliceWidth = contentWidth * showContentNum + space * (showContentNum - 1);
   const isLastSlide = currentSlide === TOTAL_SLIDES + 1 - showContentNum;
-
+  const lastSlide = TOTAL_SLIDES - showContentNum + 1;
   const nextSlide = () => {
     setCurrentSlide(currentSlide + 1);
   };
@@ -51,41 +80,43 @@ export default function Slide({
   const prevSlide = () => {
     setCurrentSlide(currentSlide - 1);
   };
-
+  // ${slideObj[type].containerWidth}
   useEffect(() => {
     if (slideRef.current) {
-      if (isLastSlide) {
+      slideRef.current.style.transition = "all 0.5s ease-in-out";
+      slideRef.current.style.transform = `translateX(-${currentSlide * (slideObj[type].size[0] + slideObj[type].size[1])}px)`;
+      if (currentSlide > lastSlide) {
         slideRef.current.style.transition = "";
         slideRef.current.style.transform = `translateX(0px)`;
-      } else {
-        slideRef.current.style.transition = "all 0.5s ease-in-out";
-        slideRef.current.style.transform = `translateX(-${currentSlide * (contentWidth + space)}px)`;
+        setCurrentSlide(0)
       }
     }
-  }, [isLastSlide, slideRef, currentSlide, contentWidth, space])
+  }, [isLastSlide, slideRef, currentSlide, type])
 
   const renderContent = () => {
     return cloneContents.map(item => (
-      <div key={item.post_id} className={`w-[${contentWidth}px]`} >
-        <div className={`w-[${contentWidth}px] h-[463px] bg-blue`} />
+      <div key={item.post_id} className={`${slideObj[type].containerWidth}`} >
+        <div className={`${slideObj[type].contentWidth} ${slideObj[type].contentHeight} bg-red-200`} >
+          <IdeaSlideCard data={item} />
+        </div>
       </div>
     ))
   }
+  //type==="idea"?'flex gap-6 top-[-105px] right-0 absolute':flex absolute left-[-105px] top-[50px]  gap-[1030px]
 
-  const containerWidth = `${((contentWidth * showContentNum) / 100) * (100 + space * (showContentNum - 1))}`
 
   return (
-    <div className='flex justify-center items-center'>
+    <div className='flex items-center relative'>
       <div
-        className={`w-[${containerWidth}%] overflow-hidden relative`}>
+        className={` overflow-x-hidden  `}>
         <div
-          className={`flex w-[${sliceWidth}px] gap-[${space}px]`}
+          className={`flex ${slideObj[type].containerWidth} ${slideObj[type].gap}`}
           ref={slideRef}>
           {renderContent()}
         </div>
-        <div className='flex'>
-          <SlideBtn type='prev' onClick={prevSlide} />
-          <SlideBtn type='next' onClick={nextSlide} />
+        <div className='flex gap-6 top-[-105px] right-0 absolute'>
+          <SlideBtn direction='prev' onClick={prevSlide} />
+          <SlideBtn direction='next' onClick={nextSlide} />
         </div>
       </div>
     </div >

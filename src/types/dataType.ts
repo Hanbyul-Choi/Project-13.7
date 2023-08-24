@@ -4,7 +4,9 @@ export interface Suggestion {
   title: string;
   content: string;
   product: string;
-  userid: string;
+  user_id: string;
   selected: boolean;
   commends: number;
+  img_url: string;
 }
+
