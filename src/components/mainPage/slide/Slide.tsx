@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 
 
+
 import IdeaSlideCard from './IdeaSlideCard';
 import SlideBtn from './slideBtn';
 
@@ -53,7 +54,7 @@ export default function Slide({
 
 
   let overContents = true;
-  if (contents.length <= showContentNum) {
+  if (contents && contents.length <= showContentNum) {
     overContents = false;
   }
 
@@ -90,17 +91,24 @@ export default function Slide({
         slideRef.current.style.transform = `translateX(0px)`;
         setCurrentSlide(0)
       }
+
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLastSlide, slideRef, currentSlide, type])
 
   const renderContent = () => {
-    return cloneContents.map(item => (
-      <div key={item.post_id} className={`${slideObj[type].containerWidth}`} >
-        <div className={`${slideObj[type].contentWidth} ${slideObj[type].contentHeight} bg-red-200`} >
-          <IdeaSlideCard data={item} />
-        </div>
-      </div>
-    ))
+    return cloneContents.map(item => {
+      return (
+
+        <div key={item.post_id} className={`${slideObj[type].containerWidth}`} >
+          <div className={`${slideObj[type].contentWidth} ${slideObj[type].contentHeight} `} >
+
+            <IdeaSlideCard data={item} />
+
+          </div>
+        </div>)
+
+    })
   }
   //type==="idea"?'flex gap-6 top-[-105px] right-0 absolute':flex absolute left-[-105px] top-[50px]  gap-[1030px]
 
@@ -115,8 +123,8 @@ export default function Slide({
           {renderContent()}
         </div>
         <div className='flex gap-6 top-[-105px] right-0 absolute'>
-          <SlideBtn direction='prev' onClick={prevSlide} />
-          <SlideBtn direction='next' onClick={nextSlide} />
+          <SlideBtn direction='prev' onClick={prevSlide} disabled={currentSlide === 0} />
+          <SlideBtn direction='next' onClick={nextSlide} disabled={false} />
         </div>
       </div>
     </div >

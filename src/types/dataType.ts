@@ -6,7 +6,18 @@ export interface Suggestion {
   product: string;
   user_id: string;
   selected: boolean;
-  commends: number;
+  likes: number;
   img_url: string;
+  users: User
+}
+
+export interface User {
+  user_id: string,
+  created_at: string,
+  point: number,
+  address: string,
+  profile_img: string,
+  nickname: string,
+  email: string
 }
 
