@@ -40,7 +40,7 @@ export default function Ranking() {
           <div key={i} className="px-7 py-3 bg-white rounded-lg border-[1px]">
             <p className="text-black opacity-50">{item.userName}</p>
             <div className="flex items-center gap-3">
-              <p className="text-lg">{item.title}</p>
+              <p className="text-lg ">{item.title}</p>
               <div className={`rounded-[4px] text-xs py-1 px-3 ${colorMatch[i]}`}>{item.challengeCount}회 성공</div>
             </div>
           </div>
