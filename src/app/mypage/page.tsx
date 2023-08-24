@@ -5,7 +5,9 @@ import Image from 'next/image';
 
 import Button from '@/components/common/Button';
 import useSessionStore from '@/store';
+import { useModalStore } from '@/store/modalStore';
 
+import TreeGuideModal from './TreeGuideModal';
 import { supabase } from '../../../supabase/supabaseConfig';
 import profileDefaultImg from '../../assets/profileDefaultImg.png';
 
@@ -110,6 +112,12 @@ export default function Page({ params: { slug } }: Props) {
     fetchData();
   }, [session]);
 
+  const { openModal } = useModalStore(state => state);
+
+  const onClickTreeGuide = () => {
+    openModal(); // 모달 열기
+  };
+
   return (
     <div>
       {/* 유저프로필 */}
@@ -129,9 +137,12 @@ export default function Page({ params: { slug } }: Props) {
       {/* 나무충전 */}
       <div>
         <h1>현재 나무 총{userProfile.point}그루</h1>
-        <Button btnType={'green'} size={'large'}>
-          나무 충전하기
-        </Button>
+        <div>
+          <Button onClick={onClickTreeGuide} btnType={'green'} size={'large'}>
+            나무 충전하기
+          </Button>
+          <TreeGuideModal />
+        </div>
       </div>
 
       {/* 참여중인 챌린지 */}
