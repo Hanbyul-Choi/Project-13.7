@@ -148,15 +148,16 @@ export default function IdeaPostPage() {
             onChange={e => setContent(e.target.value)}
           />
         </div>
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center my-[24px]">
           <Label size="" name="product">
             챌린지 물품
           </Label>
           <Input placeholder="필요 물품을 입력하세요." _size="lg" id="product" inputStyle="ml-[20px]" onChange={e => setProduct(e.target.value)} />
         </div>
-        <div className="flex items-center justify-center">
-          <Label size="" name="product">
-            챌린지 인증 예시
+        <div className="flex">
+          <Label size="" name="challengeImage" labelStyle="w-[5.12rem]">
+            챌린지
+            <br /> 인증 예시
           </Label>
           {typeof previewImg === 'string' ? (
             <div>
@@ -164,7 +165,13 @@ export default function IdeaPostPage() {
               <button onClick={handleCancelImg}>x</button>
             </div>
           ) : (
-            <input type="file" onChange={event => handleChangeImg(event)} />
+            <div className="flex flex-col">
+              <button className="px-4 py-1 border border-blue rounded-lg text-sm text-blue leading-[150%] relative ml-[20px] w-[6.93rem] mb-[12px]">
+                파일 찾아보기
+                <input type="file" id="challengeImage" className="absolute left-[-68px] top-0 w-[11.06rem] h-[31px] opacity-0 cursor-pointer" onChange={event => handleChangeImg(event)} />
+              </button>
+              <div></div>
+            </div>
           )}
         </div>
         <div className="flex items-center justify-center mt-20">
