@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Content from './Content';
+
 import SideBar from './SideBar';
 import Layout from '../common/Layout';
 
@@ -12,7 +14,7 @@ export default function NaturePage() {
       <div className="w-full h-[1px] bg-opacityblack mt-10" />
       <section className="flex mt-20">
         <SideBar />
-        <article>컨텐츠 영역</article>
+        <Content />
       </section>
     </Layout>
   );
