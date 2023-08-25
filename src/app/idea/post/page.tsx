@@ -2,46 +2,43 @@
 import { useEffect, useState } from 'react';
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useMutation } from 'react-query';
+import { v4 } from 'uuid';
 
+import { postChallengeIdea } from '@/app/api/challengeSuggestion';
 import Button from '@/components/common/Button';
+import { useDialog } from '@/components/common/Dialog';
 import { Input } from '@/components/common/Input';
 import { Label } from '@/components/common/Label';
 import SingleLayout from '@/components/layout/SingleLayout';
 
 import { supabase } from '../../../../supabase/supabaseConfig';
 
+export type TIdeaData = {
+  created_at: string;
+  title: string;
+  content: string;
+  product: string;
+  user_id: string;
+  selected: boolean;
+  img_url: string | null;
+  likes: number;
+};
+
 export default function IdeaPostPage() {
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
   const [product, setProduct] = useState<string>('');
   const [userId, setUserId] = useState<string>('');
-  const [imgUrl, setImgUrl] = useState<string>('');
 
   const [imgFile, setImgFile] = useState<File | undefined>(undefined);
   const [previewImg, setPreviewImg] = useState<string | ArrayBuffer | undefined>(undefined);
   const createdAt = Date.now();
+  const { Alert } = useDialog();
+  const router = useRouter();
 
-  const ideaData = {
-    created_at: new Date(createdAt).toISOString(),
-    title,
-    content,
-    product,
-    user_id: userId,
-    selected: false,
-    img_url: imgUrl,
-    likes: 0,
-  };
-
-  // 로그인한 user 데이터 가져오기1
-  // const getLogintUser = async () => {
-  //   const {
-  //     data: { user },
-  //   } = await supabase.auth.getUser();
-  //   console.log(user?.id);
-  // };
-  // getLogintUser();
-
-  // 로그인한 user 데이터 가져오기2
+  // 로그인한 user 데이터 가져오기
   const handleGetLogintUserId = async () => {
     const { data } = await supabase.auth.getSession();
     if (data.session?.user) {
@@ -72,9 +69,10 @@ export default function IdeaPostPage() {
   };
 
   // 등록하기 버튼 click시 실행. supabase storage Image Insert.
-  const handleIdeaPost = async () => {
+  const handleGetImg = async () => {
+    const imgName = v4();
     if (imgFile) {
-      const { error } = await supabase.storage.from('project').upload(`challengeSuggestion/${imgFile.name}`, imgFile, {
+      const { error } = await supabase.storage.from('project').upload(`challengeSuggestion/${imgName}`, imgFile, {
         cacheControl: '3600',
         upsert: false,
       });
@@ -82,14 +80,41 @@ export default function IdeaPostPage() {
         console.error('Upload error:', error);
       }
     }
-    // handleGetImg();
-    const { data } = supabase.storage.from('project').getPublicUrl(`challengeSuggestion/${imgFile?.name}`);
-    setImgUrl(data.publicUrl);
-    // console.log('File URL:', data.publicUrl);
 
-    const { error } = await supabase.from('challengeSuggestion').insert(ideaData);
-    if (error) {
-      console.error('Upload error:', error);
+    // storage에서 이미지 주소 가져오기. 이미지 URL이 설정된 후에 데이터베이스에 전송
+    const { data } = await supabase.storage.from('project').getPublicUrl(`challengeSuggestion/${imgName}`);
+
+    const checkImg = previewImg !== undefined ? data.publicUrl : null;
+    const ideaData = {
+      created_at: new Date(createdAt).toISOString(),
+      title,
+      content,
+      product,
+      user_id: userId,
+      selected: false,
+      img_url: checkImg,
+      likes: 0,
+    };
+
+    handleIdeaPost(ideaData);
+  };
+  const mutation = useMutation({
+    mutationFn: postChallengeIdea,
+  });
+
+  // 유효성 검사 후 DB insert
+  const handleIdeaPost = (ideaData: TIdeaData) => {
+    console.log(ideaData);
+    if (userId === '') {
+      Alert('로그인이 필요합니다.');
+    } else if (title === '') {
+      Alert('제목을 입력해주세요');
+    } else if (content === '') {
+      Alert('내용을 입력해주세요');
+    } else {
+      mutation.mutate(ideaData);
+      Alert('작성하신 글이 정상적으로 등록되었습니다.');
+      router.push('/idea');
     }
   };
 
@@ -99,21 +124,8 @@ export default function IdeaPostPage() {
     setPreviewImg(undefined);
   };
 
-  // 등록하기 버튼 click시 실행. Image getUrl
-  // const handleGetImg = async () => {
-  //   const { data } = await supabase.storage.from('project').getPublicUrl(`challengeSuggestion/${imgFile?.name}`);
-
-  //   console.log('File URL:', data.publicUrl);
-  // };
-
-  // console.log('title', title);
-  // console.log('contents', contents);
-  // console.log('product', product);
-  // console.log(userId);
-  console.log(ideaData);
   return (
-    // <SingleLayout title="챌린지 제안하기🙌" animal="북극곰을">
-    <SingleLayout title="챌린지 제안하기🙌">
+    <SingleLayout size={true} title="챌린지 제안하기🙌">
       <form
         onSubmit={e => {
           e.preventDefault();
@@ -143,10 +155,6 @@ export default function IdeaPostPage() {
           <Input placeholder="필요 물품을 입력하세요." _size="lg" id="product" inputStyle="ml-[20px]" onChange={e => setProduct(e.target.value)} />
         </div>
         <div className="flex items-center justify-center">
-          {/* <Label size="" name="product">
-            챌린지 인증 예시
-          </Label>
-          <Input type="file" placeholder="챌린지를 인증하는 사진 예시를 업로드해주세요!" _size="lg" id="product" inputStyle="ml-[20px]" onChange={e => setProduct(e.target.value)} /> */}
           <Label size="" name="product">
             챌린지 인증 예시
           </Label>
@@ -160,10 +168,10 @@ export default function IdeaPostPage() {
           )}
         </div>
         <div className="flex items-center justify-center mt-20">
-          <Button btnType="black" size="small">
+          <Button btnType="black" size="small" onClick={() => router.push('/idea')}>
             취소하기
           </Button>
-          <Button btnType="primary" size="small" buttonStyle="ml-6" onClick={handleIdeaPost}>
+          <Button btnType="primary" size="small" buttonStyle="ml-6" onClick={handleGetImg}>
             등록하기
           </Button>
         </div>
