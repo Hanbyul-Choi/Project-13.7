@@ -109,7 +109,7 @@ export default function IdeaList() {
           </Link>
         ))}
       </div>
-      <Button btnType="borderBlack" size="small" buttonStyle="py-2 px-8 text-xl" rounded>
+      <Button btnType="borderBlack" size="large" rounded>
         더보기
         <AiOutlineArrowRight size={20} />
       </Button>
