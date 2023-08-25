@@ -31,7 +31,7 @@ export default function IdeaSlide() {
 
 
   return (
-    <div className="border-b-2 mt-20 pb-20">
+    <section className="border-b-2 mt-20 pb-20">
       <p className="text-xl opacity-50 underline underline-offset-4 font-montserrat">Next Challenge</p>
       <div className='flex justify-between'>
         <h2 className="mt-4">다음 챌린지 투표하기</h2>
@@ -39,6 +39,6 @@ export default function IdeaSlide() {
       <div className={'mt-10'}>
         <Slide showContentNum={3} type='idea' contents={data}></Slide>
       </div>
-    </div>
+    </section >
   )
 }

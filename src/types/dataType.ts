@@ -1,3 +1,5 @@
+
+
 export interface Suggestion {
   post_id: string;
   created_at: string;
@@ -11,6 +13,14 @@ export interface Suggestion {
   users: User
 }
 
+export interface NatureStory{
+  post_id: string,
+  created_at: string,
+  category: string,
+  url: string,
+  tag: string,
+}
+
 export interface User {
   user_id: string,
   created_at: string,
@@ -20,4 +30,3 @@ export interface User {
   nickname: string,
   email: string
 }
-

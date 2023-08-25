@@ -3,18 +3,16 @@ import React, { useEffect, useRef, useState } from 'react'
 
 
 
+import VideoSlideCard from './ColumnSlideCard';
 import IdeaSlideCard from './IdeaSlideCard';
 import SlideBtn from './slideBtn';
 
-import type { Suggestion } from '@/types/dataType';
-
-
-
+import type { NatureStory, Suggestion } from '@/types/dataType';
 
 interface Props {
   showContentNum: number;
   type: "idea" | "column"
-  contents: Suggestion[]
+  contents: (Suggestion | NatureStory)[]
   onClickHandler?: () => void
 }
 
@@ -62,6 +60,7 @@ export default function Slide({
 
   const [currentSlide, setCurrentSlide] = useState(0);
 
+
   const cloneContents = [...contents];
 
   if (overContents) {
@@ -97,17 +96,15 @@ export default function Slide({
   }, [isLastSlide, slideRef, currentSlide, type])
 
   const renderContent = () => {
-    return cloneContents.map(item => {
+    return cloneContents.map((item, i) => {
       return (
-
-        <div key={item.post_id} className={`${slideObj[type].containerWidth}`} >
+        <div key={i} className={`${slideObj[type].containerWidth} `} >
           <div className={`${slideObj[type].contentWidth} ${slideObj[type].contentHeight} `} >
-
-            <IdeaSlideCard data={item} />
-
+            {
+              type === 'idea' ? <IdeaSlideCard data={item as Suggestion} /> : <VideoSlideCard data={item as NatureStory} />
+            }
           </div>
         </div>)
-
     })
   }
   //type==="idea"?'flex gap-6 top-[-105px] right-0 absolute':flex absolute left-[-105px] top-[50px]  gap-[1030px]
@@ -122,9 +119,9 @@ export default function Slide({
           ref={slideRef}>
           {renderContent()}
         </div>
-        <div className='flex gap-6 top-[-105px] right-0 absolute'>
-          <SlideBtn direction='prev' onClick={prevSlide} disabled={currentSlide === 0} />
-          <SlideBtn direction='next' onClick={nextSlide} disabled={false} />
+        <div className={type === "idea" ? 'flex gap-6 top-[-105px] right-0 absolute' : 'flex absolute left-[-105px] top-[50px]  gap-[1030px]'}>
+          <SlideBtn direction='prev' onClick={prevSlide} />
+          <SlideBtn direction='next' onClick={nextSlide} />
         </div>
       </div>
     </div >
