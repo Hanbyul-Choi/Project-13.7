@@ -1,4 +1,3 @@
-// TreeGuideModal.tsx
 import React from 'react';
 
 import Link from 'next/link';
@@ -13,46 +12,35 @@ const TreeGuideModal: React.FC = () => {
   return (
     <Modal>
       <div className="">
-        <h3>활동하고 나무 충전하기</h3>
-        <p className="text-sky">나무 충전 가이드</p>
+        <h1>활동하고 나무 충전하기</h1>
         <ul className="flex item-center justify-between gap-2 py-1">
           <li>회원가입</li>
           <li>25 그루</li>
-          <Button btnType={'borderBlack'} size={'xsmall'}>
-            <Link href={'/'}>바로가기</Link>
-          </Button>
         </ul>
         <ul className="flex item-center justify-between gap-2 py-1">
           <li>챌린지 참가 인증</li>
           <li>10 그루</li>
-          <Button btnType={'borderBlack'} size={'xsmall'}>
-            <Link href={'/'}>바로가기</Link>
-          </Button>
         </ul>
         <ul className="flex item-center justify-between gap-2 py-1">
           <li>챌린지 제안</li>
           <li>5 그루</li>
-          <Button btnType={'borderBlack'} size={'xsmall'}>
-            <Link href={'/'}>바로가기</Link>
-          </Button>
         </ul>
         <ul className="flex item-center justify-between gap-2 py-1">
           <li>댓글 작성</li>
           <li>1 그루</li>
-          <Button btnType={'borderBlack'} size={'xsmall'}>
-            <Link href={'/'}>바로가기</Link>
-          </Button>
         </ul>
         <ul className="flex item-center justify-between gap-2 py-1">
           <li>등급 UP</li>
           <li>20 그루</li>
-          <Button btnType={'borderBlack'} size={'xsmall'}>
-            <Link href={'/'}>바로가기</Link>
-          </Button>
         </ul>
-        <Button onClick={closeModal} btnType={'primary'} size={'small'}>
-          확인
-        </Button>
+        <div className="flex gap-2">
+          <Button btnType={'primary'} size={'small'}>
+            <Link href={'/challenge'}>챌린지 바로가기</Link>
+          </Button>
+          <Button onClick={closeModal} btnType={'borderBlack'} size={'small'}>
+            닫기
+          </Button>
+        </div>
       </div>
     </Modal>
   );

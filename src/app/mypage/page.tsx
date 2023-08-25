@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 import Button from '@/components/common/Button';
+import { Input } from '@/components/common/Input';
 import useSessionStore from '@/store';
 import { useModalStore } from '@/store/modalStore';
 
@@ -38,6 +39,8 @@ type UserReviews = {
 };
 
 export default function Page({ params: { slug } }: Props) {
+  const session = useSessionStore((state: { session: any }) => state.session);
+
   const [userProfile, setUserProfile] = useState<UserProfile>({
     address: '',
     email: '',
@@ -49,23 +52,53 @@ export default function Page({ params: { slug } }: Props) {
   const [userChallenges, setUserChallenges] = useState<UserChallenges[]>([]);
   const [userReviews, setUserReviews] = useState<UserReviews[]>([]);
 
-  const session = useSessionStore((state: { session: any }) => state.session);
+  const [editMode, setEditMode] = useState(false);
+  const [editedProfile, setEditedProfile] = useState<UserProfile>({
+    address: '',
+    email: '',
+    nickname: '',
+    point: 0,
+    profile_img: '',
+  });
 
   // user profile
   const loadUserInfo = async () => {
-    let { data: users } = await supabase.from('users').select('*').eq('user_id', session?.user.id);
-    console.log('Users:', users);
+    try {
+      const response = await supabase.from('users').select('*').eq('user_id', session?.user.id);
+      const user = response.data[0];
 
-    if (users && users.length > 0) {
-      const user = users[0];
-      setUserProfile({
+      console.log('User:', user);
+
+      setUserProfile(user);
+      setEditedProfile({
         address: user.address,
         email: user.email,
         nickname: user.nickname,
         point: user.point,
         profile_img: user.profile_img,
       });
+    } catch (error) {
+      console.error('Error fetching user profile:', error);
     }
+  };
+
+  // Edit user profile
+  const handleEditClick = () => {
+    setEditMode(true);
+  };
+
+  const handleSaveClick = async () => {
+    try {
+      await supabase.from('users').update(editedProfile).eq('user_id', session?.user.id);
+      setEditMode(false);
+      loadUserInfo(); // Update user profile data after save
+    } catch (error) {
+      console.error('Error updating user profile:', error);
+    }
+  };
+
+  const handleCancelClick = () => {
+    setEditMode(false);
   };
 
   // user가 신청하고 참여한 main challenge
@@ -115,7 +148,7 @@ export default function Page({ params: { slug } }: Props) {
   const { openModal } = useModalStore(state => state);
 
   const onClickTreeGuide = () => {
-    openModal(); // 모달 열기
+    openModal();
   };
 
   return (
@@ -124,12 +157,38 @@ export default function Page({ params: { slug } }: Props) {
       <div>
         {slug}
         <h1>My Page</h1>
-        <Image src={userProfile?.profile_img ? `${userProfile.profile_img}` : profileDefaultImg} alt="profileDefaultImg" className="w-[100px] h-[100px] rounded-full inline-block mb-4" />
-        <Button btnType={'black'} size={'small'}>
-          내정보 수정하기
-        </Button>
-        <p>Nickname: {userProfile.nickname}</p>
-        <p>Email: {userProfile.email}</p>
+        {editMode ? (
+          <>
+            <Image src={userProfile?.profile_img ? `${userProfile.profile_img}` : profileDefaultImg} alt="profileDefaultImg" className="w-[100px] h-[100px] rounded-full inline-block mb-4" />
+            {/* 기능 추가 필요 */}
+            <Button btnType={'borderBlack'} size={'xsmall'}>
+              이미지 수정
+            </Button>
+            <p>
+              닉네임: <Input type="text" value={editedProfile.nickname || ''} onChange={e => setEditedProfile(prev => ({ ...prev, nickname: e.target.value }))} _size={''} />
+            </p>
+            <p>
+              주소: <Input type="text" value={editedProfile.address || ''} onChange={e => setEditedProfile(prev => ({ ...prev, address: e.target.value }))} _size={''} />
+            </p>
+            <div className="flex gap-2 m-2">
+              <Button btnType={'borderBlack'} size={'small'} onClick={handleCancelClick}>
+                수정 취소
+              </Button>
+              <Button btnType={'black'} size={'small'} onClick={handleSaveClick}>
+                저장하기
+              </Button>
+            </div>
+          </>
+        ) : (
+          <>
+            <Image src={userProfile?.profile_img ? `${userProfile.profile_img}` : profileDefaultImg} alt="profileDefaultImg" className="w-[100px] h-[100px] rounded-full inline-block mb-4" />
+            <p>닉네임: {userProfile.nickname}</p>
+            <p>주소: {userProfile.address}</p>
+            <Button btnType={'black'} size={'small'} onClick={handleEditClick}>
+              내 정보 수정하기
+            </Button>
+          </>
+        )}
       </div>
       <h1>내 뱃지</h1>
       <div>---------------뱃지영역---------------</div>
