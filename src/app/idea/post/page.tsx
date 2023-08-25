@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useMutation } from 'react-query';
 import { v4 } from 'uuid';
 
-import { postChallengeIdea } from '@/app/api/challengeSuggestion';
+import { postChallengeIdea } from '@/app/api/ChallengeSuggestion';
 import Button from '@/components/common/Button';
 import { useDialog } from '@/components/common/Dialog';
 import { Input } from '@/components/common/Input';
