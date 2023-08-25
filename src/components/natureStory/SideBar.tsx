@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation';
 export default function SideBar() {
   const params = usePathname();
   return (
-    <nav className="flex flex-col justify-center items-center w-[180px]">
+    <nav className="flex flex-col justify-start items-center w-[180px]">
       <Link href="/naturestory" className="px-6 py-4">
         <h5 className={`${params === '/naturestory' ? '' : 'text-lg font-medium opacity-50'}`}>전체보기</h5>
       </Link>
