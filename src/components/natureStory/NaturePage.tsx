@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Content from './Content';
+
 import SideBar from './SideBar';
 import Layout from '../common/Layout';
 
