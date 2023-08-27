@@ -41,18 +41,11 @@ export default function Header() {
             </Link>
           </div>
           <nav className="flex gap-8">
-            <Link href="/challenge" className="text-sub6">
-              <h5 className={`${params === '/challenge' ? 'text-black' : ''} font-semibold `}>이달의 챌린지</h5>
-            </Link>
-            <Link href="/idea" className="text-sub6 font-semibold">
-              <h5 className={`${params === '/idea' ? 'text-black' : ''} font-semibold `}>다음 챌린지</h5>
-            </Link>
-            <Link href="/challenge/certify" className="text-sub6 font-semibold">
-              <h5 className={`${params === '/challenge/certify' ? 'text-black' : ''} font-semibold `}>참여 인증</h5>
-            </Link>
-            <Link href="/naturestory" className="text-sub6 font-semibold">
-              <h5 className={`${params === '/column' ? 'text-black' : ''} font-semibold `}>환경 이야기</h5>
-            </Link>
+            {navCategory.map(item => (
+              <Link href={item.pathname} className="text-sub6" key={item.title}>
+                <h5 className={`${params === item.pathname ? 'text-black' : ''} font-semibold `}>{item.title}</h5>
+              </Link>
+            ))}
           </nav>
           <div className="flex gap-4 text-base">
             {session ? (
@@ -71,3 +64,22 @@ export default function Header() {
     </div>
   );
 }
+
+const navCategory = [
+  {
+    title: '이달의 챌린지',
+    pathname: '/challenge',
+  },
+  {
+    title: '다음 챌린지',
+    pathname: '/idea',
+  },
+  {
+    title: '참여 인증',
+    pathname: '/challenge/certify',
+  },
+  {
+    title: '환경 이야기',
+    pathname: '/column',
+  },
+];

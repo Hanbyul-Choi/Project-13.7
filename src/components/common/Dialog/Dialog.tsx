@@ -23,7 +23,7 @@ export const Dialog = ({ onClose, onSuccess, type, mainText, subText }: DiologPr
   useLockBodyScroll(true);
 
   return (
-    <div className="fixed top-0 left-0 z-50 w-full h-full bg-black/30" onClick={close}>
+    <div className="fixed top-0 left-0 z-50 w-screen h-screen bg-black/40" onClick={close}>
       <div className="flex flex-col gap-8 absolute top-[50%] left-[50%] -translate-x-center -translate-y-center bg-white rounded-[8px] p-10 ">
         <div className="border-b-[1px] border-opacityblack ">
           <h5 className="font-semibold text-blue pb-4 w-80">알림</h5>

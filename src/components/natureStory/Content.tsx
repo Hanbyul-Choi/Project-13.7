@@ -12,7 +12,7 @@ const data = [
     date: Date.now(),
     title: '[자막뉴스] 북극곰은 몇 마리? 드론 개체수 조사 최초 공개 줄이기',
     content: null,
-    tags: '해시태그 해시태그',
+    tags: '해시태그1 해시태그2',
   },
   {
     id: 2,
@@ -21,7 +21,7 @@ const data = [
     date: Date.now(),
     title: '[자막뉴스] 북극곰은 몇 마리? 드론 개체수 조사 최초 공개 줄이기',
     content: null,
-    tags: '해시태그 해시태그',
+    tags: '해시태그1 해시태그2',
   },
   {
     id: 3,
@@ -30,7 +30,7 @@ const data = [
     date: Date.now(),
     title: '[자막뉴스] 북극곰은 몇 마리? 드론 개체수 조사 최초 공개 줄이기',
     content: null,
-    tags: '해시태그 해시태그',
+    tags: '해시태그1 해시태그2',
   },
 ];
 

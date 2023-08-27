@@ -143,7 +143,8 @@ const AuthModal: React.FC<SignUpModalProps> = ({ switchHandler, modalType }) => 
             </Label>
             <Input _size="sm" type="password" value={password} onChange={handlePasswordChange} placeholder="비밀번호" />
             <div className="flex justify-end py-2 text-base text-sub6">
-              <p>아이디 찾기</p> <p className="px-2">|</p>
+              <p>아이디 찾기</p>
+              <p className="px-2">|</p>
               <p>비밀번호 찾기</p>
             </div>
             <Button type="submit" btnType={'primary'} size={'full'} disabled={disabled}>
