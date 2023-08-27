@@ -2,6 +2,7 @@ import React from 'react';
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { AiOutlineArrowRight } from 'react-icons/ai';
 
 import heartIcon from '../../../public/heart.svg';
 import Button from '../common/Button';
@@ -108,8 +109,9 @@ export default function IdeaList() {
           </Link>
         ))}
       </div>
-      <Button btnType="borderBlack" size="small" rounded>
+      <Button btnType="borderBlack" size="large" rounded>
         더보기
+        <AiOutlineArrowRight size={20} />
       </Button>
     </div>
   );
