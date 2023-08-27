@@ -14,30 +14,6 @@ import profileDefaultImg from '../../assets/profileDefaultImg.png';
 
 import type { Props } from '@/types/PropsType';
 
-type UserProfile = {
-  address: string | null;
-  email: string;
-  nickname: string;
-  point: number;
-  profile_img: string | null;
-};
-
-type UserChallenges = {
-  mainChallenge: any;
-  id: string;
-  title: string;
-  startDate: number;
-  endDate: number;
-  isCompleted: boolean;
-};
-
-type UserReviews = {
-  mainChallenge: any;
-  id: string;
-  created_at: number;
-  insta_url: string;
-};
-
 export default function Page({ params: { slug } }: Props) {
   const session = useSessionStore((state: { session: any }) => state.session);
 
@@ -103,7 +79,7 @@ export default function Page({ params: { slug } }: Props) {
 
   // user가 신청하고 참여한 main challenge
   const loadUserChallenges = async () => {
-    let { data: challenges } = await supabase.from('joinChallenge').select(`*, mainChallenge (*)`);
+    let { data: challenges } = await supabase.from('joinChallenge').select(`*, mainChallenge (*)`).eq('user_id', session?.user.id);
     console.log('Challenges:', challenges);
 
     if (challenges) {
@@ -198,7 +174,7 @@ export default function Page({ params: { slug } }: Props) {
         <h1>현재 나무 총{userProfile.point}그루</h1>
         <div>
           <Button onClick={onClickTreeGuide} btnType={'green'} size={'large'}>
-            나무 충전하기
+            나무를 얻으려면?
           </Button>
           <TreeGuideModal />
         </div>
@@ -230,3 +206,27 @@ export default function Page({ params: { slug } }: Props) {
     </div>
   );
 }
+
+type UserProfile = {
+  address: string | null;
+  email: string;
+  nickname: string;
+  point: number;
+  profile_img: string | null;
+};
+
+type UserChallenges = {
+  mainChallenge: any;
+  id: string;
+  title: string;
+  startDate: number;
+  endDate: number;
+  isCompleted: boolean;
+};
+
+type UserReviews = {
+  mainChallenge: any;
+  id: string;
+  created_at: number;
+  insta_url: string;
+};
