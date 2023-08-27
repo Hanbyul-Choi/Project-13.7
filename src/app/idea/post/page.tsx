@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useMutation } from 'react-query';
 import { v4 } from 'uuid';
 
-import { postChallengeIdea } from '@/app/api/ChallengeSuggestion';
+import { postChallengeIdea } from '@/app/api/challengeIdea';
 import Button from '@/components/common/Button';
 import { useDialog } from '@/components/common/Dialog';
 import { Input } from '@/components/common/Input';
@@ -168,7 +168,7 @@ export default function IdeaPostPage() {
             <div className="flex flex-col">
               <button className="px-4 py-1 border border-blue rounded-lg text-sm text-blue leading-[150%] relative ml-[20px] w-[6.93rem] mb-[12px]">
                 파일 찾아보기
-                <input type="file" id="challengeImage" className="absolute left-[-68px] top-0 w-[11.06rem] h-[31px] opacity-0 cursor-pointer" onChange={event => handleChangeImg(event)} />
+                <input type="file" accept="image/jpeg" id="challengeImage" className="absolute left-[-68px] top-0 w-[11.06rem] h-[31px] opacity-0 cursor-pointer" onChange={event => handleChangeImg(event)} />
               </button>
               <div></div>
             </div>

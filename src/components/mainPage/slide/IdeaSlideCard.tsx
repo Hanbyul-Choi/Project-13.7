@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 import imgSrc from '../../../../public/dog.jpg';
 
-import type { Suggestion } from '@/types/dataType';
+import type { Suggestion } from '@/types/db.type';
 
 interface Props {
   data: Suggestion;
