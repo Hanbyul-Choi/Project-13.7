@@ -1,8 +1,13 @@
-import React from 'react';
+'use client';
+import React, { useEffect, useState } from 'react';
 
 import Image from 'next/image';
+import { useMutation } from 'react-query';
+
+import { postChallengeIdeaComment } from '@/app/api/ideaComments';
 
 import defaultImage from '../../../public/defaultProfileImage.jpeg';
+import { supabase } from '../../../supabase/supabaseConfig';
 import Button from '../common/Button';
 import { Input } from '../common/Input';
 
@@ -11,6 +16,36 @@ type TChallengeId = {
 };
 
 function Review({ slug }: TChallengeId) {
+  const [comment, setComment] = useState<string>('');
+  const [userId, setUserId] = useState<string>('');
+
+  const mutation = useMutation({
+    mutationFn: postChallengeIdeaComment,
+  });
+
+  const handleGetLogintUserId = async () => {
+    const { data } = await supabase.auth.getSession();
+    if (data.session?.user) {
+      setUserId(data.session?.user.id);
+    }
+  };
+
+  // 처음 렌더링됐을 때 함수 실행
+  useEffect(() => {
+    handleGetLogintUserId();
+  }, []);
+
+  // [ ] 나중에 post_id 받아오는걸로 바꾸기
+  const commentData = {
+    post_id: '6f69f1a0-0d09-4919-a85f-a8c5e30fbb27',
+    user_id: userId,
+    comment,
+  };
+  const handlePostComment = () => {
+    mutation.mutate(commentData);
+  };
+
+  // console.log('commentData:', commentData);
   return (
     <div>
       {/* ex.댓글 2 */}
@@ -43,9 +78,14 @@ function Review({ slug }: TChallengeId) {
             <p className="leading-[150%]">{slug}응원의 댓글을 남겨주세요.</p>
           </div>
         </div>
-        <form className="flex flex-row mt-7">
-          <Input type="text" _size="md" />
-          <Button btnType="primary" buttonStyle="ml-[16px]">
+        <form
+          className="flex flex-row mt-7"
+          onSubmit={e => {
+            e.preventDefault();
+          }}
+        >
+          <Input placeholder="응원의 댓글을 남겨주세요." type="text" _size="md" onChange={e => setComment(e.target.value)} />
+          <Button type="submit" btnType="primary" buttonStyle="ml-[16px]" onClick={handlePostComment}>
             댓글입력
           </Button>
         </form>
