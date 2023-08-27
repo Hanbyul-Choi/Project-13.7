@@ -38,8 +38,12 @@ export default function IdeaPostPage() {
   const createdAt = Date.now();
   const { Alert } = useDialog();
   const router = useRouter();
+  const mutation = useMutation({
+    mutationFn: postChallengeIdea,
+  });
 
   // CHECKLIST
+  // [ ] user 가져오는지 확인하는 콘솔
   // 로그인한 user 데이터 가져오기
   const handleGetLogintUserId = async () => {
     const { data } = await supabase.auth.getSession();
@@ -54,7 +58,7 @@ export default function IdeaPostPage() {
     handleGetLogintUserId();
   }, []);
 
-  // input 선택한 Image => DB state 할당, 미리보기 state 할당
+  // input에서 사진 첨부 => DB state 할당, 미리보기 state 할당 함수 실행
   const handleChangeImg = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0]; // Access the selected file
     if (selectedFile) {
@@ -62,14 +66,18 @@ export default function IdeaPostPage() {
     }
   };
 
+  // Drag & Drop 사진 첨부 => DB state 할당, 미리보기 state 할당 함수 실행
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const [selectedFile] = acceptedFiles; // Access the selected file
     imgUpload(selectedFile);
   }, []);
 
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+
+  // 첨부된 파일 읽고 DB state 할당, 미리보기 state 할당
   const imgUpload = (selectedFile: File) => {
     if (selectedFile) {
-      setImgFile(selectedFile); // Update the state with the selected file
+      setImgFile(selectedFile);
       const reader = new FileReader();
       reader.readAsDataURL(selectedFile);
       reader.onloadend = () => {
@@ -79,8 +87,6 @@ export default function IdeaPostPage() {
       };
     }
   };
-
-  const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   // 등록하기 버튼 click시 실행. supabase storage Image Insert.
   const handleGetImg = async () => {
@@ -112,13 +118,9 @@ export default function IdeaPostPage() {
 
     handleIdeaPost(ideaData);
   };
-  const mutation = useMutation({
-    mutationFn: postChallengeIdea,
-  });
 
   // 유효성 검사 후 DB insert
   const handleIdeaPost = (ideaData: TIdeaData) => {
-    console.log(ideaData);
     if (userId === '') {
       Alert('로그인이 필요합니다.');
     } else if (title === '') {
@@ -137,8 +139,10 @@ export default function IdeaPostPage() {
     setImgFile(undefined);
     setPreviewImg(undefined);
   };
-  useDropzone;
+
+  // [ ] user 가져오는지 확인하는 콘솔
   console.log('🚀 ~ file: page.tsx:35 ~ IdeaPostPage ~ userId:', userId);
+
   return (
     <SingleLayout size={true} title="챌린지 제안하기🙌">
       <form
