@@ -1,1 +1,1 @@
-export { useLockBodyScroll } from './useLockBodyScroll';
+export { useLockBodyScroll } from './useLockBodyScroll.hook';

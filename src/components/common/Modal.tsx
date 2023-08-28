@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 import { createPortal } from 'react-dom';
 
-import { useModalStore } from '@/store/modalStore';
+import { useModalStore } from '@/store/modal.store';
 
 type ModalProps = {
   children: React.ReactNode;

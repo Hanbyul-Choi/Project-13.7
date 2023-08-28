@@ -1,15 +1,12 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 
-import { useModalStore } from '@/store/modalStore';
+import { useModalStore } from '@/store/modal.store';
 
-import NaverSignIn from './naverSignIn';
-import SocialSignIn from './SocialSignIn';
+import NaverSignIn from './social-sign-in/NaverSignIn';
+import SocialSignIn from './social-sign-in/SocialSignIn';
 import { supabase } from '../../../supabase/supabaseConfig';
-import Button from '../common/Button';
-import { useDialog } from '../common/Dialog';
-import { Input } from '../common/Input';
-import { Label } from '../common/Label';
+import { Button, Input, Label, useDialog } from '../common';
 import Modal from '../common/Modal';
 
 type SignUpModalProps = {

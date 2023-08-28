@@ -5,18 +5,18 @@ import { AiOutlineArrowRight } from 'react-icons/ai';
 import { useQuery } from 'react-query';
 import { PropagateLoader } from 'react-spinners';
 
-import { getSuggestions } from '@/app/api/ChallengeSuggestion';
-import { getLikes } from '@/app/api/ideaLikes';
+import { getSuggestions } from '@/app/api/challenge-suggestion';
+import { getLikes } from '@/app/api/idea-likes';
 
-import IdeaContent from './IdeaContent';
-import IdeaHeader from './IdeaHeader';
-import Button from '../common/Button';
+import { Button } from '../common';
 
 import type { Likes } from '@/types/db.type';
 
+import { IdeaContent, IdeaHeader } from '.';
+
 export type SortWay = '추천순' | '최신순';
 
-export default function IdeaList() {
+export function IdeaList() {
   const [sortWay, setSortway] = useState<SortWay>('추천순');
 
   const { isError, data } = useQuery('challengeSuggestion', getSuggestions);
