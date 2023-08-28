@@ -23,10 +23,8 @@ export default function Page({ params: { slug } }: Props) {
     nickname: '',
     point: 0,
     profile_img: '',
+    rank: 0,
   });
-
-  const [userChallenges, setUserChallenges] = useState<UserChallenges[]>([]);
-  const [userReviews, setUserReviews] = useState<UserReviews[]>([]);
 
   const [editMode, setEditMode] = useState(false);
   const [editedProfile, setEditedProfile] = useState<UserProfile>({
@@ -35,6 +33,16 @@ export default function Page({ params: { slug } }: Props) {
     nickname: '',
     point: 0,
     profile_img: '',
+    rank: 0,
+  });
+
+  const [userChallenges, setUserChallenges] = useState<UserChallenges[]>([]);
+  const [userReviews, setUserReviews] = useState<UserReviews[]>([]);
+  const [addReview, setAddReview] = useState<UserReviews>({
+    mainChallenge: '',
+    id: '',
+    created_at: 0,
+    insta_url: '',
   });
 
   // user profile
@@ -52,6 +60,7 @@ export default function Page({ params: { slug } }: Props) {
         nickname: user.nickname,
         point: user.point,
         profile_img: user.profile_img,
+        rank: user.rank,
       });
     } catch (error) {
       console.error('Error fetching user profile:', error);
@@ -97,6 +106,31 @@ export default function Page({ params: { slug } }: Props) {
     }
   };
 
+  // reviews table 추가 & joinChallenge reviews 1 추가
+  const addChallengeReview = async () => {
+    let { data: addReview } = await supabase.from('reviews').insert('*').eq('user_id', session?.user.id);
+
+    if (addReview) {
+      setUserReviews(addReview);
+    }
+  };
+
+  // reviews 갯수에 따른 성공여부(completedMission) 업데이트
+  const updateUserChallenges = async () => {
+    let { data: updatedChallenge } = await supabase.from('joinChallenge').update({ completedMission: true }).eq('user_id', session?.user.id).gte('reviews', 10).select(`*, mainChallenge(*)`);
+
+    const updatedChallenges = userChallenges.map(challenge => {
+      if (challenge.reviews >= 10) {
+        return { ...challenge, completedMission: true };
+      } else {
+        return challenge;
+      }
+    });
+
+    setUserChallenges(updatedChallenges); // 업데이트된 배열을 setUserChallenges를 통해 저장
+    console.log('Updated Challenge:', updatedChallenge);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       await loadUserInfo();
@@ -115,7 +149,16 @@ export default function Page({ params: { slug } }: Props) {
 
   useEffect(() => {
     const fetchData = async () => {
+      await loadUserChallenges();
+    };
+
+    fetchData();
+  }, [session]);
+
+  useEffect(() => {
+    const fetchData = async () => {
       await loadUserReviews();
+      await updateUserChallenges(); // loadUserReviews 후에 updateUserChallenges를 호출하여 completedMission 값을 업데이트
     };
 
     fetchData();
@@ -127,12 +170,56 @@ export default function Page({ params: { slug } }: Props) {
     openModal();
   };
 
+  const [showRankGuide, setShowRankGuide] = useState(false); // 상태를 이용하여 툴팁의 표시 여부를 관리
   return (
     <div>
+      {/* 임시 인증하기 버튼 */}
+      <form>
+        <Input
+          type="text"
+          value={addReview.insta_url}
+          onChange={e => {
+            e.target.value && setAddReview({ ...addReview, insta_url: e.target.value });
+          }}
+        />
+        <Button onClick={addChallengeReview} btnType={'black'}>
+          챌린지 인증하기
+        </Button>
+      </form>
       {/* 유저프로필 */}
       <div>
         {slug}
         <h1>My Page</h1>
+
+        <div>
+          <p
+            onMouseEnter={() => setShowRankGuide(true)} // 마우스 오버시 툴팁 표시
+            onMouseLeave={() => setShowRankGuide(false)} // 마우스 벗어날 때 툴팁 숨김
+            style={{ cursor: 'pointer' }} // 마우스 커서 모양을 변경하여 사용자에게 표시될 수 있다는 힌트 제공
+          >
+            등급: {userProfile?.rank}ⓘ
+          </p>
+          {showRankGuide && (
+            <div className="absolute bg-white p-2 border rounded shadow text-center">
+              <h3>등급 UP 혜택</h3>
+              <div className="flex justify-between gap-4 py-1 mx-2">
+                <p>챌린지 1회 달성 시</p>
+                <p>물범 수호신 승급</p>
+                <p>나무 10그루 지급</p>
+              </div>
+              <div className="flex justify-between gap-4 py-1 mx-2">
+                <p>챌린지 5회 달성 시</p>
+                <p>호랑이 수호신 승급</p>
+                <p>나무 30그루 지급</p>
+              </div>
+              <div className="flex justify-between gap-4 py-1 mx-2">
+                <p>챌린지 10회 달성 시</p>
+                <p>북극곰 마스터 승급</p>
+                <p>나무 50그루 지급</p>
+              </div>
+            </div>
+          )}
+        </div>
         {editMode ? (
           <>
             <Image src={userProfile?.profile_img ? `${userProfile.profile_img}` : profileDefaultImg} alt="profileDefaultImg" className="w-[100px] h-[100px] rounded-full inline-block mb-4" />
@@ -188,6 +275,9 @@ export default function Page({ params: { slug } }: Props) {
           <div>제목: {item.mainChallenge.title}</div>
           <div>시작일: {item.mainChallenge.startDate}</div>
           <div>종료일: {item.mainChallenge.endDate}</div>
+          <div>참여 인증: {item.reviews}/10</div>
+          <div>성공 여부: {item.completedMission.toString()}</div>
+          <div>진행 상황: {item.mainChallenge.isCompleted.toString()}</div>
         </div>
       ))}
 
@@ -198,8 +288,8 @@ export default function Page({ params: { slug } }: Props) {
           <div key={item.id}>
             <div>{index + 1}</div>
             <div>제목: {item.mainChallenge.title}</div>
-            <div>시작일: {item.insta_url}</div>
-            <div>종료일: {item.created_at}</div>
+            <div>게시글URL: {item.insta_url}</div>
+            <div>생성일: {item.created_at}</div>
           </div>
         ))}
       </div>
@@ -208,6 +298,7 @@ export default function Page({ params: { slug } }: Props) {
 }
 
 type UserProfile = {
+  rank: number;
   address: string | null;
   email: string;
   nickname: string;
@@ -218,10 +309,9 @@ type UserProfile = {
 type UserChallenges = {
   mainChallenge: any;
   id: string;
-  title: string;
-  startDate: number;
-  endDate: number;
-  isCompleted: boolean;
+  completedMission: boolean;
+  reviews: number;
+  challengeReviews: UserReviews[];
 };
 
 type UserReviews = {
