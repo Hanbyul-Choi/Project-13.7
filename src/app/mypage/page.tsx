@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 
 import { supabase } from '../../../supabase/supabaseConfig';
 
-import type { Props } from '@/types/Props.type';
+import type { Props } from '@/types/props.type';
 
 export default function Page({ params: { slug } }: Props) {
   useEffect(() => {

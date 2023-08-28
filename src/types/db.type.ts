@@ -6,7 +6,7 @@ export interface Suggestion {
   product: string;
   user_id: string;
   selected: boolean;
-  likes: number;
+  likes: Likes;
   img_url: string;
   users: User;
 }

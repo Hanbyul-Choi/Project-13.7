@@ -3,7 +3,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import fullHeart from '../../../../public/fullHeart.svg'
+import fullHeart from '../../../../public/fullHeart.svg';
 
 import type { Suggestion } from '@/types/db.type';
 
@@ -17,7 +17,8 @@ export default function IdeaSlideCard({ data }: Props) {
   return (
     <div className="flex flex-col gap-3 hover:drop-shadow-lg">
       <Link href={`/idea/${data.post_id}`}>
-        <img src={data.img_url} style={{ objectFit: "cover" }} alt="ideaCardImg" className="h-[339px] font-normal" />
+        <img src={data.img_url} style={{ objectFit: 'cover' }} alt="ideaCardImg" className="h-[339px] w-full font-normal" />
+
         <div className="flex text-black opacity-50 text-sm">
           <p>{data.users?.nickname}</p>
           &nbsp;
@@ -26,12 +27,12 @@ export default function IdeaSlideCard({ data }: Props) {
           <p>{date ? date[1] : ''}</p>
         </div>
         <div>
-          <h2 className="text-lg">{data.title}</h2>
-          <h3 className="text-black opacity-50 text-sm">{data.content}</h3>
+          <h2 className="text-lg text-left">{data.title}</h2>
+          <h3 className="text-black opacity-50 text-sm text-left">{data.content}</h3>
         </div>
-        <div className='flex items-center'>
+        <div className="flex items-center">
           <Image src={fullHeart} alt="heart" />
-          <h3 className='text-sm text-green'>추천수 {data.likes}</h3>
+          <h3 className="text-sm text-green">추천수 {data.likes?.users.length}</h3>
         </div>
         <div />
       </Link>
