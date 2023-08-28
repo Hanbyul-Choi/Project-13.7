@@ -11,7 +11,7 @@ interface Props {
   showContentNum: number;
   type: "idea" | "column"
   contents: (Suggestion | NatureStory)[]
-  onClickHandler: (id: string) => void
+  onClickHandler?: (id: string) => void
 }
 
 type innerMatch = {
@@ -19,7 +19,6 @@ type innerMatch = {
   containerWidth: string;
   gap: string;
   contentWidth: string;
-
 }
 
 type Match = Record<string, innerMatch>;
@@ -28,7 +27,7 @@ export default function Slide({
   showContentNum = 3,
   contents,
   type,
-  onClickHandler
+  onClickHandler = () => { }
 }: Props) {
 
   const slideObj: Match = {
@@ -47,16 +46,12 @@ export default function Slide({
     }
   }
 
-
-
   let overContents = true;
   if (contents && contents.length <= showContentNum) {
     overContents = false;
   }
 
   const [currentSlide, setCurrentSlide] = useState(0);
-
-
   const cloneContents = [...contents];
 
   if (overContents) {
@@ -104,7 +99,6 @@ export default function Slide({
         </div>)
     })
   }
-
 
   return (
     <div className='flex items-center relative'>

@@ -2,7 +2,6 @@ import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 interface Props {
   onClick?: (event: React.MouseEvent) => void;
   direction: "prev" | "next";
-
 }
 
 export default function SlideBtn({ onClick, direction }: Props) {

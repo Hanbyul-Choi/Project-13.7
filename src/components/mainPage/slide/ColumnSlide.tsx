@@ -7,12 +7,10 @@ import Link from 'next/link';
 import { getNatureStory } from '@/app/api/nature-stroty';
 import { Button } from '@/components/common';
 
-
 import Slide from './Slide';
 import nextIcon from '../../../../public/rightArrow.svg'
 
 import type { NatureStory } from '@/types/db.type';
-
 
 export default function ContentSlide() {
   const [contentData, setContentData] = useState<NatureStory[]>([])
@@ -30,12 +28,12 @@ export default function ContentSlide() {
     const pickData = contentData.filter(data => data.post_id === id)
     setSelectedItem(pickData[0])
   }
-  //db에 저장된 데이터 불러와서 적용, props전달
+  const createdAt = selectedItem.created_at;
+  const date = createdAt.match(/(\d{4}-\d{2}-\d{2})/);
   return (
     <div className=" border-b-2 mt-20 pb-20 my-20">
       <p className="text-xl opacity-50 underline underline-offset-4 font-montserrat">Contents</p>
       <h2 className="mt-4">멸종위기 동물들의 생활</h2>
-
       <div className='flex gap-10 mt-20'>
         {selectedItem?.category === "youtube" ?
           <div className='w-[690px] h-[420px]'>
@@ -51,7 +49,6 @@ export default function ContentSlide() {
             <img width={690} height={420} src={selectedItem?.img_url} alt='natureStroyImg' />
           </div>
         }
-
         <div className='my-auto'>
           <p className='mb-4'>{selectedItem?.category}</p>
           <h1 className='text-2xl mb-[14px]'>{selectedItem?.title}</h1>
@@ -60,7 +57,7 @@ export default function ContentSlide() {
             &nbsp;
             <span>|</span>
             &nbsp;
-            <p>2023.08.18(금)</p>
+            <p>{date ? date[1] : ''}</p>
           </div>
           <Link href={`/naturestory/${selectedItem?.post_id}`}>
             <Button btnType='borderBlack' size='large' rounded={true} >

@@ -3,7 +3,6 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import imgSrc from '../../../../public/dog.jpg'
 import fullHeart from '../../../../public/fullHeart.svg'
 
 import type { Suggestion } from '@/types/db.type';
@@ -18,7 +17,7 @@ export default function IdeaSlideCard({ data }: Props) {
   return (
     <div className="flex flex-col gap-3 hover:drop-shadow-lg">
       <Link href={`/idea/${data.post_id}`}>
-        <Image src={imgSrc} objectFit="cover" alt="개야" className="h-[339px] font-normal" />
+        <img src={data.img_url} style={{ objectFit: "cover" }} alt="ideaCardImg" className="h-[339px] font-normal" />
         <div className="flex text-black opacity-50 text-sm">
           <p>{data.users?.nickname}</p>
           &nbsp;
