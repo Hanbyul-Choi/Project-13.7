@@ -2,9 +2,9 @@ import React from 'react';
 
 import Link from 'next/link';
 
-import Button from '@/components/common/Button';
+import { Button } from '@/components/common/Button';
 import Modal from '@/components/common/Modal';
-import { useModalStore } from '@/store/modalStore';
+import { useModalStore } from '@/store/modal.store';
 
 const TreeGuideModal: React.FC = () => {
   const { closeModal } = useModalStore(state => state);

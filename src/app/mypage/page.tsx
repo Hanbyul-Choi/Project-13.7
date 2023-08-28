@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react';
 
 import Image from 'next/image';
 
-import Button from '@/components/common/Button';
+import { Button } from '@/components/common/Button';
 import { Input } from '@/components/common/Input';
-import useSessionStore from '@/store';
-import { useModalStore } from '@/store/modalStore';
+import { useModalStore } from '@/store/modal.store';
+import useSessionStore from '@/store/sesson.store.';
 
 import TreeGuideModal from './TreeGuideModal';
 import { supabase } from '../../../supabase/supabaseConfig';
@@ -38,12 +38,6 @@ export default function Page({ params: { slug } }: Props) {
 
   const [userChallenges, setUserChallenges] = useState<UserChallenges[]>([]);
   const [userReviews, setUserReviews] = useState<UserReviews[]>([]);
-  const [addReview, setAddReview] = useState<UserReviews>({
-    mainChallenge: '',
-    id: '',
-    created_at: 0,
-    insta_url: '',
-  });
 
   // user profile
   const loadUserInfo = async () => {
@@ -106,15 +100,6 @@ export default function Page({ params: { slug } }: Props) {
     }
   };
 
-  // reviews table 추가 & joinChallenge reviews 1 추가
-  const addChallengeReview = async () => {
-    let { data: addReview } = await supabase.from('reviews').insert('*').eq('user_id', session?.user.id);
-
-    if (addReview) {
-      setUserReviews(addReview);
-    }
-  };
-
   // reviews 갯수에 따른 성공여부(completedMission) 업데이트
   const updateUserChallenges = async () => {
     let { data: updatedChallenge } = await supabase.from('joinChallenge').update({ completedMission: true }).eq('user_id', session?.user.id).gte('reviews', 10).select(`*, mainChallenge(*)`);
@@ -158,7 +143,7 @@ export default function Page({ params: { slug } }: Props) {
   useEffect(() => {
     const fetchData = async () => {
       await loadUserReviews();
-      await updateUserChallenges(); // loadUserReviews 후에 updateUserChallenges를 호출하여 completedMission 값을 업데이트
+      await updateUserChallenges();
     };
 
     fetchData();
@@ -170,33 +155,15 @@ export default function Page({ params: { slug } }: Props) {
     openModal();
   };
 
-  const [showRankGuide, setShowRankGuide] = useState(false); // 상태를 이용하여 툴팁의 표시 여부를 관리
+  const [showRankGuide, setShowRankGuide] = useState(false);
   return (
     <div>
-      {/* 임시 인증하기 버튼 */}
-      <form>
-        <Input
-          type="text"
-          value={addReview.insta_url}
-          onChange={e => {
-            e.target.value && setAddReview({ ...addReview, insta_url: e.target.value });
-          }}
-        />
-        <Button onClick={addChallengeReview} btnType={'black'}>
-          챌린지 인증하기
-        </Button>
-      </form>
       {/* 유저프로필 */}
       <div>
         {slug}
         <h1>My Page</h1>
-
         <div>
-          <p
-            onMouseEnter={() => setShowRankGuide(true)} // 마우스 오버시 툴팁 표시
-            onMouseLeave={() => setShowRankGuide(false)} // 마우스 벗어날 때 툴팁 숨김
-            style={{ cursor: 'pointer' }} // 마우스 커서 모양을 변경하여 사용자에게 표시될 수 있다는 힌트 제공
-          >
+          <p onMouseEnter={() => setShowRankGuide(true)} onMouseLeave={() => setShowRankGuide(false)} style={{ cursor: 'pointer' }}>
             등급: {userProfile?.rank}ⓘ
           </p>
           {showRankGuide && (
