@@ -20,17 +20,16 @@ const animals = {
 
 interface Props {
   item: Suggestion;
-  likedUsers: string[] | undefined;
 }
 
-export function IdeaContent({ item, likedUsers }: Props) {
+export function IdeaContent({ item }: Props) {
   const { post_id, users, content, title, created_at, img_url } = item;
   const queryClient = useQueryClient();
   const [isliked, setIsLiked] = useState(false);
   const { Alert } = useDialog();
   const { session } = useSessionStore();
   const curUserId = session?.user.id;
-
+  const likedUsers = item.likes?.users;
   const checkLiked = () => {
     if (!curUserId) return false;
     return likedUsers?.includes(curUserId);
@@ -53,8 +52,8 @@ export function IdeaContent({ item, likedUsers }: Props) {
     },
     {
       onMutate: async () => {
-        await queryClient.cancelQueries({ queryKey: 'ideaLikes' });
-        const prevLikes: Likes[] | undefined = queryClient.getQueryData('ideaLikes');
+        await queryClient.cancelQueries({ queryKey: 'challengeSuggestion' });
+        const prevLikes: Likes[] | undefined = queryClient.getQueryData('challengeSuggestion');
         if (prevLikes === undefined) return;
         console.log(prevLikes);
         const updatedLikes = likedUsers
@@ -64,13 +63,13 @@ export function IdeaContent({ item, likedUsers }: Props) {
                 if (checkLiked()) {
                   return {
                     ...like,
-                    users: like.users.filter(userId => userId !== curUserId),
+                    users: likedUsers.filter(userId => userId !== curUserId),
                   };
                 } else {
                   // 좋아요 추가
                   return {
                     ...like,
-                    users: [...like.users, curUserId!],
+                    users: [...likedUsers, curUserId!],
                   };
                 }
               }
@@ -84,15 +83,15 @@ export function IdeaContent({ item, likedUsers }: Props) {
               },
             ];
         console.log(updatedLikes);
-        queryClient.setQueryData('ideaLikes', updatedLikes);
+        queryClient.setQueryData('challengeSuggestion', updatedLikes);
         return { prevLikes };
       },
       onError: ({ context }) => {
         if (context === undefined) return;
-        queryClient.setQueryData(['ideaLikes'], context.prevLikes);
+        queryClient.setQueryData(['challengeSuggestion'], context.prevLikes);
       },
       onSettled: async () => {
-        await queryClient.invalidateQueries({ queryKey: 'ideaLikes' });
+        await queryClient.invalidateQueries({ queryKey: 'challengeSuggestion' });
       },
     },
   );

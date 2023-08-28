@@ -36,7 +36,7 @@ export default function IdeaSlideCard({ data }: Props) {
               fill="#34C184"
             />
           </svg>
-          <h3 className="text-sm text-green">추천수 {data.likes}</h3>
+          <h3 className="text-sm text-green">추천수 {data.likes?.users.length}</h3>
         </div>
         <div />
       </Link>

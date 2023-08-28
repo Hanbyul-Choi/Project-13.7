@@ -4,7 +4,7 @@ import React from 'react';
 import { useQuery } from 'react-query';
 import { PropagateLoader } from 'react-spinners';
 
-import { getSuggestions } from '@/app/api/challenge-suggestion';
+import { getSuggestions } from '@/app/api/challenge-idea';
 
 import Slide from './Slide';
 
@@ -18,7 +18,7 @@ export default function IdeaSlide() {
     return <PropagateLoader color="#36d7b7" size={10} />;
   }
 
-  data.sort((a, b) => b.likes - a.likes);
+  data.sort((a, b) => b.likes?.users.length - a.likes?.users.length);
 
   if (data.length > 10) {
     data = data.slice(0, 10);
