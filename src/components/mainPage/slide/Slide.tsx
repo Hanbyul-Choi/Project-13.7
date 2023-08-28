@@ -1,16 +1,17 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 
+import ColumnSlideCard from './ColumnSlideCard';
 import IdeaSlideCard from './IdeaSlideCard';
 import SlideBtn from './slideBtn';
 
-import type { Suggestion } from '@/types/db.type';
+import type { NatureStory, Suggestion } from '../../../types/db.type'
 
 interface Props {
   showContentNum: number;
-  type: 'idea' | 'column';
-  contents: Suggestion[];
-  onClickHandler?: () => void;
+  type: "idea" | "column"
+  contents: (Suggestion | NatureStory)[]
+  onClickHandler?: (id: string) => void
 }
 
 type innerMatch = {
@@ -18,28 +19,32 @@ type innerMatch = {
   containerWidth: string;
   gap: string;
   contentWidth: string;
-  contentHeight: string;
-};
+}
 
 type Match = Record<string, innerMatch>;
 
-export default function Slide({ showContentNum = 3, contents, type }: Props) {
+export default function Slide({
+  showContentNum = 3,
+  contents,
+  type,
+  onClickHandler = () => { }
+}: Props) {
+
   const slideObj: Match = {
     idea: {
       size: [343, 85.5],
       containerWidth: 'w-[1199px]',
       gap: 'gap-[85.5px]',
       contentWidth: 'w-[343px]',
-      contentHeight: 'h-[463px]',
     },
     column: {
       size: [228, 24],
       containerWidth: 'w-[983px]',
       gap: 'gap-[24px]',
       contentWidth: 'w-[228px]',
-      contentHeight: 'h-[192px]',
-    },
-  };
+
+    }
+  }
 
   let overContents = true;
   if (contents && contents.length <= showContentNum) {
@@ -47,7 +52,6 @@ export default function Slide({ showContentNum = 3, contents, type }: Props) {
   }
 
   const [currentSlide, setCurrentSlide] = useState(0);
-
   const cloneContents = [...contents];
 
   if (overContents) {
@@ -67,7 +71,7 @@ export default function Slide({ showContentNum = 3, contents, type }: Props) {
   const prevSlide = () => {
     setCurrentSlide(currentSlide - 1);
   };
-  // ${slideObj[type].containerWidth}
+
   useEffect(() => {
     if (slideRef.current) {
       slideRef.current.style.transition = 'all 0.5s ease-in-out';
@@ -82,27 +86,32 @@ export default function Slide({ showContentNum = 3, contents, type }: Props) {
   }, [isLastSlide, slideRef, currentSlide, type]);
 
   const renderContent = () => {
-    return cloneContents.map(item => {
+    return cloneContents.map((item, i) => {
       return (
-        <div key={item.post_id} className={`${slideObj[type].containerWidth}`}>
-          <div className={`${slideObj[type].contentWidth} ${slideObj[type].contentHeight} `}>
-            <IdeaSlideCard data={item} />
+        <div key={i} className={`${slideObj[type].containerWidth} `} >
+          <div className={`${slideObj[type].contentWidth} `} >
+            <button onClick={() => onClickHandler(item.post_id)}>
+              {
+                type === 'idea' ? <IdeaSlideCard data={item as Suggestion} /> : <ColumnSlideCard data={item as NatureStory} />
+              }
+            </button>
           </div>
-        </div>
-      );
-    });
-  };
-  //type==="idea"?'flex gap-6 top-[-105px] right-0 absolute':flex absolute left-[-105px] top-[50px]  gap-[1030px]
+        </div>)
+    })
+  }
 
   return (
-    <div className="flex items-center relative">
-      <div className={` overflow-x-hidden  `}>
-        <div className={`flex ${slideObj[type].containerWidth} ${slideObj[type].gap}`} ref={slideRef}>
+    <div className='flex items-center relative'>
+      <div
+        className={` overflow-x-hidden  `}>
+        <div
+          className={`flex ${slideObj[type].containerWidth} ${slideObj[type].gap} `}
+          ref={slideRef}>
           {renderContent()}
         </div>
-        <div className="flex gap-6 top-[-105px] right-0 absolute">
-          <SlideBtn direction="prev" onClick={prevSlide} disabled={currentSlide === 0} />
-          <SlideBtn direction="next" onClick={nextSlide} disabled={false} />
+        <div className={type === "idea" ? 'flex gap-6 top-[-105px] right-0 absolute' : 'flex absolute left-[-105px] top-[50px]  gap-[1030px]'}>
+          <SlideBtn direction='prev' onClick={prevSlide} />
+          <SlideBtn direction='next' onClick={nextSlide} />
         </div>
       </div>
     </div>

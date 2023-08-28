@@ -84,11 +84,10 @@ const AuthModal: React.FC<SignUpModalProps> = ({ switchHandler, modalType }) => 
 
   const signInHandler = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signInWithPassword({
       email: email,
       password: password,
     });
-    console.log(data);
     if (error) Alert('아이디 또는 비밀번호가 일치하지 않습니다.');
     else Alert('로그인 되었습니다.');
     closeModal();

@@ -9,7 +9,7 @@ import SingleLayout from '@/components/layout/SingleLayout';
 import defaultImage from '../../../../public/defaultProfileImage.jpeg';
 import heartIcon from '../../../../public/heart.svg';
 
-import type { Props } from '@/types/Props.type';
+import type { Props } from '@/types/props.type';
 
 export default function page({ params: { slug } }: Props) {
   return (

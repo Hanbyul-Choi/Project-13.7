@@ -4,11 +4,11 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'fvkzqozjdtlaogexuuin.supabase.co',
+        hostname: '*',
         port: '',
       },
     ],
   },
-};
+}
 
 module.exports = nextConfig;
