@@ -56,7 +56,7 @@ export function IdeaContent({ item, likedUsers }: Props) {
         await queryClient.cancelQueries({ queryKey: 'ideaLikes' });
         const prevLikes: Likes[] | undefined = queryClient.getQueryData('ideaLikes');
         if (prevLikes === undefined) return;
-
+        console.log(prevLikes);
         const updatedLikes = likedUsers
           ? prevLikes.map(like => {
               if (post_id === like.post_id) {
@@ -83,6 +83,7 @@ export function IdeaContent({ item, likedUsers }: Props) {
                 users: [curUserId!],
               },
             ];
+        console.log(updatedLikes);
         queryClient.setQueryData('ideaLikes', updatedLikes);
         return { prevLikes };
       },

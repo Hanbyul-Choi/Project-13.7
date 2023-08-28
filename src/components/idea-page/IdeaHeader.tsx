@@ -1,8 +1,10 @@
 'use client';
 
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
-import { Button } from '../common';
+import useSessionStore from '@/store/sesson.store.';
+
+import { Button, useDialog } from '../common';
 
 import type { SortWay } from './IdeaList';
 
@@ -12,6 +14,13 @@ interface Props {
 }
 
 export function IdeaHeader({ sortWay, setSortway }: Props) {
+  const { Alert } = useDialog();
+  const { session } = useSessionStore();
+  const route = useRouter();
+  const clickSuggestionButton = () => {
+    if (!session) return Alert('로그인 후 이용 가능합니다.');
+    route.push('/idea/post');
+  };
   return (
     <div className="w-full flex justify-between items-center mt-10 pb-4 border-b-2 border-opacityblack">
       <div className="flex">
@@ -35,11 +44,9 @@ export function IdeaHeader({ sortWay, setSortway }: Props) {
         >
           최신순
         </h5>
-        <Link href="/idea/post">
-          <Button btnType="black" size="large">
-            챌린지 제안하기
-          </Button>
-        </Link>
+        <Button btnType="black" size="large" onClick={clickSuggestionButton}>
+          챌린지 제안하기
+        </Button>
       </div>
     </div>
   );
