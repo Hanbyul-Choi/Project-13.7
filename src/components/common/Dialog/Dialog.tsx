@@ -3,7 +3,7 @@ import { type MouseEvent } from 'react';
 
 import { useLockBodyScroll } from '@/hooks';
 
-import Button from '../Button';
+import { Button } from '..';
 
 interface DiologProps {
   onClose: () => void;
