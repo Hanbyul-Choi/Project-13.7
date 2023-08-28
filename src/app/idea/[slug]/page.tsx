@@ -41,11 +41,11 @@ export default function page({ params: { slug } }: Props) {
       <div>
         <div className="flex flex-row justify-center items-center">
           <p className="text-lg leading-[140%] font-medium w-[83px]">챌린지 내용</p>
-          <p className="px-6 py-2 border-b border-[#bdbdbd] w-[83%] ml-5">{slug}텀블러 사용으로 일회용컵 쓰레기 줄이기 챌린지 도전해요!</p>
+          <p className="px-6 py-2 border-b border-[#bdbdbd] w-[85%] ml-5">{slug}텀블러 사용으로 일회용컵 쓰레기 줄이기 챌린지 도전해요!</p>
         </div>
         <div className="flex flex-row justify-center items-center my-6">
           <p className="text-lg leading-[140%] font-medium mr-5 w-[83px]">챌린지 물품</p>
-          <p className="px-6 py-2 border-b border-[#bdbdbd] w-[83%]">{slug}텀블러</p>
+          <p className="px-6 py-2 border-b border-[#bdbdbd] w-[85%]">{slug}텀블러</p>
         </div>
         <div className="flex flex-row items-center">
           <p className="text-lg leading-[140%] font-medium mr-5 w-[83px]">참여비용</p>

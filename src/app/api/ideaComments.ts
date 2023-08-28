@@ -1,11 +1,8 @@
 import { supabase } from '../../../supabase/supabaseConfig';
-type TcommentData = {
-  post_id: string;
-  user_id: string;
-  comment: string;
-};
 
-export const postChallengeIdeaComment = async (commentData: TcommentData) => {
+import type { TChallengeIdeaComment } from '@/components/ideaDetailPage/Review';
+
+export const postChallengeIdeaComment = async (commentData: TChallengeIdeaComment) => {
   const response = await supabase.from('ideaComments').insert(commentData);
   console.error(response.error);
   return response.data;

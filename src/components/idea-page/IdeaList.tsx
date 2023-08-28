@@ -5,7 +5,7 @@ import { AiOutlineArrowRight } from 'react-icons/ai';
 import { useQuery } from 'react-query';
 import { PropagateLoader } from 'react-spinners';
 
-import { getSuggestions } from '@/app/api/challenge-suggestion';
+import { getSuggestions } from '@/app/api/challenge-idea';
 import { getLikes } from '@/app/api/idea-likes';
 
 import { Button } from '../common';

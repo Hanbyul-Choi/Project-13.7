@@ -1,4 +1,4 @@
-import Button from '@/components/common/Button';
+import { Button } from '@/components/common';
 import SingleLayout from '@/components/layout/SingleLayout';
 
 import type { Props } from '@/types/Props.type';

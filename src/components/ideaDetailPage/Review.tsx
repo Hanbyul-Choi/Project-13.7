@@ -8,16 +8,20 @@ import { postChallengeIdeaComment } from '@/app/api/ideaComments';
 
 import defaultImage from '../../../public/defaultProfileImage.jpeg';
 import { supabase } from '../../../supabase/supabaseConfig';
-import Button from '../common/Button';
+import { Button } from '../common';
 import { Input } from '../common/Input';
 
 type TChallengeId = {
   slug: string;
 };
+export type TChallengeIdeaComment = {
+  [key: string]: string;
+};
 
 function Review({ slug }: TChallengeId) {
   const [comment, setComment] = useState<string>('');
   const [userId, setUserId] = useState<string>('');
+  const [commentDatas, setCommentDatas] = useState<TChallengeIdeaComment[]>([]);
 
   const mutation = useMutation({
     mutationFn: postChallengeIdeaComment,
@@ -30,54 +34,72 @@ function Review({ slug }: TChallengeId) {
     }
   };
 
+  const handleGetChallengeIdeaCommentData = async () => {
+    const { data: comments, error } = await supabase.from('ideaComments').select().eq('post_id', `${slug}`);
+    if (comments) {
+      const commentUserIdArr = comments.map(comment => comment.user_id);
+      const set = new Set(commentUserIdArr);
+      const filterCommentUserIdArr = [...set];
+      const { data: commentUser, error } = await supabase.from('users').select().in('user_id', filterCommentUserIdArr);
+      const newComments = comments.map(comment => {
+        const findUser = commentUser?.find(user => user.user_id === comment.user_id);
+        return { ...findUser, ...comment };
+      });
+      setCommentDatas(newComments);
+    }
+    if (error) {
+      throw error;
+    }
+  };
+
   // 처음 렌더링됐을 때 함수 실행
   useEffect(() => {
     handleGetLogintUserId();
+    handleGetChallengeIdeaCommentData();
   }, []);
 
-  // [ ] 나중에 post_id 받아오는걸로 바꾸기
   const commentData = {
-    post_id: '6f69f1a0-0d09-4919-a85f-a8c5e30fbb27',
+    post_id: slug,
     user_id: userId,
     comment,
   };
+
+  const handleDeleteChallengeIdeaCommentData = async (id: string) => {
+    const { error } = await supabase.from('ideaComments').delete().eq('id', id);
+    if (error) {
+      console.error('Error deleting comment:', error);
+    }
+  };
+
   const handlePostComment = () => {
     mutation.mutate(commentData);
   };
 
-  // console.log('commentData:', commentData);
   return (
     <div>
       {/* ex.댓글 2 */}
-      <h4 className="mb-3">댓글 {slug}</h4>
+      <h4 className="mb-3">댓글 {commentDatas.length}</h4>
       <div className="flex justify-center flex-col">
-        <div className="flex items-center flex-row justify-start my-3">
-          <Image src={defaultImage} width={55} height={55} alt="Default Profile Image" className="mr-[16px] shadow-[0_1px_5px_0_rgba(53,60,73,0.08)] rounded-lg " />
-          <div>
-            <div className="flex flex-row text-sm text-[#838384] leading-[150%]">
-              {/* userId */}
-              <p>{slug}User ID-1</p>
-              {/* Date */}
-              <p>{slug}2023.08.18</p>
+        {commentDatas.map(comment => {
+          return (
+            <div key={comment.id} className="flex items-center flex-row justify-start my-3">
+              <Image src={comment.profile_img ? comment.profile_img : defaultImage} width={55} height={55} alt="Default Profile Image" className="mr-[16px] shadow-[0_1px_5px_0_rgba(53,60,73,0.08)] rounded-lg " />
+              <div>
+                <div className="flex flex-row text-sm text-[#838384] leading-[150%]">
+                  {/* userId */}
+                  <p>{comment.nickname}</p>
+                  {/* Date */}
+                  <p>{comment.created_at.slice(0, 10).replaceAll('-', '.')}</p>
+                </div>
+                {/* 댓글 내용 */}
+                <p className="leading-[150%]">{comment.comment}</p>
+              </div>
+              <button onClick={() => handleDeleteChallengeIdeaCommentData(comment.id)}>삭제</button>
+              <button>수정</button>
             </div>
-            {/* 댓글 내용 */}
-            <p className="leading-[150%]">{slug}응원의 댓글을 남겨주세요.</p>
-          </div>
-        </div>
-        {/* WARNING map 사용해서 반복 줄일 것*/}
-        <div className="flex items-center flex-row justify-start my-3">
-          <Image src={defaultImage} width={55} height={55} alt="Default Profile Image" className="mr-[16px] shadow-[0_1px_5px_0_rgba(53,60,73,0.08)] rounded-lg " />
-          <div>
-            <div className="flex flex-row text-sm text-[#838384] leading-[150%]">
-              {/* userId */}
-              <p>{slug}User ID-1</p>
-              {/* Date */}
-              <p>{slug}2023.08.18</p>
-            </div>
-            {/* 댓글 내용 */}
-            <p className="leading-[150%]">{slug}응원의 댓글을 남겨주세요.</p>
-          </div>
-        </div>
+          );
+        })}
+
         <form
           className="flex flex-row mt-7"
           onSubmit={e => {
