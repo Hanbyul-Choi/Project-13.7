@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 
-import Button from '../common/Button';
+import { Button } from '../common';
 
 import type { SortWay } from './IdeaList';
 
@@ -11,7 +11,7 @@ interface Props {
   setSortway: React.Dispatch<React.SetStateAction<SortWay>>;
 }
 
-export default function IdeaHeader({ sortWay, setSortway }: Props) {
+export function IdeaHeader({ sortWay, setSortway }: Props) {
   return (
     <div className="w-full flex justify-between items-center mt-10 pb-4 border-b-2 border-opacityblack">
       <div className="flex">

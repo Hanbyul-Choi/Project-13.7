@@ -3,9 +3,9 @@ import React from 'react';
 
 import Image from 'next/image';
 
-import google from '../../../public/social/google.svg';
-import kakao from '../../../public/social/kakao.svg';
-import { supabase } from '../../../supabase/supabaseConfig';
+import google from '../../../../public/social-signin-icon/google.svg';
+import kakao from '../../../../public/social-signin-icon/kakao.svg';
+import { supabase } from '../../../../supabase/supabaseConfig';
 
 const icons = {
   google,

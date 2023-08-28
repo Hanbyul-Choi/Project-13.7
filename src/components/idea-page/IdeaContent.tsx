@@ -1,11 +1,12 @@
+'use client';
 import React, { useEffect, useState } from 'react';
 
 import Image from 'next/image';
 import Link from 'next/link';
 import { useMutation, useQueryClient } from 'react-query';
 
-import { clickLike } from '@/app/api/ideaLikes';
-import useSessionStore from '@/store';
+import { clickLike } from '@/app/api/idea-likes';
+import useSessionStore from '@/store/sesson.store.';
 
 import disLiked from '../../../public/empty-heart.svg';
 import liked from '../../../public/heart.svg';
@@ -22,7 +23,7 @@ interface Props {
   likedUsers: string[] | undefined;
 }
 
-export default function IdeaContent({ item, likedUsers }: Props) {
+export function IdeaContent({ item, likedUsers }: Props) {
   const { post_id, users, content, title, created_at, img_url } = item;
   const queryClient = useQueryClient();
   const [isliked, setIsLiked] = useState(false);
@@ -67,7 +68,6 @@ export default function IdeaContent({ item, likedUsers }: Props) {
                   };
                 } else {
                   // 좋아요 추가
-                  console.log(like.users.length);
                   return {
                     ...like,
                     users: [...like.users, curUserId!],
@@ -126,7 +126,7 @@ export default function IdeaContent({ item, likedUsers }: Props) {
         <p className="mt-3 w-full text-lg font-bold text-ellipsis overflow-hidden whitespace-nowrap">{title}</p>
         <p className="mt-2 w-full h-12 opacity-50">{content}</p>
         <div className="max-w-fit px-4 py-1 rounded bg-lightblue mt-4">
-          <p className="text-blue text-sm ">{animals.animal || '북극곰'}을 위한 챌린지</p>
+          <p className="text-blue text-sm ">{animals.animal}을 위한 챌린지</p>
         </div>
       </Link>
     </div>

@@ -3,8 +3,7 @@ import React from 'react';
 import Link from 'next/link';
 import { AiOutlineArrowRight } from 'react-icons/ai';
 
-import Button from '../common/Button';
-import Layout from '../common/Layout';
+import { Button, Layout } from '../common';
 
 export default function MainBanner() {
   return (

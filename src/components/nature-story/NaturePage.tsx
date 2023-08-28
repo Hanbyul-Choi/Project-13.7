@@ -1,10 +1,10 @@
 import React from 'react';
 
-import Content from './Content';
-import SideBar from './SideBar';
-import Layout from '../common/Layout';
+import { Layout } from '../common';
 
-export default function NaturePage() {
+import { Content, SideBar } from '.';
+
+export function NaturePage() {
   return (
     <Layout>
       <div className="flex justify-center items-center w-full mt-10 px-[32.25rem] py-[5rem] bg-sub3">
