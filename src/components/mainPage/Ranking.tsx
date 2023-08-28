@@ -1,33 +1,5 @@
 import React from 'react';
 
-const data = [
-  {
-    userName: 'hannah.G',
-    title: '북극곰마스터',
-    challengeCount: 10,
-  },
-  {
-    userName: 'hannah.G',
-    title: '북극곰마스터',
-    challengeCount: 9,
-  },
-  {
-    userName: 'hannah.G',
-    title: '북극곰마스터',
-    challengeCount: 8,
-  },
-  {
-    userName: 'hannah.G',
-    title: '북극곰마스터',
-    challengeCount: 7,
-  },
-  {
-    userName: 'hannah.G',
-    title: '북극곰마스터',
-    challengeCount: 6,
-  },
-];
-
 export default function Ranking() {
   const colorMatch = ['text-blue bg-lightblue', 'text-green bg-lightgreen', 'text-orange bg-lightorange', 'text-sub6 bg-lightsub6', 'text-sub6 bg-lightsub6'];
 
@@ -49,3 +21,36 @@ export default function Ranking() {
     </div>
   );
 }
+
+const data = [
+  {
+    id: 1,
+    userName: 'hannah.G',
+    title: '북극곰마스터',
+    challengeCount: 10,
+  },
+  {
+    id: 2,
+    userName: 'hannah.G',
+    title: '북극곰마스터',
+    challengeCount: 9,
+  },
+  {
+    id: 3,
+    userName: 'hannah.G',
+    title: '북극곰마스터',
+    challengeCount: 8,
+  },
+  {
+    id: 4,
+    userName: 'hannah.G',
+    title: '북극곰마스터',
+    challengeCount: 7,
+  },
+  {
+    id: 5,
+    userName: 'hannah.G',
+    title: '북극곰마스터',
+    challengeCount: 6,
+  },
+];

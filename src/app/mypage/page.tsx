@@ -12,7 +12,7 @@ import TreeGuideModal from './TreeGuideModal';
 import { supabase } from '../../../supabase/supabaseConfig';
 import profileDefaultImg from '../../assets/profileDefaultImg.png';
 
-import type { Props } from '@/types/PropsType';
+import type { Props } from '@/types/Props.type';
 
 export default function Page({ params: { slug } }: Props) {
   const session = useSessionStore((state: { session: any }) => state.session);

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import NaturePage from '@/components/natureStory/NaturePage';
+import { NaturePage } from '@/components/nature-story';
 
 export default function ColumnPage() {
   return <NaturePage />;
