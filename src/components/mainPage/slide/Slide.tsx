@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 
 
 
-import VideoSlideCard from './ColumnSlideCard';
+import ColumnSlideCard from './ColumnSlideCard';
 import IdeaSlideCard from './IdeaSlideCard';
 import SlideBtn from './slideBtn';
 
@@ -13,7 +13,7 @@ interface Props {
   showContentNum: number;
   type: "idea" | "column"
   contents: (Suggestion | NatureStory)[]
-  onClickHandler?: () => void
+  onClickHandler: (id: string) => void
 }
 
 type innerMatch = {
@@ -21,7 +21,7 @@ type innerMatch = {
   containerWidth: string;
   gap: string;
   contentWidth: string;
-  contentHeight: string;
+
 }
 
 type Match = Record<string, innerMatch>;
@@ -29,7 +29,8 @@ type Match = Record<string, innerMatch>;
 export default function Slide({
   showContentNum = 3,
   contents,
-  type
+  type,
+  onClickHandler
 }: Props) {
 
   const slideObj: Match = {
@@ -38,14 +39,14 @@ export default function Slide({
       containerWidth: 'w-[1199px]',
       gap: 'gap-[85.5px]',
       contentWidth: 'w-[343px]',
-      contentHeight: 'h-[463px]'
+
     },
     column: {
       size: [228, 24],
       containerWidth: 'w-[983px]',
       gap: 'gap-[24px]',
       contentWidth: 'w-[228px]',
-      contentHeight: 'h-[192px]'
+
     }
   }
 
@@ -99,10 +100,12 @@ export default function Slide({
     return cloneContents.map((item, i) => {
       return (
         <div key={i} className={`${slideObj[type].containerWidth} `} >
-          <div className={`${slideObj[type].contentWidth} ${slideObj[type].contentHeight} `} >
-            {
-              type === 'idea' ? <IdeaSlideCard data={item as Suggestion} /> : <VideoSlideCard data={item as NatureStory} />
-            }
+          <div className={`${slideObj[type].contentWidth} `} >
+            <button onClick={() => onClickHandler(item.post_id)}>
+              {
+                type === 'idea' ? <IdeaSlideCard data={item as Suggestion} /> : <ColumnSlideCard data={item as NatureStory} />
+              }
+            </button>
           </div>
         </div>)
     })
@@ -115,7 +118,7 @@ export default function Slide({
       <div
         className={` overflow-x-hidden  `}>
         <div
-          className={`flex ${slideObj[type].containerWidth} ${slideObj[type].gap}`}
+          className={`flex ${slideObj[type].containerWidth} ${slideObj[type].gap} `}
           ref={slideRef}>
           {renderContent()}
         </div>

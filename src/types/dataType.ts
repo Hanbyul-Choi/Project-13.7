@@ -14,19 +14,23 @@ export interface Suggestion {
 }
 
 export interface NatureStory{
-  post_id: string,
-  created_at: string,
-  category: string,
-  url: string,
-  tag: string,
+  post_id: string;
+  content: string;
+  created_at: string;
+  category: string;
+  img_url: string;
+  title: string,
+  video_url: string 
+  tag: string;
+
 }
 
 export interface User {
-  user_id: string,
-  created_at: string,
-  point: number,
-  address: string,
-  profile_img: string,
-  nickname: string,
-  email: string
+  user_id: string;
+  created_at: string;
+  point: number;
+  address: string;
+  profile_img: string;
+  nickname: string;
+  email: string;
 }
