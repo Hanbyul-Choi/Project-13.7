@@ -1,6 +1,4 @@
 import axios from "axios"
-
-
 const apiKey = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY
 export const getYouTubeInfo = async(videoId: string) => {
   try {
