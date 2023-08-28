@@ -22,6 +22,7 @@ function Review({ slug }: TChallengeId) {
   const [comment, setComment] = useState<string>('');
   const [userId, setUserId] = useState<string>('');
   const [commentDatas, setCommentDatas] = useState<TChallengeIdeaComment[]>([]);
+  const [isEdit, setIsEdit] = useState<Boolean>(false);
 
   const mutation = useMutation({
     mutationFn: postChallengeIdeaComment,
@@ -92,10 +93,17 @@ function Review({ slug }: TChallengeId) {
                   <p>{comment.created_at.slice(0, 10).replaceAll('-', '.')}</p>
                 </div>
                 {/* 댓글 내용 */}
-                <p className="leading-[150%]">{comment.comment}</p>
+                {isEdit ? (
+                  <>
+                    <Input _size="lg" />
+                    <Button btnType="primary">입력</Button>
+                  </>
+                ) : (
+                  <p className="leading-[150%]">{comment.comment}</p>
+                )}
               </div>
               <button onClick={() => handleDeleteChallengeIdeaCommentData(comment.id)}>삭제</button>
-              <button>수정</button>
+              <button onClick={() => setIsEdit(true)}>수정</button>
             </div>
           );
         })}
