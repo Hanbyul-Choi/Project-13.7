@@ -4,13 +4,13 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image';
 
 import { getYouTubeInfo } from '@/app/api/youtube-api';
-import Button from '@/components/common/Button';
+import { Button } from '@/components/common';
 
 
 import Slide from './Slide';
 import nextIcon from '../../../../public/rightArrow.svg'
 
-import type { NatureStory } from '@/types/dataType';
+import type { NatureStory } from '@/types/db.type';
 const data: NatureStory[] = [
   {
     post_id: "1",
@@ -66,12 +66,10 @@ const data: NatureStory[] = [
 
 const videoId = 'Q414VnDOZNk'
 export default function ContentSlide() {
-  const [youtubeInfo, setYoutubeInfo] = useState<any>(null)
   const [selectedItem, setSelectedItem] = useState<NatureStory>(data[0])
   useEffect(() => {
     const fetchData = async () => {
       const data = await getYouTubeInfo(videoId);
-      setYoutubeInfo(data)
     }
     fetchData()
   }, [])
@@ -122,6 +120,6 @@ export default function ContentSlide() {
         <Slide showContentNum={4} type='column' contents={data} onClickHandler={onClickItem}></Slide>
       </div>
     </div>
-  )
+  );
 }
 //{ children, btnType, size = 'medium', onClick, rounded, buttonStyle, disabled }

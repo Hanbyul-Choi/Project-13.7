@@ -1,13 +1,11 @@
-'use client'
-import React, { useEffect, useRef, useState } from 'react'
-
-
+'use client';
+import React, { useEffect, useRef, useState } from 'react';
 
 import ColumnSlideCard from './ColumnSlideCard';
 import IdeaSlideCard from './IdeaSlideCard';
 import SlideBtn from './slideBtn';
 
-import type { NatureStory, Suggestion } from '@/types/dataType';
+import type { NatureStory, Suggestion } from '../../../types/db.type'
 
 interface Props {
   showContentNum: number;
@@ -17,7 +15,7 @@ interface Props {
 }
 
 type innerMatch = {
-  size: number[]
+  size: number[];
   containerWidth: string;
   gap: string;
   contentWidth: string;
@@ -39,7 +37,6 @@ export default function Slide({
       containerWidth: 'w-[1199px]',
       gap: 'gap-[85.5px]',
       contentWidth: 'w-[343px]',
-
     },
     column: {
       size: [228, 24],
@@ -56,8 +53,6 @@ export default function Slide({
   if (contents && contents.length <= showContentNum) {
     overContents = false;
   }
-
-
 
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -81,20 +76,19 @@ export default function Slide({
   const prevSlide = () => {
     setCurrentSlide(currentSlide - 1);
   };
-  // ${slideObj[type].containerWidth}
+
   useEffect(() => {
     if (slideRef.current) {
-      slideRef.current.style.transition = "all 0.5s ease-in-out";
+      slideRef.current.style.transition = 'all 0.5s ease-in-out';
       slideRef.current.style.transform = `translateX(-${currentSlide * (slideObj[type].size[0] + slideObj[type].size[1])}px)`;
       if (currentSlide > lastSlide) {
-        slideRef.current.style.transition = "";
+        slideRef.current.style.transition = '';
         slideRef.current.style.transform = `translateX(0px)`;
-        setCurrentSlide(0)
+        setCurrentSlide(0);
       }
-
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLastSlide, slideRef, currentSlide, type])
+  }, [isLastSlide, slideRef, currentSlide, type]);
 
   const renderContent = () => {
     return cloneContents.map((item, i) => {
@@ -110,7 +104,6 @@ export default function Slide({
         </div>)
     })
   }
-  //type==="idea"?'flex gap-6 top-[-105px] right-0 absolute':flex absolute left-[-105px] top-[50px]  gap-[1030px]
 
 
   return (
@@ -127,6 +120,6 @@ export default function Slide({
           <SlideBtn direction='next' onClick={nextSlide} />
         </div>
       </div>
-    </div >
+    </div>
   );
 }

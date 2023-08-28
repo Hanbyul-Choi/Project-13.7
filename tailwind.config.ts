@@ -36,6 +36,7 @@ const config: Config = {
         nagative: '#FF4C4C',
         positive: '#21C389',
         opacityblack: 'rgba(18, 18, 19, 0.25)',
+        modalBackground: 'rgba(18, 18, 19, 0.4)',
       },
       translate: {
         center: '50%',

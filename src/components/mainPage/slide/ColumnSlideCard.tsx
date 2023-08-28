@@ -7,7 +7,7 @@ import playBtn from '../../../../public/playBtn.svg'
 
 
 
-import type { NatureStory } from '@/types/dataType'
+import type { NatureStory } from '@/types/db.type'
 
 
 interface Props {

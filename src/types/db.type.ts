@@ -1,5 +1,3 @@
-
-
 export interface Suggestion {
   post_id: string;
   created_at: string;
@@ -10,7 +8,26 @@ export interface Suggestion {
   selected: boolean;
   likes: number;
   img_url: string;
-  users: User
+  users: User;
+}
+
+
+
+export interface User {
+  user_id: string;
+  created_at: string;
+  point: number;
+  address: string;
+  profile_img: string;
+  nickname: string;
+  email: string;
+}
+
+
+export interface Likes {
+  post_id: string;
+  created_at: string;
+  users: string[];
 }
 
 export interface NatureStory{
@@ -22,15 +39,9 @@ export interface NatureStory{
   title: string,
   video_url: string 
   tag: string;
-
 }
 
-export interface User {
-  user_id: string;
-  created_at: string;
-  point: number;
-  address: string;
-  profile_img: string;
-  nickname: string;
-  email: string;
-}
+
+
+
+

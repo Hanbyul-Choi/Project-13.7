@@ -3,7 +3,7 @@ import React from 'react';
 
 import { useRouter } from 'next/navigation';
 
-import useSessionStore from '@/store';
+import useSessionStore from '@/store/sesson.store.';
 
 import { supabase } from '../../../supabase/supabaseConfig';
 import { useDialog } from '../common/Dialog';
