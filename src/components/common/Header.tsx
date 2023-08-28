@@ -4,13 +4,14 @@ import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import useSessionStore from '@/store';
+import useSessionStore from '@/store/sesson.store.';
 
-import { Auth, SignOut } from './auth';
-import Layout from './common/Layout';
-import { supabase } from '../../supabase/supabaseConfig';
+import { supabase } from '../../../supabase/supabaseConfig';
+import { Auth, SignOut } from '../auth';
 
-export default function Header() {
+import { Layout } from '.';
+
+export function Header() {
   const session = useSessionStore(state => state.session);
   const setSession = useSessionStore(state => state.setSession);
   const params = usePathname();
@@ -80,6 +81,6 @@ const navCategory = [
   },
   {
     title: '환경 이야기',
-    pathname: '/column',
+    pathname: '/naturestory',
   },
 ];

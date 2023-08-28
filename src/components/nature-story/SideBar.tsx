@@ -1,10 +1,8 @@
 'use client';
-import React from 'react';
-
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-export default function SideBar() {
+export function SideBar() {
   const params = usePathname();
   return (
     <nav className="flex flex-col justify-start items-center w-[180px]">

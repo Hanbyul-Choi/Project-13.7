@@ -1,7 +1,7 @@
 import React from 'react';
 
-import NaturePage from '@/components/natureStory/NaturePage';
+import type { Props } from '@/types/Props.type';
 
-export default function NatureStoryPage() {
-  return <NaturePage />;
+export default function page({ params: { slug } }: Props) {
+  return <div>NatureStory {slug} Detail</div>;
 }

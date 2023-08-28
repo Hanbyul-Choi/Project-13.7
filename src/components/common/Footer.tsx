@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Footer() {
+export function Footer() {
   return (
     <footer className="w-full bg-navy py-[39px] px-[562px] flex justify-center">
       <p className="text-sm text-sub6 whitespace-nowrap ">

@@ -1,7 +1,8 @@
 import React from 'react';
 
-import Layout from '@/components/common/Layout';
-import IdeaList from '@/components/ideaPage/IdeaList';
+import { Layout } from '@/components/common';
+import { IdeaList } from '@/components/idea-page';
+
 export default function IdeaPage() {
   return (
     <Layout>
