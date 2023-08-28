@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 
-import { useModalStore } from '@/store/modalStore';
+import { useModalStore } from '@/store/modal.store';
 
 import AuthModal from './AuthModal';
 
@@ -25,5 +25,3 @@ export const Auth: React.FC = () => {
     </div>
   );
 };
-
-export default Auth;

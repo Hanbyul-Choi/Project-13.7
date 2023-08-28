@@ -2,14 +2,14 @@ import React from 'react';
 
 import Image from 'next/image';
 
-import Button from '@/components/common/Button';
+import { Button } from '@/components/common';
 import Review from '@/components/ideaDetailPage/Review';
 import SingleLayout from '@/components/layout/SingleLayout';
 
 import defaultImage from '../../../../public/defaultProfileImage.jpeg';
 import heartIcon from '../../../../public/heart.svg';
 
-import type { Props } from '@/types/PropsType';
+import type { Props } from '@/types/Props.type';
 
 export default function page({ params: { slug } }: Props) {
   return (

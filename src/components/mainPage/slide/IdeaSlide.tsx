@@ -4,7 +4,7 @@ import React from 'react';
 import { useQuery } from 'react-query';
 import { PropagateLoader } from 'react-spinners';
 
-import { getSuggestions } from '@/app/api/challengeIdea';
+import { getSuggestions } from '@/app/api/challenge-suggestion';
 
 import Slide from './Slide';
 

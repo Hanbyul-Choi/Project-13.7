@@ -1,7 +1,7 @@
 import Button from '@/components/common/Button';
 import SingleLayout from '@/components/layout/SingleLayout';
 
-import type { Props } from '@/types/PropsType';
+import type { Props } from '@/types/Props.type';
 
 export default function page({ params: { slug } }: Props) {
   return (

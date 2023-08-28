@@ -1,15 +1,12 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 
-import { useModalStore } from '@/store/modalStore';
+import { useModalStore } from '@/store/modal.store';
 
-import NaverSignIn from './naverSignIn';
-import SocialSignIn from './SocialSignIn';
+import NaverSignIn from './social-sign-in/NaverSignIn';
+import SocialSignIn from './social-sign-in/SocialSignIn';
 import { supabase } from '../../../supabase/supabaseConfig';
-import Button from '../common/Button';
-import { useDialog } from '../common/Dialog';
-import { Input } from '../common/Input';
-import { Label } from '../common/Label';
+import { Button, Input, Label, useDialog } from '../common';
 import Modal from '../common/Modal';
 
 type SignUpModalProps = {
@@ -143,7 +140,8 @@ const AuthModal: React.FC<SignUpModalProps> = ({ switchHandler, modalType }) => 
             </Label>
             <Input _size="sm" type="password" value={password} onChange={handlePasswordChange} placeholder="비밀번호" />
             <div className="flex justify-end py-2 text-base text-sub6">
-              <p>아이디 찾기</p> <p className="px-2">|</p>
+              <p>아이디 찾기</p>
+              <p className="px-2">|</p>
               <p>비밀번호 찾기</p>
             </div>
             <Button type="submit" btnType={'primary'} size={'full'} disabled={disabled}>
