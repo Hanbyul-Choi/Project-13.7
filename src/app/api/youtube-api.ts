@@ -12,3 +12,10 @@ export const getYouTubeInfo = async(videoId: string) => {
     return 
  }
 }
+// 글작성시 유튜브API사용해서 데이터 저장
+// useEffect(() => {
+//   const fetchData = async () => {
+//     const data = await getYouTubeInfo(videoId);
+//   }
+//   fetchData()
+// }, [])
