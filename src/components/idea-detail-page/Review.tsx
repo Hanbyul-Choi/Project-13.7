@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useMutation } from 'react-query';
 
-import { postChallengeIdeaComment } from '@/app/api/ideaComments';
+import { postChallengeIdeaComment } from '@/app/api/idea-comments';
 
 import defaultImage from '../../../public/defaultProfileImage.jpeg';
 import { supabase } from '../../../supabase/supabaseConfig';
@@ -41,7 +41,7 @@ function Review({ slug }: TChallengeId) {
       const commentUserIdArr = comments.map(comment => comment.user_id);
       const set = new Set(commentUserIdArr);
       const filterCommentUserIdArr = [...set];
-      const { data: commentUser, error } = await supabase.from('users').select().in('user_id', filterCommentUserIdArr);
+      const { data: commentUser } = await supabase.from('users').select().in('user_id', filterCommentUserIdArr);
       const newComments = comments.map(comment => {
         const findUser = commentUser?.find(user => user.user_id === comment.user_id);
         return { ...findUser, ...comment };

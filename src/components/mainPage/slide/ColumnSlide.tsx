@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { getNatureStory } from '@/app/api/nature-stroty';
+import { getNatureStory } from '@/app/api/nature-story';
 import { Button } from '@/components/common';
 
 import Slide from './Slide';
