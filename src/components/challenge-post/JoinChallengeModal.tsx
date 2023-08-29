@@ -2,17 +2,37 @@ import React, { useEffect, useState } from 'react';
 
 import { loadMainChallenge } from '@/app/api/challenge-certify';
 import { useModalStore } from '@/store/modal.store';
-import useSessionStore from '@/store/sesson.store.';
+import useSessionStore from '@/store/sesson.store';
 
 import { supabase } from '../../../supabase/supabaseConfig';
-import { Button, useDialog } from '../common';
+import { Button, Input, Label, useDialog } from '../common';
 import Modal from '../common/Modal';
 
 export default function JoinChallengeModal() {
   const session = useSessionStore((state: { session: any }) => state.session);
   const [mainChallenge, setMainChallenge] = useState('');
+  const [currentPoint, setCurrentPoint] = useState(null);
+
   const { Alert } = useDialog();
   const { mainCloseModal } = useModalStore(state => state);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data: previousData, error } = await supabase.from('users').select('point').eq('user_id', session?.user.id).single();
+        if (error) {
+          console.error('Error fetching previous data', error);
+        } else if (previousData) {
+          const fetchedPoint = previousData.point;
+          setCurrentPoint(fetchedPoint);
+        }
+      } catch (error) {
+        console.error('Data Fetching Error', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const onClickJoinChallenge = async () => {
     if (session?.user) {
@@ -38,7 +58,6 @@ export default function JoinChallengeModal() {
             }
 
             // joinChallenge 생성
-            // 메인챌린지 한 번만 신청 가능하게 로직 수정!
             await supabase.from('joinChallenge').insert({ user_id: session?.user.id, challenge_id: mainChallenge.challenge_Id });
 
             Alert('챌린지 참여신청이 완료되었습니다! 참여 인증페이지에서 활동을 인증하고 지구 온도를 지켜주세요! :)');
@@ -67,6 +86,26 @@ export default function JoinChallengeModal() {
 
   return (
     <Modal>
+      <Label name={'주문자정보'} size={'base'}>
+        주문자정보
+      </Label>
+      <p>이름</p>
+      <p>연락처</p>
+      <p>이메일</p>
+      <Label name={'배송정보'} size={'base'}>
+        배송정보
+      </Label>
+      <Input _size={'sm'} placeholder="주소" />
+      <Input _size={'sm'} placeholder="상세주소" />
+      <Input _size={'sm'} placeholder="우편번호" />
+      <Label name={'배송메세지'} size={'base'}>
+        배송메세지
+      </Label>
+      <p>배송 메세지를 선택해주세요. ▼드롭다운▼</p>
+      <Label name={'결제 방식'} size={'base'}>
+        결제 방식
+      </Label>
+      보유중인 나무: {currentPoint}
       <Button onClick={onClickJoinChallenge} btnType={'primary'}>
         참여 신청하기
       </Button>
