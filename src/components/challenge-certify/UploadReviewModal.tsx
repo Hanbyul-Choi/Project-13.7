@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 import { loadMainChallenge } from '@/app/api/challenge-certify';
 import { useModalStore } from '@/store/modal.store';
-import useSessionStore from '@/store/sesson.store.';
+import useSessionStore from '@/store/sesson.store';
 
 import { supabase } from '../../../supabase/supabaseConfig';
 import { Button, Input } from '../common';

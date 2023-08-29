@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 
 import { useModalStore } from '@/store/modal.store';
-import useSessionStore from '@/store/sesson.store.';
+import useSessionStore from '@/store/sesson.store';
 
 import UploadReviewModal from './UploadReviewModal';
 import { Button, useDialog } from '../common';

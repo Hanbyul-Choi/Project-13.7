@@ -7,12 +7,12 @@ import { Button } from '@/components/common/Button';
 import { Input } from '@/components/common/Input';
 import TreeGuideModal from '@/components/common/mypage/TreeGuideModal';
 import { useModalStore } from '@/store/modal.store';
-import useSessionStore from '@/store/sesson.store.';
+import useSessionStore from '@/store/sesson.store';
 
 import { supabase } from '../../../supabase/supabaseConfig';
 import profileDefaultImg from '../../assets/profileDefaultImg.png';
 
-import type { Props } from '@/types/props.type';
+import type { Props } from '@/types/Props.type';
 
 export default function Page({ params: { slug } }: Props) {
   const session = useSessionStore((state: { session: any }) => state.session);
