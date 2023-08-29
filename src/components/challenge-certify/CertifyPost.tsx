@@ -38,7 +38,7 @@ export function CertifyPost() {
       setJoinChallenge(joinChallenge);
     }
   };
-  console.log('joinChallenge data check:', joinChallenge);
+  console.log('joinChallenge data check:', joinChallenge.length);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,21 +48,30 @@ export function CertifyPost() {
   }, [session]);
 
   const onClickUploadReview = () => {
-    if (joinChallenge.length === 0) {
-      Alert('챌린지에 참여신청을 먼저 해주세요');
-    } else if (session?.user) {
+    if (session?.user) {
       setModalType('reviews');
       mainOpenModal();
     } else {
-      Alert('로그인하세요');
+      Alert('로그인이 필요합니다');
     }
+  };
+
+  const onClickUploadReviewFalse = () => {
+    Alert('챌린지 참여신청을 먼저 해주세요');
   };
 
   return (
     <>
-      <Button onClick={onClickUploadReview} btnType={'primary'} size="small">
-        인증하기
-      </Button>
+      {joinChallenge.length > 0 ? (
+        <Button onClick={onClickUploadReview} btnType={'primary'} size="small">
+          인증하기
+        </Button>
+      ) : (
+        <Button onClick={onClickUploadReviewFalse} btnType={'primary'} size="small">
+          인증하기
+        </Button>
+      )}
+
       {isOpenMainModal && <UploadReviewModal modalType={modalType} />}
     </>
   );
