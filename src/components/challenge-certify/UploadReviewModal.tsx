@@ -13,7 +13,7 @@ interface UploadReviewProps {
   modalType: string;
 }
 
-const UploadReviewModal: React.FC<UploadReviewProps> = ({ modalType }) => {
+const UploadReviewModal: React.FC<UploadReviewProps> = () => {
   const session = useSessionStore((state: { session: any }) => state.session);
 
   const [mainChallenge, setMainChallenge] = useState('');
