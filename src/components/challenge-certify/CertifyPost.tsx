@@ -10,7 +10,7 @@ import { Button, useDialog } from '../common';
 export function CertifyPost() {
   const session = useSessionStore((state: { session: any }) => state.session);
 
-  const { openModal } = useModalStore(state => state);
+  const { mainOpenModal, isOpenMainModal } = useModalStore(state => state);
 
   const [modalType, setModalType] = useState('');
   const { Alert } = useDialog();
@@ -18,7 +18,7 @@ export function CertifyPost() {
   const onClickUploadReview = () => {
     if (session?.user) {
       setModalType('reviews');
-      openModal();
+      mainOpenModal();
     } else {
       Alert('로그인하세요');
     }
@@ -29,7 +29,7 @@ export function CertifyPost() {
       <Button onClick={onClickUploadReview} btnType={'primary'} size="small">
         인증하기
       </Button>
-      <UploadReviewModal modalType={modalType} />
+      {isOpenMainModal && <UploadReviewModal modalType={modalType} />}
     </>
   );
 }
