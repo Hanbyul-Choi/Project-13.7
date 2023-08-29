@@ -31,6 +31,9 @@ export const Button: React.FC<ButtonProps> = ({ children, btnType, size = 'mediu
     case 'small':
       buttonSize = 'px-6 py-1 text-base';
       break;
+    case 'xsmall':
+      buttonSize = 'px-3 py-1 text-sm';
+      break;
   }
 
   switch (btnType) {
