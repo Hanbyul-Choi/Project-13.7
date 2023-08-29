@@ -11,13 +11,10 @@ import { supabase } from '../../../supabase/supabaseConfig';
 import { Button } from '../common';
 import { Input } from '../common/Input';
 
+import type { DetailProps } from '@/app/idea/[slug]/page';
 import type { IdeaComments } from '@/types/db.type';
 
-interface ReviewProps {
-  slug: string;
-}
-
-function Review({ slug }: ReviewProps) {
+function Review({ slug }: DetailProps) {
   const [comment, setComment] = useState<string>('');
   const [userId, setUserId] = useState<string>('');
   const [commentDatas, setCommentDatas] = useState<IdeaComments[]>([]);
@@ -54,6 +51,9 @@ function Review({ slug }: ReviewProps) {
 
   const handleUpdateChallengeIdeaCommentData = async (id: string) => {
     const { error } = await supabase.from('ideaComments').update({ comment: editComment }).eq('id', id);
+    if (error) {
+      console.error('Error deleting comment:', error);
+    }
   };
 
   const handleDeleteChallengeIdeaCommentData = async (id: string) => {
