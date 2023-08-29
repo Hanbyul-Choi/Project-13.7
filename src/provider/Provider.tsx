@@ -2,20 +2,16 @@
 
 import React from 'react';
 
-import { SessionProvider } from 'next-auth/react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 
 import { OverlayProvider } from '@/components/common/Dialog';
 
-import type { Session } from 'next-auth';
-
 type Props = {
   children: React.ReactNode;
-  session: Session;
 };
 
-function Providers({ children, session }: Props) {
+function Providers({ children }: Props) {
   const [client] = React.useState(
     new QueryClient({
       defaultOptions: {
@@ -29,12 +25,10 @@ function Providers({ children, session }: Props) {
   );
 
   return (
-    <SessionProvider session={session}>
-      <QueryClientProvider client={client}>
-        <OverlayProvider>{children}</OverlayProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
-    </SessionProvider>
+    <QueryClientProvider client={client}>
+      <OverlayProvider>{children}</OverlayProvider>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   );
 }
 

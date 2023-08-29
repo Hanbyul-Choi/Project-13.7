@@ -55,7 +55,6 @@ export function IdeaContent({ item }: Props) {
         await queryClient.cancelQueries({ queryKey: 'challengeSuggestion' });
         const prevLikes: Likes[] | undefined = queryClient.getQueryData('challengeSuggestion');
         if (prevLikes === undefined) return;
-        console.log(prevLikes);
         const updatedLikes = likedUsers
           ? prevLikes.map(like => {
               if (post_id === like.post_id) {
@@ -82,7 +81,6 @@ export function IdeaContent({ item }: Props) {
                 users: [curUserId!],
               },
             ];
-        console.log(updatedLikes);
         queryClient.setQueryData('challengeSuggestion', updatedLikes);
         return { prevLikes };
       },
@@ -105,10 +103,10 @@ export function IdeaContent({ item }: Props) {
   };
 
   useEffect(() => {
-    if (checkLiked()) {
+    if (likedUsers?.includes(curUserId!)) {
       setIsLiked(true);
     }
-  }, [curUserId]);
+  }, [curUserId, likedUsers]);
 
   return (
     <div className="flex flex-col w-72 ">
