@@ -19,7 +19,7 @@ const UploadReviewModal: React.FC<UploadReviewProps> = ({ modalType }) => {
   const [mainChallenge, setMainChallenge] = useState('');
   const [instaUrl, setInstaUrl] = useState('');
 
-  const { isOpen, closeModal } = useModalStore();
+  const { isOpenMainModal, mainCloseModal } = useModalStore();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -54,7 +54,7 @@ const UploadReviewModal: React.FC<UploadReviewProps> = ({ modalType }) => {
 
   return (
     <Modal>
-      {isOpen && modalType === 'reviews' && (
+      {isOpenMainModal && (
         <>
           <h3>{mainChallenge?.title}</h3>
           <div className="text-center">
@@ -71,7 +71,7 @@ const UploadReviewModal: React.FC<UploadReviewProps> = ({ modalType }) => {
               <Button onClick={onClickSaveReview} btnType={'primary'} size={'small'}>
                 인증하기
               </Button>
-              <Button onClick={closeModal} btnType={'borderBlack'} size={'small'}>
+              <Button onClick={mainCloseModal} btnType={'borderBlack'} size={'small'}>
                 취소
               </Button>
             </div>
