@@ -15,6 +15,8 @@ export function Header() {
   const session = useSessionStore(state => state.session);
   const setSession = useSessionStore(state => state.setSession);
   const params = usePathname();
+  const cookie = document.cookie;
+  console.log(cookie);
 
   useEffect(() => {
     supabase.auth.getSession().then(async ({ data: { session } }) => {

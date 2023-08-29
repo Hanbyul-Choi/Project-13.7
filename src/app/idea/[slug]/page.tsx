@@ -3,7 +3,7 @@ import React from 'react';
 import Image from 'next/image';
 
 import { Button } from '@/components/common';
-import Review from '@/components/ideaDetailPage/Review';
+import Review from '@/components/idea-detail-page/Review';
 import SingleLayout from '@/components/layout/SingleLayout';
 
 import defaultImage from '../../../../public/defaultProfileImage.jpeg';
