@@ -27,7 +27,6 @@ export const OverlayProvider = ({ children }: PropsWithChildren) => {
     setOverlays(_overlays => {
       const overlays = new Map(_overlays);
       overlays.delete(id);
-
       return overlays;
     });
   }, []);

@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 
-import useSessionStore from '@/store/sesson.store.';
+import useSessionStore from '@/store/sesson.store';
 
 import { Button, useDialog } from '../common';
 
