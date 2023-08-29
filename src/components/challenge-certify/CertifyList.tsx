@@ -1,32 +1,22 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-import { supabase } from '../../../supabase/supabaseConfig';
+import { useQuery } from 'react-query';
+
+import { loadChallengeReviews } from '@/app/api/challenge-certify';
 
 export function CertifyList() {
-  const [reviews, setReviews] = useState<ChallengeReviews[]>([]);
+  const { isError, data } = useQuery('reviews', loadChallengeReviews);
+  if (isError) {
+    return <p>Error Fetching Challenge Reviews</p>;
+  }
 
-  const loadChallengeReviews = async () => {
-    let { data: reviews } = await supabase.from('reviews').select(`*, mainChallenge (title)`);
-    console.log('Reviews:', reviews);
-
-    if (reviews) {
-      setReviews(reviews);
-    }
-  };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      await loadChallengeReviews();
-    };
-
-    fetchData();
-  }, []);
+  console.log('reviews:', data);
 
   return (
     <>
       <div className="flex">
-        {reviews?.map(item => (
+        {data?.map(item => (
           <div key={item.id} className="box-content border-4 m-1 p-2">
             <div>제목: {item.mainChallenge.title}</div>
             <div>
@@ -40,10 +30,3 @@ export function CertifyList() {
     </>
   );
 }
-
-type ChallengeReviews = {
-  mainChallenge: any;
-  id: string;
-  created_at: number;
-  insta_url: string;
-};

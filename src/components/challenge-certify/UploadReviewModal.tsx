@@ -1,6 +1,7 @@
 'user client';
 import React, { useEffect, useState } from 'react';
 
+import { loadMainChallenge } from '@/app/api/challenge-certify';
 import { useModalStore } from '@/store/modal.store';
 import useSessionStore from '@/store/sesson.store.';
 
@@ -15,41 +16,39 @@ interface UploadReviewProps {
 const UploadReviewModal: React.FC<UploadReviewProps> = ({ modalType }) => {
   const session = useSessionStore((state: { session: any }) => state.session);
 
-  const [mainChallenge, setMainChallenge] = useState<MainChallenge>([]);
+  const [mainChallenge, setMainChallenge] = useState('');
   const [instaUrl, setInstaUrl] = useState('');
 
   const { isOpen, closeModal } = useModalStore();
 
-  // get 진행중인(boolean: false) mainChallenge data
-  const loadMainChallenges = async () => {
-    try {
-      const response = await supabase.from('mainChallenge').select(`*`).eq('isCompleted', false);
-      const challenge = response.data[0];
-
-      console.log('진행중인 챌린지:', challenge);
-
-      setMainChallenge(challenge);
-    } catch (error) {
-      console.error('Error fetching Challenge data', error);
-    }
-  };
-
   useEffect(() => {
     const fetchData = async () => {
-      await loadMainChallenges();
+      const challengeData = await loadMainChallenge();
+      setMainChallenge(challengeData);
     };
 
     fetchData();
   }, []);
 
-  // reviews table 추가 & joinChallenge reviews 1 추가
   const onClickSaveReview = async () => {
     try {
-      await supabase.from('reviews').insert({ user_id: session?.user.id, insta_url: instaUrl, challenge_id: mainChallenge.challenge_Id });
+      // reviews table 추가
+      await supabase.from('reviews').insert({
+        user_id: session?.user.id,
+        insta_url: instaUrl,
+        challenge_id: mainChallenge.challenge_Id,
+      });
+
+      // joinChallenge reviews 1 추가(진행중)
+      // await supabase
+      //   .from('joinChallenge')
+      //   .update({ reviews: { _increment: 1 } })
+      //   .eq('user_id', session?.user.id);
+      //   .eq('challenge_Id', mainChallenge.challenge_Id);
 
       setInstaUrl('');
     } catch (error) {
-      console.error('Error posting review', error);
+      console.error('Error adding review', error);
     }
   };
 
@@ -84,10 +83,3 @@ const UploadReviewModal: React.FC<UploadReviewProps> = ({ modalType }) => {
 };
 
 export default UploadReviewModal;
-
-type MainChallenge = {
-  challenge_id: string;
-  title: string;
-  startDate: number;
-  endDate: number;
-} | null;
