@@ -1,9 +1,9 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useMutation, useQueryClient } from 'react-query';
 
 import { clickLike } from '@/app/api/idea-likes';
 import useSessionStore from '@/store/sesson.store';
@@ -52,36 +52,37 @@ export function IdeaContent({ item }: Props) {
     },
     {
       onMutate: async () => {
-        await queryClient.cancelQueries({ queryKey: 'challengeSuggestion' });
-        const prevLikes: Likes[] | undefined = queryClient.getQueryData('challengeSuggestion');
+        await queryClient.cancelQueries({ queryKey: ['challengeSuggestion'] });
+        const prevLikes: Likes[] | undefined = queryClient.getQueryData(['challengeSuggestion']);
         if (prevLikes === undefined) return;
         const updatedLikes = likedUsers
           ? prevLikes.map(like => {
-              if (post_id === like.post_id) {
-                // 좋아요 취소
-                if (checkLiked()) {
-                  return {
-                    ...like,
-                    users: likedUsers.filter(userId => userId !== curUserId),
-                  };
-                } else {
-                  // 좋아요 추가
-                  return {
-                    ...like,
-                    users: [...likedUsers, curUserId!],
-                  };
-                }
-              }
-              return like;
+              if (like) return;
+              //       if (post_id === like.post_id) {
+              //         // 좋아요 취소
+              //         if (checkLiked()) {
+              //           return {
+              //             ...like,
+              //             users: likedUsers.filter(userId => userId !== curUserId),
+              //           };
+              //         } else {
+              //           // 좋아요 추가
+              //           return {
+              //             ...like,
+              //             users: [...likedUsers, curUserId!],
+              //           };
+              //         }
+              //       }
+              //       return like;
             })
           : [
-              ...prevLikes,
-              {
-                post_id,
-                users: [curUserId!],
-              },
+              //       ...prevLikes,
+              //       {
+              //         post_id,
+              //         users: [curUserId!],
+              //       },
             ];
-        queryClient.setQueryData('challengeSuggestion', updatedLikes);
+        queryClient.setQueryData(['challengeSuggestion'], updatedLikes);
         return { prevLikes };
       },
       onError: ({ context }) => {
@@ -89,7 +90,7 @@ export function IdeaContent({ item }: Props) {
         queryClient.setQueryData(['challengeSuggestion'], context.prevLikes);
       },
       onSettled: async () => {
-        await queryClient.invalidateQueries({ queryKey: 'challengeSuggestion' });
+        await queryClient.invalidateQueries({ queryKey: ['challengeSuggestion'] });
       },
     },
   );
@@ -99,7 +100,7 @@ export function IdeaContent({ item }: Props) {
       return await Alert('로그인 후 이용 가능합니다.');
     }
     clickLikeMutation.mutate();
-    setIsLiked(prev => !prev);
+    // setIsLiked(prev => !prev);
   };
 
   useEffect(() => {
