@@ -13,16 +13,7 @@ import SingleLayout from '@/components/layout/SingleLayout';
 
 import { supabase } from '../../../../supabase/supabaseConfig';
 
-export type TIdeaData = {
-  created_at: string;
-  title: string;
-  content: string;
-  product: string;
-  user_id: string;
-  selected: boolean;
-  img_url: string | null;
-  likes: number;
-};
+import type { IdeaPost } from '@/types/db.type';
 
 export default function IdeaPostPage() {
   const [title, setTitle] = useState<string>('');
@@ -32,19 +23,15 @@ export default function IdeaPostPage() {
 
   const [imgFile, setImgFile] = useState<File | undefined>(undefined);
   const [previewImg, setPreviewImg] = useState<string | ArrayBuffer | undefined>(undefined);
-  const createdAt = Date.now();
   const { Alert } = useDialog();
   const router = useRouter();
   const mutation = useMutation({
     mutationFn: postChallengeIdea,
   });
 
-  // CHECKLIST
-  // [ ] user 가져오는지 확인하는 콘솔
   // 로그인한 user 데이터 가져오기
   const handleGetLogintUserId = async () => {
     const { data } = await supabase.auth.getSession();
-    console.log('🚀 ~ file: page.tsx:47 ~ handleGetLogintUserId ~ data.session?.user:', data.session?.user);
     if (data.session?.user) {
       setUserId(data.session?.user.id);
     }
@@ -66,9 +53,16 @@ export default function IdeaPostPage() {
   // Drag & Drop 사진 첨부 => DB state 할당, 미리보기 state 할당 함수 실행
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const [selectedFile] = acceptedFiles; // Access the selected file
-    imgUpload(selectedFile);
+    const imgExtension = selectedFile.name.split('.')[1];
+    const extension = ['jpeg', 'jpg', 'png', 'GIF'].includes(imgExtension);
+    if (extension) {
+      imgUpload(selectedFile);
+    } else {
+      Alert('이미지는 jpeg, jpg, png, gif 확장자만 첨부할 수 있습니다');
+    }
   }, []);
 
+  // [x] accept 속성 추가 오류. Alert으로 해결.
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   // 첨부된 파일 읽고 DB state 할당, 미리보기 state 할당
@@ -83,6 +77,12 @@ export default function IdeaPostPage() {
         }
       };
     }
+  };
+
+  // Image 취소 버튼 click시 실행
+  const handleCancelImg = () => {
+    setImgFile(undefined);
+    setPreviewImg(undefined);
   };
 
   // 등록하기 버튼 click시 실행. supabase storage Image Insert.
@@ -103,42 +103,33 @@ export default function IdeaPostPage() {
 
     const checkImg = previewImg !== undefined ? data.publicUrl : null;
     const ideaData = {
-      created_at: new Date(createdAt).toISOString(),
       title,
       content,
       product,
       user_id: userId,
       selected: false,
       img_url: checkImg,
-      likes: 0,
     };
 
     handleIdeaPost(ideaData);
   };
 
   // 유효성 검사 후 DB insert
-  const handleIdeaPost = (ideaData: TIdeaData) => {
+  const handleIdeaPost = (ideaData: IdeaPost) => {
     if (userId === '') {
       Alert('로그인이 필요합니다.');
     } else if (title === '') {
       Alert('제목을 입력해주세요');
     } else if (content === '') {
       Alert('내용을 입력해주세요');
+    } else if (imgFile === undefined) {
+      Alert('챌린지 인증 예시 사진을 업로드해주세요');
     } else {
       mutation.mutate(ideaData);
       Alert('작성하신 글이 정상적으로 등록되었습니다.');
       router.push('/idea');
     }
   };
-
-  // Image 취소 버튼 click시 실행
-  const handleCancelImg = () => {
-    setImgFile(undefined);
-    setPreviewImg(undefined);
-  };
-
-  // [ ] user 가져오는지 확인하는 콘솔
-  console.log('🚀 ~ file: page.tsx:35 ~ IdeaPostPage ~ userId:', userId);
 
   return (
     <SingleLayout size={true} title="챌린지 제안하기🙌">
@@ -148,14 +139,14 @@ export default function IdeaPostPage() {
         }}
       >
         <div className="flex items-center justify-center">
-          <Label size="" name="title">
-            챌린지 제목
+          <Label size="" name="title" labelStyle="w-[5.97rem]">
+            <span className="text-nagative">* </span>챌린지 제목
           </Label>
           <Input placeholder="제목을 입력하세요." _size="lg" id="title" inputStyle="ml-[20px]" onChange={e => setTitle(e.target.value)} />
         </div>
         <div className="flex justify-center my-[24px]">
-          <Label size="" name="contents">
-            챌린지 내용
+          <Label size="" name="contents" labelStyle="w-[5.97rem]">
+            <span className="text-nagative">* </span>챌린지 내용
           </Label>
           <textarea
             placeholder="내용을 입력하세요."
@@ -165,20 +156,20 @@ export default function IdeaPostPage() {
           />
         </div>
         <div className="flex items-center justify-center my-[24px]">
-          <Label size="" name="product">
+          <Label size="" name="product" labelStyle="w-[5.97rem]">
             챌린지 물품
           </Label>
           <Input placeholder="필요 물품을 입력하세요." _size="lg" id="product" inputStyle="ml-[20px]" onChange={e => setProduct(e.target.value)} />
         </div>
         <div className="flex justify-center">
-          <Label size="" name="challengeImage" labelStyle="w-[5.12rem]">
-            챌린지
+          <Label size="" name="challengeImage" labelStyle="w-[5.97rem]">
+            <span className="text-nagative">* </span>챌린지
             <br /> 인증 예시
           </Label>
           <div className="flex flex-col">
             <button className="px-4 py-1 border border-blue rounded-lg text-sm text-blue leading-[150%] relative ml-[20px] w-[6.93rem] mb-[12px]">
               파일 찾아보기
-              <input type="file" id="challengeImage" className="absolute left-[-68px] top-0 w-[11.06rem] h-[31px] opacity-0 cursor-pointer" onChange={event => handleChangeImg(event)} />
+              <input type="file" accept="image/*" id="challengeImage" className="absolute left-[-68px] top-0 w-[11.06rem] h-[31px] opacity-0 cursor-pointer" onChange={event => handleChangeImg(event)} />
             </button>
 
             {typeof previewImg === 'string' ? (
@@ -191,7 +182,7 @@ export default function IdeaPostPage() {
             ) : (
               <>
                 <div {...getRootProps()}>
-                  <input type="file" {...getInputProps()} onChange={event => handleChangeImg(event)} />
+                  <input accept="image/*" type="file" {...getInputProps()} onChange={event => handleChangeImg(event)} />
                   <div className="rounded-lg font-normal text-base border border-opacityblack w-[33.93rem] ml-[20px] h-20 flex items-center justify-center text-[#bdbdbd] leading-[150%]">챌린지 인증하는 사진 예시를 업로드 하세요.</div>
                 </div>
               </>

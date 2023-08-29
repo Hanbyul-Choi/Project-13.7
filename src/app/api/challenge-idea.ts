@@ -1,6 +1,6 @@
 import { supabase } from '../../../supabase/supabaseConfig';
 
-import type { TIdeaData } from '../idea/post/page';
+import type { IdeaPost } from '@/types/db.type';
 
 // ChallengeSuggestion datat와 해당유저 데이터 get
 export const getSuggestions = async () => {
@@ -11,7 +11,7 @@ export const getSuggestions = async () => {
   return data;
 };
 
-export const postChallengeIdea = async (ideaData: TIdeaData) => {
+export const postChallengeIdea = async (ideaData: IdeaPost) => {
   const response = await supabase.from('challengeSuggestion').insert(ideaData);
   return response.data;
 };

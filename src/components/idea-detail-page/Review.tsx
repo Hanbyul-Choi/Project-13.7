@@ -11,18 +11,18 @@ import { supabase } from '../../../supabase/supabaseConfig';
 import { Button } from '../common';
 import { Input } from '../common/Input';
 
-type TChallengeId = {
-  slug: string;
-};
-export type TChallengeIdeaComment = {
-  [key: string]: string;
-};
+import type { IdeaComments } from '@/types/db.type';
 
-function Review({ slug }: TChallengeId) {
+interface ReviewProps {
+  slug: string;
+}
+
+function Review({ slug }: ReviewProps) {
   const [comment, setComment] = useState<string>('');
   const [userId, setUserId] = useState<string>('');
-  const [commentDatas, setCommentDatas] = useState<TChallengeIdeaComment[]>([]);
-  const [isEdit, setIsEdit] = useState<Boolean>(false);
+  const [commentDatas, setCommentDatas] = useState<IdeaComments[]>([]);
+  const [editCommentId, setEditCommentId] = useState<string>('');
+  const [editComment, setEditComment] = useState<string>('');
 
   const mutation = useMutation({
     mutationFn: postChallengeIdeaComment,
@@ -36,17 +36,10 @@ function Review({ slug }: TChallengeId) {
   };
 
   const handleGetChallengeIdeaCommentData = async () => {
-    const { data: comments, error } = await supabase.from('ideaComments').select().eq('post_id', `${slug}`);
+    const { data: comments, error } = await supabase.from('ideaComments').select(`*, users(*)`).eq('post_id', `${slug}`);
     if (comments) {
-      const commentUserIdArr = comments.map(comment => comment.user_id);
-      const set = new Set(commentUserIdArr);
-      const filterCommentUserIdArr = [...set];
-      const { data: commentUser } = await supabase.from('users').select().in('user_id', filterCommentUserIdArr);
-      const newComments = comments.map(comment => {
-        const findUser = commentUser?.find(user => user.user_id === comment.user_id);
-        return { ...findUser, ...comment };
-      });
-      setCommentDatas(newComments);
+      // console.log('🚀 ~ file: Review.tsx:42 ~ handleGetChallengeIdeaCommentData ~ comments:', comments);
+      setCommentDatas(comments);
     }
     if (error) {
       throw error;
@@ -59,10 +52,8 @@ function Review({ slug }: TChallengeId) {
     handleGetChallengeIdeaCommentData();
   }, []);
 
-  const commentData = {
-    post_id: slug,
-    user_id: userId,
-    comment,
+  const handleUpdateChallengeIdeaCommentData = async (id: string) => {
+    const { error } = await supabase.from('ideaComments').update({ comment: editComment }).eq('id', id);
   };
 
   const handleDeleteChallengeIdeaCommentData = async (id: string) => {
@@ -70,6 +61,12 @@ function Review({ slug }: TChallengeId) {
     if (error) {
       console.error('Error deleting comment:', error);
     }
+  };
+
+  const commentData = {
+    post_id: slug,
+    user_id: userId,
+    comment,
   };
 
   const handlePostComment = () => {
@@ -81,29 +78,46 @@ function Review({ slug }: TChallengeId) {
       {/* ex.댓글 2 */}
       <h4 className="mb-3">댓글 {commentDatas.length}</h4>
       <div className="flex justify-center flex-col">
-        {commentDatas.map(comment => {
+        {commentDatas.map(commentData => {
+          const { id, created_at, comment, users } = commentData;
           return (
-            <div key={comment.id} className="flex items-center flex-row justify-start my-3">
-              <Image src={comment.profile_img ? comment.profile_img : defaultImage} width={55} height={55} alt="Default Profile Image" className="mr-[16px] shadow-[0_1px_5px_0_rgba(53,60,73,0.08)] rounded-lg " />
+            <div key={id} className="flex items-center flex-row justify-start my-3">
+              <Image src={users.profile_img ? users.profile_img : defaultImage} width={55} height={55} alt="Default Profile Image" className="mr-[16px] shadow-[0_1px_5px_0_rgba(53,60,73,0.08)] rounded-lg " />
               <div>
                 <div className="flex flex-row text-sm text-[#838384] leading-[150%]">
                   {/* userId */}
-                  <p>{comment.nickname}</p>
+                  <p>{users.nickname}</p>
                   {/* Date */}
-                  <p>{comment.created_at.slice(0, 10).replaceAll('-', '.')}</p>
+                  <p>{created_at.slice(0, 10).replaceAll('-', '.')}</p>
                 </div>
                 {/* 댓글 내용 */}
-                {isEdit ? (
-                  <>
-                    <Input _size="lg" />
-                    <Button btnType="primary">입력</Button>
-                  </>
+                {editCommentId === id ? (
+                  <form
+                    onSubmit={e => {
+                      e.preventDefault();
+                    }}
+                  >
+                    <Input _size="lg" type="text" value={editComment} onChange={e => setEditComment(e.target.value)} />
+                    <Button btnType="primary" onClick={() => handleUpdateChallengeIdeaCommentData(id)}>
+                      수정
+                    </Button>
+                    <Button btnType="primary" onClick={() => setEditCommentId('')}>
+                      취소
+                    </Button>
+                  </form>
                 ) : (
-                  <p className="leading-[150%]">{comment.comment}</p>
+                  <p className="leading-[150%]">{comment}</p>
                 )}
               </div>
-              <button onClick={() => handleDeleteChallengeIdeaCommentData(comment.id)}>삭제</button>
-              <button onClick={() => setIsEdit(true)}>수정</button>
+              <button onClick={() => handleDeleteChallengeIdeaCommentData(id)}>삭제</button>
+              <button
+                onClick={() => {
+                  setEditCommentId(id);
+                  setEditComment(comment);
+                }}
+              >
+                수정
+              </button>
             </div>
           );
         })}

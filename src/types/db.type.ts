@@ -11,8 +11,6 @@ export interface Suggestion {
   users: User;
 }
 
-
-
 export interface User {
   user_id: string;
   created_at: string;
@@ -23,25 +21,37 @@ export interface User {
   email: string;
 }
 
-
 export interface Likes {
   post_id: string;
   created_at: string;
   users: string[];
 }
 
-export interface NatureStory{
+export interface NatureStory {
   post_id: string;
   content: string;
   created_at: string;
   category: string;
   img_url: string;
-  title: string,
-  video_url: string 
+  title: string;
+  video_url: string;
   tag: string;
 }
 
+export interface IdeaComments {
+  id: string;
+  created_at: string;
+  post_id: string;
+  comment: string;
+  user_id: string;
+  users: User;
+}
 
-
-
-
+export interface IdeaPost {
+  title: string;
+  content: string;
+  product: string;
+  user_id: string;
+  selected: boolean;
+  img_url: string | null;
+}
