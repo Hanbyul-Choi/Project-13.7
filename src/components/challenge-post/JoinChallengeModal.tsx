@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { loadMainChallenge } from '@/app/api/challenge-certify';
+import { useModalStore } from '@/store/modal.store';
 import useSessionStore from '@/store/sesson.store.';
 
 import { supabase } from '../../../supabase/supabaseConfig';
@@ -11,6 +12,7 @@ export default function JoinChallengeModal() {
   const session = useSessionStore((state: { session: any }) => state.session);
   const [mainChallenge, setMainChallenge] = useState('');
   const { Alert } = useDialog();
+  const { mainCloseModal } = useModalStore(state => state);
 
   const onClickJoinChallenge = async () => {
     if (session?.user) {
@@ -40,6 +42,7 @@ export default function JoinChallengeModal() {
             await supabase.from('joinChallenge').insert({ user_id: session?.user.id, challenge_id: mainChallenge.challenge_Id });
 
             Alert('챌린지 참여신청이 완료되었습니다! 참여 인증페이지에서 활동을 인증하고 지구 온도를 지켜주세요! :)');
+            mainCloseModal();
           } else {
             // 포인트 얻는 법 페이지 (마이페이지) 바로가기 버튼 추가?
             Alert('포인트가 부족하여 신청할 수 없습니다. 포인트를 확인해주세요!');
@@ -50,6 +53,7 @@ export default function JoinChallengeModal() {
       }
     } else {
       Alert('챌린지에 참여하려면 로그인이 필요합니다.');
+      mainCloseModal();
     }
   };
   useEffect(() => {

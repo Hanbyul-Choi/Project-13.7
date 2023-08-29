@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Button, useDialog } from '@/components/common';
 import { useModalStore } from '@/store/modal.store';
@@ -10,14 +10,12 @@ import JoinChallengeModal from './JoinChallengeModal';
 export default function JoinChallenge() {
   const session = useSessionStore((state: { session: any }) => state.session);
 
-  const { openModal } = useModalStore(state => state);
-  const [modalType, setModalType] = useState('');
+  const { mainOpenModal } = useModalStore(state => state);
   const { Alert } = useDialog();
 
   const joinChallengeModalHandler = () => {
     if (session?.user) {
-      setModalType('reviews');
-      openModal();
+      mainOpenModal();
     } else {
       Alert('로그인하세요');
     }
@@ -25,11 +23,12 @@ export default function JoinChallenge() {
 
   return (
     <>
-      <div>JoinChallenge</div>
-      <Button onClick={joinChallengeModalHandler} btnType={'primary'}>
-        챌린지 참여하기
-      </Button>
-      <JoinChallengeModal modalType={modalType} />
+      <div>
+        <Button onClick={joinChallengeModalHandler} btnType={'primary'}>
+          챌린지 참여하기
+        </Button>
+        <JoinChallengeModal />
+      </div>
     </>
   );
 }
