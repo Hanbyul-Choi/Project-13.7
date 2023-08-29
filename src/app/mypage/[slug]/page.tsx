@@ -7,5 +7,5 @@ type Props = {
 };
 
 export default function page({ params: { slug } }: Props) {
-  return <div>{slug}</div>;
+  return <div>{slug}My Page</div>;
 }
