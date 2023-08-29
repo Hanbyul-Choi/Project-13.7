@@ -10,7 +10,7 @@ import JoinChallengeModal from './JoinChallengeModal';
 export default function JoinChallenge() {
   const session = useSessionStore((state: { session: any }) => state.session);
 
-  const { mainOpenModal } = useModalStore(state => state);
+  const { mainOpenModal, isOpenMainModal } = useModalStore(state => state);
   const { Alert } = useDialog();
 
   const joinChallengeModalHandler = () => {
@@ -24,10 +24,11 @@ export default function JoinChallenge() {
   return (
     <>
       <div>
-        <Button onClick={joinChallengeModalHandler} btnType={'primary'}>
-          챌린지 참여하기
+        <Button onClick={joinChallengeModalHandler} btnType="primary" size="large" buttonStyle="mx-[auto] mt-20">
+          참여하기
         </Button>
-        <JoinChallengeModal />
+
+        {isOpenMainModal && <JoinChallengeModal />}
       </div>
     </>
   );
