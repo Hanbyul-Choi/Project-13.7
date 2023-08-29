@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import useSessionStore from '@/store/sesson.store.';
+import useSessionStore from '@/store/sesson.store';
 
 import { supabase } from '../../../supabase/supabaseConfig';
 import { Auth, SignOut } from '../auth';
@@ -12,27 +12,43 @@ import { Auth, SignOut } from '../auth';
 import { Layout } from '.';
 
 export function Header() {
-  const session = useSessionStore(state => state.session);
-  const setSession = useSessionStore(state => state.setSession);
+  const { session, setSession } = useSessionStore();
   const params = usePathname();
-  const cookie = document.cookie;
-  console.log(cookie);
+
+  const refresh = async () => {
+    const access_token = localStorage.getItem('access_token');
+    const refresh_token = localStorage.getItem('refresh_token');
+    if (access_token && refresh_token) {
+      const { data } = await supabase.auth.setSession({ access_token, refresh_token });
+      const session = data.session;
+      setSession(session);
+    }
+  };
+  useEffect(() => {
+    refresh();
+  }, []);
 
   useEffect(() => {
     supabase.auth.getSession().then(async ({ data: { session } }) => {
-      setSession(session);
       if (!session) return;
-      const user_id = session?.user.id;
-      const { email, name: nickname, avatar_url: profile_img } = session?.user.user_metadata;
-      const { error } = await supabase.from('users').insert({ user_id, email, nickname, profile_img });
-      if (error) {
-        console.log(error);
+      setSession(session);
+      const access_token = session.access_token;
+      const refresh_token = session.refresh_token;
+      localStorage.setItem('access_token', access_token);
+      localStorage.setItem('refresh_token', refresh_token);
+      if (!session.user.last_sign_in_at) {
+        const user_id = session?.user.id;
+        const { email, name: nickname, avatar_url: profile_img } = session?.user.user_metadata;
+        const { error } = await supabase.from('users').insert({ user_id, email, nickname, profile_img });
+        if (error) {
+          console.log(error);
+        }
       }
     });
     supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
     });
-  }, [setSession]);
+  }, []);
 
   return (
     <div className="w-full sticky top-0 bg-white text-black px-10 py-8 text-lg z-10">

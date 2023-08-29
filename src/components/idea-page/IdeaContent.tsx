@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useMutation, useQueryClient } from 'react-query';
 
 import { clickLike } from '@/app/api/idea-likes';
-import useSessionStore from '@/store/sesson.store.';
+import useSessionStore from '@/store/sesson.store';
 
 import disLiked from '../../../public/empty-heart.svg';
 import liked from '../../../public/heart.svg';
