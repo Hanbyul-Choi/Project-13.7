@@ -2,9 +2,10 @@
 import React, { useEffect, useState } from 'react';
 
 import Image from 'next/image';
-import { useMutation } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 
-import { postChallengeIdeaComment } from '@/app/api/idea-comments';
+import { getLoginUser } from '@/app/api/auth';
+import { getChallengeIdeaComment, postChallengeIdeaComment } from '@/app/api/idea-comments';
 
 import defaultImage from '../../../public/defaultProfileImage.jpeg';
 import { supabase } from '../../../supabase/supabaseConfig';
@@ -21,33 +22,28 @@ function Review({ slug }: DetailProps) {
   const [editCommentId, setEditCommentId] = useState<string>('');
   const [editComment, setEditComment] = useState<string>('');
 
-  const mutation = useMutation({
-    mutationFn: postChallengeIdeaComment,
+  const queryClient = useQueryClient();
+  const mutation = useMutation(postChallengeIdeaComment, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('ideaComments');
+    },
   });
 
-  const handleGetLogintUserId = async () => {
-    const { data } = await supabase.auth.getSession();
-    if (data.session?.user) {
-      setUserId(data.session?.user.id);
-    }
-  };
-
-  const handleGetChallengeIdeaCommentData = async () => {
-    const { data: comments, error } = await supabase.from('ideaComments').select(`*, users(*)`).eq('post_id', `${slug}`);
-    if (comments) {
-      // console.log('🚀 ~ file: Review.tsx:42 ~ handleGetChallengeIdeaCommentData ~ comments:', comments);
-      setCommentDatas(comments);
-    }
-    if (error) {
-      throw error;
-    }
-  };
-
-  // 처음 렌더링됐을 때 함수 실행
+  // 로그인한 user 데이터 get
+  const { isLoading: userLoading, isError: userError, data: loginUser } = useQuery('auth', getLoginUser);
   useEffect(() => {
-    handleGetLogintUserId();
-    handleGetChallengeIdeaCommentData();
-  }, []);
+    if (loginUser?.session) {
+      setUserId(loginUser.session.user.id);
+    }
+  }, [loginUser]);
+
+  // 해당 포스트 댓글 데이터 get
+  const { isLoading: commentsLoading, isError: commentsError, data: commentsData } = useQuery('ideaComments', () => getChallengeIdeaComment(slug));
+  useEffect(() => {
+    if (commentsData) {
+      setCommentDatas(commentsData);
+    }
+  }, [commentsData]);
 
   const handleUpdateChallengeIdeaCommentData = async (id: string) => {
     const { error } = await supabase.from('ideaComments').update({ comment: editComment }).eq('id', id);
@@ -72,6 +68,13 @@ function Review({ slug }: DetailProps) {
   const handlePostComment = () => {
     mutation.mutate(commentData);
   };
+
+  if (commentsLoading || userLoading) {
+    return <p>로딩중입니다.</p>;
+  }
+  if (commentsError || userError) {
+    return <p>에러입니다.</p>;
+  }
 
   return (
     <div>
@@ -129,7 +132,7 @@ function Review({ slug }: DetailProps) {
           }}
         >
           <Input placeholder="응원의 댓글을 남겨주세요." type="text" _size="md" onChange={e => setComment(e.target.value)} />
-          <Button type="submit" btnType="primary" buttonStyle="ml-[16px]" onClick={handlePostComment}>
+          <Button type="submit" btnType="primary" buttonStyle="ml-[16px]" size="large" onClick={handlePostComment}>
             댓글입력
           </Button>
         </form>
