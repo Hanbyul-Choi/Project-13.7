@@ -4,12 +4,12 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 import { loadMainChallenge } from '@/app/api/challenge-certify';
-import { Button, useDialog } from '@/components/common';
 import { useModalStore } from '@/store/modal.store';
 import useSessionStore from '@/store/sesson.store';
 
 import JoinChallengeModal from './JoinChallengeModal';
 import { supabase } from '../../../supabase/supabaseConfig';
+import { Button, useDialog } from '../common';
 
 export default function JoinChallenge() {
   const session = useSessionStore((state: { session: any }) => state.session);

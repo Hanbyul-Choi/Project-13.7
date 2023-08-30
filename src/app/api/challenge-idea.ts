@@ -18,18 +18,36 @@ export const postChallengeIdea = async (ideaData: TIdeaData) => {
 
 export const getIdeaInfinite = async ({ queryKey, pageParam = 1 }: any) => {
   const { count } = await supabase.from('challengeSuggestion').select('*', { count: 'exact', head: true });
-  const [_, page] = queryKey;
-  const pageToFetch = (page ?? pageParam) * 7;
 
-  const { data, error } = await supabase
-    .from('challengeSuggestion')
-    .select(`*, users(*), likes(*)`)
-    .range(pageToFetch - 7, pageToFetch)
-    .order('created_at', { ascending: false });
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, sort] = queryKey;
+  const pageToFetch = pageParam * 7 + (pageParam - 1 * 1);
 
-  if (error) {
-    throw error;
+  let sortedData: any = [];
+  if (sort === '최신순') {
+    const { data, error } = await supabase
+      .from('challengeSuggestion')
+      .select(`*, users(*)`)
+      .range(pageToFetch - 7, pageToFetch)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      throw error;
+    }
+
+    sortedData = [...data];
+  } else if (sort === '추천순') {
+    const { data, error } = await supabase
+      .from('challengeSuggestion')
+      .select(`*, users(*)`)
+      .range(pageToFetch - 7, pageToFetch)
+      .order('liked_count', { ascending: false })
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      throw error;
+    }
+    sortedData = [...data];
   }
-
-  return { result: data, total_pages: (count ?? 0) / 7, page: pageParam };
+  return { result: sortedData, total_pages: Math.ceil((count ?? 0) / 8), page: pageParam };
 };

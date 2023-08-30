@@ -1,13 +1,12 @@
 'use client';
 import { createContext, Fragment, type PropsWithChildren, type ReactNode, useCallback, useContext, useMemo, useState } from 'react';
 
-export const OverlayContext = createContext<
-  | {
-      mount: (id: string, element: ReactNode) => void;
-      unmount: (id: string) => void;
-    }
-  | undefined
->(undefined);
+type OverlayType = {
+  mount: (id: string, element: ReactNode) => void;
+  unmount: (id: string) => void;
+};
+
+export const OverlayContext = createContext<OverlayType | undefined>(undefined);
 
 export type CreateOverlayElement = (props: { isOpen: boolean; close: () => void; exit: () => void }) => JSX.Element;
 

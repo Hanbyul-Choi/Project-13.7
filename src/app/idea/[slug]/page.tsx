@@ -5,13 +5,16 @@ import Image from 'next/image';
 import { Button } from '@/components/common';
 import Review from '@/components/idea-detail-page/Review';
 import SingleLayout from '@/components/layout/SingleLayout';
+// import useLike from '@/hooks/useLike.hook';
 
 import defaultImage from '../../../../public/defaultProfileImage.jpeg';
 import heartIcon from '../../../../public/heart.svg';
 
-import type { Props } from '@/types/props.type';
+import type { Props } from '@/types/Props.type';
 
 export default function page({ params: { slug } }: Props) {
+  // const { onClickLike } = useLike(item);
+
   return (
     <SingleLayout title="챌린지 응원하기🙌" size={true}>
       {/* 챌린지 아이디어 타이틀 */}
@@ -31,6 +34,7 @@ export default function page({ params: { slug } }: Props) {
         <div className="flex justify-center flex-col items-center">
           <p className="text-green leading-[150%] text-sm">추천수 {slug}</p>
           <Button btnType="green" size="small">
+            {/* <Button btnType="green" size="small" onClick={onClickLike}> */}
             <Image src={heartIcon} width={16} height={16} alt="Like this idea" />
             추천하기
           </Button>

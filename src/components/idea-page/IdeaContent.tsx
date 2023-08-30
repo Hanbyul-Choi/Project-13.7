@@ -1,16 +1,14 @@
 'use client';
 import React from 'react';
 
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { clickLike } from '@/app/api/idea-likes';
+import useLike from '@/hooks/useLike.hook';
 import useSessionStore from '@/store/sesson.store';
 
 import disLiked from '../../../public/empty-heart.svg';
 import liked from '../../../public/heart.svg';
-import { useDialog } from '../common/Dialog';
 
 import type { Suggestion } from '@/types/db.type';
 
@@ -23,79 +21,17 @@ interface Props {
 }
 
 export function IdeaContent({ item }: Props) {
-  const { post_id, users, content, title, created_at, img_url } = item;
-  const queryClient = useQueryClient();
-  const { Alert } = useDialog();
+  const { post_id, users, created_at, img_url, liked_count, liked_users, title, content } = item;
   const { session } = useSessionStore();
-  const curUserId = session?.user.id;
-  const likedUsers = item.likes?.users;
-
-  const checkLiked = () => {
-    if (!curUserId) return false;
-    return likedUsers?.includes(curUserId);
-  };
-
-  const clickLikeMutation = useMutation(
-    async () => {
-      if (!curUserId) return;
-      if (likedUsers) {
-        let newUsers = [];
-        if (checkLiked()) {
-          newUsers = likedUsers.filter(user => user !== curUserId);
-        } else {
-          newUsers = likedUsers ? [...likedUsers, curUserId] : [curUserId];
-        }
-        clickLike(newUsers, post_id, 'update');
-      } else {
-        clickLike([curUserId], post_id, 'insert');
-      }
-    },
-    {
-      onMutate: async () => {
-        await queryClient.cancelQueries({ queryKey: ['challengeSuggestion'] });
-        const prevIdea: Suggestion[] | undefined = queryClient.getQueryData(['challengeSuggestion']);
-        if (prevIdea === undefined) return;
-        const updatedIdea = prevIdea.map(idea => {
-          if (post_id === idea.post_id) {
-            if (checkLiked()) {
-              console.log('dislike');
-              return { ...idea, likes: { ...idea.likes, users: likedUsers.filter(user => user !== curUserId) } };
-            } else {
-              console.log('like');
-              return likedUsers ? { ...idea, likes: { ...idea.likes, users: [...likedUsers, curUserId] } } : { ...idea, likes: { users: [curUserId] } };
-            }
-          }
-          return idea;
-        });
-        // console.log(updatedIdea);
-
-        queryClient.setQueryData(['challengeSuggestion'], updatedIdea);
-        return { prevIdea };
-      },
-      onError: ({ context }) => {
-        if (context === undefined) return;
-        queryClient.setQueryData(['challengeSuggestion'], context.prevLikes);
-      },
-      onSettled: async () => {
-        await queryClient.invalidateQueries({ queryKey: ['challengeSuggestion'] });
-      },
-    },
-  );
-
-  const onClickLike = async () => {
-    if (!curUserId) {
-      return await Alert('로그인 후 이용 가능합니다.');
-    }
-    clickLikeMutation.mutate();
-  };
+  const { onClickLike } = useLike(item);
 
   return (
     <div className="flex flex-col w-72">
       <div className="bg-sub2 rounded-t-lg text-center relative h-[250px] overflow-hidden">
         <img src={img_url} alt="인증예시 사진" style={{ objectFit: 'cover', width: '288px', height: '250px' }} />
         <button onClick={onClickLike} className="absolute text-green bottom-4 right-4 flex flex-col items-center rounded-lg bg-white px-3 py-2 hover: scale-110">
-          <Image src={likedUsers?.includes(curUserId!) ? liked : disLiked} alt="Like this idea" />
-          <p className="text-sm">{likedUsers?.length ?? 0}</p>
+          <Image src={liked_users?.includes(session?.user.id!) ? liked : disLiked} alt="Like this idea" />
+          <p className="text-sm">{liked_count}</p>
         </button>
       </div>
       <Link href={`/idea/${post_id}`} className="flex flex-col px-3 py-6 rounded-b-lg shadow-lg ">
