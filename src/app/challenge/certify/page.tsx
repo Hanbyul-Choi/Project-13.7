@@ -1,14 +1,14 @@
 'use client';
 import React from 'react';
 
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 
 import { loadMainChallenge } from '@/app/api/challenge-certify';
 import { CertifyList, CertifyPost } from '@/components/challenge-certify';
 import { Layout } from '@/components/common';
 
 export default function CertifyPage() {
-  const { isLoading, isError, data } = useQuery('mainChallenge', loadMainChallenge);
+  const { isLoading, isError, data } = useQuery(['mainChallenge'], loadMainChallenge);
   if (isLoading) {
     return <h1>is Loading...</h1>;
   }
