@@ -6,7 +6,7 @@ import { useModalStore } from '@/store/modal.store';
 import useSessionStore from '@/store/sesson.store';
 
 import { supabase } from '../../../supabase/supabaseConfig';
-import { Button, Input } from '../common';
+import { Button, Input, useDialog } from '../common';
 import Modal from '../common/Modal';
 
 interface UploadReviewProps {
@@ -15,6 +15,7 @@ interface UploadReviewProps {
 
 const UploadReviewModal: React.FC<UploadReviewProps> = () => {
   const session = useSessionStore((state: { session: any }) => state.session);
+  const Alert = useDialog();
 
   const [mainChallenge, setMainChallenge] = useState('');
   const [instaUrl, setInstaUrl] = useState('');
@@ -39,12 +40,15 @@ const UploadReviewModal: React.FC<UploadReviewProps> = () => {
         challenge_id: mainChallenge.challenge_Id,
       });
 
-      // joinChallenge reviews 1 추가(진행중)
+      // joinChallenge reviews 1 추가(진행중) 이거 수퍼베이스 자체에 기능없나...
       // await supabase
       //   .from('joinChallenge')
       //   .update({ reviews: { _increment: 1 } })
       //   .eq('user_id', session?.user.id);
       //   .eq('challenge_Id', mainChallenge.challenge_Id);
+
+      // joinChallenge reviews 갯수 10개 이상이면 미션완료 true 업데이트 (진행중)
+      // await supabase.from('joinChallenge').update({ completedMission: true }).eq('user_id', session?.user.id).gte('reviews', 10).select(`*, mainChallenge(*)`);
 
       setInstaUrl('');
     } catch (error) {
