@@ -16,16 +16,20 @@ export const postChallengeIdea = async (ideaData: TIdeaData) => {
   return response.data;
 };
 
-export const getIdeaInfinite = async (pageParam = 7, order = 'created_at') => {
+export const getIdeaInfinite = async ({ queryKey, pageParam = 1 }: any) => {
   const { count } = await supabase.from('challengeSuggestion').select('*', { count: 'exact', head: true });
-  console.log(count);
+  const [_, page] = queryKey;
+  const pageToFetch = (page ?? pageParam) * 7;
+
   const { data, error } = await supabase
     .from('challengeSuggestion')
     .select(`*, users(*), likes(*)`)
-    .range(pageParam - 7, pageParam)
-    .order(order, { ascending: false });
+    .range(pageToFetch - 7, pageToFetch)
+    .order('created_at', { ascending: false });
+
   if (error) {
     throw error;
   }
-  return data;
+
+  return { result: data, total_pages: (count ?? 0) / 7, page: pageParam };
 };

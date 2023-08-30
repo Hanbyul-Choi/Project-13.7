@@ -3,6 +3,7 @@
 import React from 'react';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import { OverlayProvider } from '@/components/common/Dialog';
 
@@ -24,7 +25,7 @@ function Providers({ children }: Props) {
   return (
     <QueryClientProvider client={client}>
       <OverlayProvider>{children}</OverlayProvider>
-      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }

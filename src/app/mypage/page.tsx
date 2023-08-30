@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { Button } from '@/components/common/Button';
 import { Input } from '@/components/common/Input';
 import { useModalStore } from '@/store/modal.store';
-import useSessionStore from '@/store/sesson.store.';
+import useSessionStore from '@/store/sesson.store';
 
 import TreeGuideModal from './TreeGuideModal';
 import { supabase } from '../../../supabase/supabaseConfig';

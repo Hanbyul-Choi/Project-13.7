@@ -1,11 +1,11 @@
 'use client';
 import React, { useState } from 'react';
 
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { AiOutlineArrowRight } from 'react-icons/ai';
 import { PropagateLoader } from 'react-spinners';
 
-import { getSuggestions } from '@/app/api/challenge-idea';
+import { getIdeaInfinite } from '@/app/api/challenge-idea';
 
 import { Button } from '../common';
 
@@ -16,18 +16,27 @@ export type SortWay = '추천순' | '최신순';
 export function IdeaList() {
   const [sortWay, setSortway] = useState<SortWay>('추천순');
 
-  const { data, isError } = useQuery({
+  const { data, fetchNextPage, hasNextPage, isError } = useInfiniteQuery({
     queryKey: ['challengeSuggestion'],
-    queryFn: getSuggestions,
+    queryFn: getIdeaInfinite,
+    getNextPageParam: lastPage => {
+      if (lastPage.page < lastPage.total_pages) {
+        return lastPage.page + 1;
+      }
+    },
+    select: data => {
+      return data.pages.map(pageData => pageData.result).flat();
+    },
   });
 
   if (isError) {
     return <p>에러가 발생했습니다. 새로고침 해주세요.</p>;
   }
   const clickNextPage = () => {
-    // if (!hasNextPage) return;
-    // fetchNextPage();
+    if (!hasNextPage) return;
+    fetchNextPage();
   };
+
   return (
     <>
       {data ? (
