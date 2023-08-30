@@ -54,6 +54,7 @@ export default function page({ params: { slug } }: Props) {
         </div>
       </div>
       <hr className="w-full my-20 border border-blue" />
+
       <Review slug={slug} />
     </SingleLayout>
   );

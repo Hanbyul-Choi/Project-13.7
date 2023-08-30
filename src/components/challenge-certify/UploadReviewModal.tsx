@@ -18,7 +18,7 @@ const UploadReviewModal: React.FC<UploadReviewProps> = () => {
 
   const [mainChallenge, setMainChallenge] = useState('');
   const [instaUrl, setInstaUrl] = useState('');
-
+  const [errorMsg, setErrorMsg] = useState('')
   const { isOpenMainModal, mainCloseModal } = useModalStore();
 
   useEffect(() => {
@@ -67,6 +67,7 @@ const UploadReviewModal: React.FC<UploadReviewProps> = () => {
                 setInstaUrl(e.target.value);
               }}
             />
+            <p className='text-red-800'>{errorMsg}</p>
             <div className="flex justify-center">
               <Button onClick={onClickSaveReview} btnType={'primary'} size={'small'}>
                 인증하기

@@ -1,12 +1,43 @@
+
+/*
+export async function crawlInstagramPost(url: string): Promise<InstagramPostData | null> {
+  try {
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+
+    await page.goto(url, { waitUntil: 'domcontentloaded' });
+
+    await page.waitForSelector('.x1yvgwvq');
+
+    const imageUrl = await page.$eval('meta[property="og:image"]', element => element.getAttribute('content'));
+    const caption = await page.$eval('meta[property="og:description"]', element => element.getAttribute('content'));
+
+    await browser.close();
+
+    return {
+      imageUrl: imageUrl || '',
+      caption: caption || '',
+    };
+  } catch (error) {
+    console.error('Error while crawling:', error);
+    return null;
+  }
+}*/
+/* 
+export default async function handler(req: any, res: any) {
+  const postUrl = 'https://www.instagram.com/p/CwelXSjN3_p/';
+  const post = await crawlInstagramPost(postUrl);
+  res.json(post);
+}
+/*/
+// cheerio사용
 import axios from 'axios';
 import cheerio from 'cheerio';
 
 interface InstagramPost {
   imageUrl: string;
-  caption: string;
-  hashtags: string[] | null
+  hashtags: string[] |null;
 }
-
 
 export async function crawlInstagramPost(url: string): Promise<InstagramPost | null> {
   try {
@@ -16,10 +47,8 @@ export async function crawlInstagramPost(url: string): Promise<InstagramPost | n
     const imageUrl = $('meta[property="og:image"]').attr('content') || '';
     const caption = $('meta[property="og:description"]').attr('content') || '';
     const hashtags = caption.match(/#[\p{L}\p{N}_]+/gu)
-
     return {
       imageUrl,
-      caption,
       hashtags,
     };
   } catch (error) {
@@ -27,40 +56,4 @@ export async function crawlInstagramPost(url: string): Promise<InstagramPost | n
     return null;
   }
 }
-//저장할 때 크롤링 해와서 저장
-  // const [embedCode, setEmbedCode] = useState<string | null>(null);
-
-  // useEffect(() => {
-  //   const postUrl = 'https://www.instagram.com/p/ABC123DEF456/';
-
-  //   async function fetchInstagramEmbed() {
-  //     try {
-  //       const oEmbedUrl = `https://api.instagram.com/oembed/?url=${encodeURIComponent(postUrl)}`;
-  //       const response = await fetch(oEmbedUrl);
-  //       const data = await response.json();
-  //       setEmbedCode(data.html);
-  //     } catch (error) {
-  //       console.error('Error fetching Instagram embed:', error);
-  //     }
-  //   }
-
-  //   fetchInstagramEmbed();
-  // }, []);
-
-    // const postUrl = 'https://www.instagram.com/p/CwheANkLXsN/';
-
-  // crawlInstagramPost(postUrl)
-  //   .then(post => {
-  //     if (post) {
-
-  //       console.log('Image URL:', post.imageUrl);
-  //       console.log('Caption:', post.caption);
-  //       console.log('Hashtags:', post.hashtags);
-  //     } else {
-  //       console.log('Failed to crawl post.');
-  //     }
-  //   })
-  //   .catch(err => {
-  //     console.error('Error:', err);
-  //   });
 
