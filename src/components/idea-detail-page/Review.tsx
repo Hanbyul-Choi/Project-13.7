@@ -1,8 +1,8 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 
+import { useMutation } from '@tanstack/react-query';
 import Image from 'next/image';
-import { useMutation } from 'react-query';
 
 import { postChallengeIdeaComment } from '@/app/api/idea-comments';
 

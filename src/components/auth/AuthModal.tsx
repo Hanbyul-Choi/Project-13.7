@@ -20,7 +20,8 @@ const AuthModal: React.FC<SignUpModalProps> = ({ switchHandler, modalType }) => 
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [nickname, setNickname] = useState('');
-  const { closeModal } = useModalStore(state => state);
+  const [errMessage, setErrMessage] = useState<string | null>(null);
+  const { closeModal, isOpen } = useModalStore(state => state);
   let disabled = true;
 
   useEffect(() => {
@@ -28,7 +29,9 @@ const AuthModal: React.FC<SignUpModalProps> = ({ switchHandler, modalType }) => 
     setPassword('');
     setPasswordConfirm('');
     setNickname('');
-  }, [modalType]);
+    setErrMessage(null);
+  }, [modalType, isOpen]);
+
   if (email.replaceAll(' ', '') !== '' && password.replaceAll(' ', '') !== '') {
     if (modalType === 'signIn') {
       disabled = false;
@@ -38,6 +41,7 @@ const AuthModal: React.FC<SignUpModalProps> = ({ switchHandler, modalType }) => 
   }
 
   const handleEmailChange = (event: { target: { value: React.SetStateAction<string> } }) => {
+    setErrMessage(null);
     setEmail(event.target.value);
   };
 
@@ -84,11 +88,13 @@ const AuthModal: React.FC<SignUpModalProps> = ({ switchHandler, modalType }) => 
 
   const signInHandler = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
+    if (!email.includes('@')) return setErrMessage('이메일을 확인하세요');
     const { error } = await supabase.auth.signInWithPassword({
       email: email,
       password: password,
     });
-    if (error) Alert('아이디 또는 비밀번호가 일치하지 않습니다.');
+
+    if (error) return Alert('아이디 또는 비밀번호가 일치하지 않습니다.');
     else Alert('로그인 되었습니다.');
     closeModal();
   };
@@ -130,10 +136,15 @@ const AuthModal: React.FC<SignUpModalProps> = ({ switchHandler, modalType }) => 
         <>
           <form onSubmit={signInHandler} className="flex flex-col gap-y-4">
             <h1 className="mb-10">Log In 👋</h1>
-            <Label name={'id'} size={'base'}>
+            <Label name={'email'} size={'base'}>
               이메일
             </Label>
-            <Input _size="sm" type="text" value={email} onChange={handleEmailChange} placeholder="example@email.com" />
+            <div className="flex flex-col gap-2">
+              <Input _size="sm" type="text" value={email} onChange={handleEmailChange} placeholder="example@email.com" />
+              <Label name="email" size="base" type="error">
+                {errMessage ?? ''}
+              </Label>
+            </div>
             <Label name={'password'} size={'base'}>
               비밀번호
             </Label>

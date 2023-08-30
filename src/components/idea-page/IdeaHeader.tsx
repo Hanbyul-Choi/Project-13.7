@@ -17,10 +17,12 @@ export function IdeaHeader({ sortWay, setSortway }: Props) {
   const { Alert } = useDialog();
   const { session } = useSessionStore();
   const route = useRouter();
+
   const clickSuggestionButton = () => {
     if (!session) return Alert('로그인 후 이용 가능합니다.');
     route.push('/idea/post');
   };
+
   return (
     <div className="w-full flex justify-between items-center mt-10 pb-4 border-b-2 border-opacityblack">
       <div className="flex">

@@ -1,12 +1,12 @@
 'use client';
 import React from 'react';
 
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 
 import { loadChallengeReviews } from '@/app/api/challenge-certify';
 
 export function CertifyList() {
-  const { isError, data } = useQuery('reviews', loadChallengeReviews);
+  const { isError, data } = useQuery(['reviews'], loadChallengeReviews);
   if (isError) {
     return <p>Error Fetching Challenge Reviews</p>;
   }
