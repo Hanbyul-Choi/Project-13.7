@@ -1,7 +1,9 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 
-import { loadMainChallenge } from '@/app/api/challenge-certify';
+import { useRouter } from 'next/navigation';
+
+import { mainChallengeCheck } from '@/app/api/challenge-post';
 import { useModalStore } from '@/store/modal.store';
 import useSessionStore from '@/store/sesson.store';
 
@@ -11,24 +13,13 @@ import { Button, useDialog } from '../common';
 
 export function CertifyPost() {
   const session = useSessionStore((state: { session: any }) => state.session);
+  const [mainChallenge, setMainChallenge] = useState('');
   const [joinChallenge, setJoinChallenge] = useState<[]>([]);
 
   const { mainOpenModal, isOpenMainModal } = useModalStore(state => state);
-
   const [modalType, setModalType] = useState('');
-  const { Alert } = useDialog();
-
-  // mainChallenge Data Check
-  const [mainChallenge, setMainChallenge] = useState('');
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const challengeData = await loadMainChallenge();
-      setMainChallenge(challengeData);
-    };
-
-    fetchData();
-  }, []);
+  const route = useRouter();
+  const { Alert, Confirm } = useDialog();
 
   // userJoinChallenge Data Check
   const userJoinChallengeCheck = async () => {
@@ -38,14 +29,28 @@ export function CertifyPost() {
       setJoinChallenge(joinChallenge);
     }
   };
+
   console.log('joinChallenge data check:', joinChallenge.length);
+
+  // mainChallenge Data Check
+  useEffect(() => {
+    const fetchData = async () => {
+      const challengeData = await mainChallengeCheck();
+      setMainChallenge(challengeData);
+    };
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
       await userJoinChallengeCheck();
     };
-    fetchData();
-  }, [session]);
+
+    if (mainChallenge) {
+      fetchData();
+    }
+  }, [mainChallenge]);
 
   const onClickUploadReview = () => {
     if (session?.user) {
@@ -56,8 +61,13 @@ export function CertifyPost() {
     }
   };
 
-  const onClickUploadReviewFalse = () => {
-    Alert('챌린지 참여신청을 먼저 해주세요');
+  const onClickUploadReviewFalseConfirm = async () => {
+    const confirmed = await Confirm('챌린지에 먼저 참여해주세요. 인증에 필요한 굿즈를 보내드립니다 :)');
+    if (confirmed) {
+      route.push('/challenge');
+    } else {
+      route.push('/challenge/certify');
+    }
   };
 
   return (
@@ -67,8 +77,8 @@ export function CertifyPost() {
           인증하기
         </Button>
       ) : (
-        <Button onClick={onClickUploadReviewFalse} btnType={'primary'} size="small">
-          인증하기
+        <Button onClick={onClickUploadReviewFalseConfirm} btnType={'primary'} size="small">
+          챌린지 인증하기
         </Button>
       )}
 
