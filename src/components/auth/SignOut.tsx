@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import useSessionStore from '@/store/sesson.store';
 
 import { supabase } from '../../../supabase/supabaseConfig';
-import { useDialog } from '../common/Dialog';
+import { useDialog } from '../common';
 
 export const SignOut = () => {
   const { Alert } = useDialog();

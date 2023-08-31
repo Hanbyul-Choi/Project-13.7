@@ -3,6 +3,7 @@ import React from 'react';
 import IdeaDetail from '@/components/idea-detail-page/IdeaDetail';
 import Review from '@/components/idea-detail-page/Review';
 import SingleLayout from '@/components/layout/SingleLayout';
+// import useLike from '@/hooks/useLike.hook';
 
 import type { Props } from '@/types/Props.type';
 export interface DetailProps {
