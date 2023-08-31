@@ -46,6 +46,7 @@ const config: Config = {
         sm: '0.875rem',
         base: '1rem',
         lg: '1.125rem',
+        xl: '1.5rem',
       },
       fontWeight: {
         regular: '400',

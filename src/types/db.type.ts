@@ -19,6 +19,7 @@ export interface User {
   profile_img: string;
   nickname: string;
   email: string;
+  rank: number;
 }
 
 export interface NatureStory {
