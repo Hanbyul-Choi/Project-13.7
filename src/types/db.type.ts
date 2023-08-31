@@ -32,6 +32,23 @@ export interface NatureStory {
   tag: string;
 }
 
+export interface IdeaComments {
+  id: string;
+  created_at: string;
+  post_id: string;
+  comment: string;
+  user_id: string;
+  users: User;
+}
+
+export interface IdeaPost {
+  title: string;
+  content: string;
+  product: string | null;
+  user_id: string;
+  selected: boolean;
+  img_url: string | null;
+}
 export interface IdeaQueryType {
   pageParams: [];
   pages: PageType[];
