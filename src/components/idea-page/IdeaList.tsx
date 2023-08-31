@@ -15,7 +15,7 @@ import { IdeaContent, IdeaHeader } from '.';
 export function IdeaList() {
   const { sortWay } = useSortWayStore();
 
-  const { data, fetchNextPage, hasNextPage, isError } = useInfiniteQuery({
+  const { data, fetchNextPage, hasNextPage, isError, isLoading } = useInfiniteQuery({
     queryKey: ['challengeSuggestion', sortWay],
     queryFn: getIdeaInfinite,
     getNextPageParam: lastPage => {
@@ -30,6 +30,7 @@ export function IdeaList() {
   if (isError) {
     return <p>에러가 발생했습니다. 새로고침 해주세요.</p>;
   }
+
   const clickNextPage = () => {
     if (!hasNextPage) return;
     fetchNextPage();
@@ -37,7 +38,7 @@ export function IdeaList() {
 
   return (
     <>
-      {ideaData ? (
+      {!isLoading ? (
         <>
           <IdeaHeader />
           <div className="flex flex-col items-center gap-[7.5rem] mb-20">

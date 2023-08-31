@@ -29,7 +29,7 @@ function DropDownBtn({ editClickHandler, deleteClickHandler, position }: DropDow
   return (
     <div ref={dropBackgroundRef} className={`absolute flex flex-col ${position}`}>
       <div className="flex w-full justify-end mb-[8.5px]">
-        <button className="bg-[url('/dropBtn.svg')] w-[4px] h-[16px] bg-no-repeat bg-center bg-contain indent-[-9999px]" onClick={dropDownToggle}>
+        <button className="bg-[url('/dropBtn.svg')] w-1 h-4 p-2 bg-no-repeat bg-center bg-contain indent-[-9999px]" onClick={dropDownToggle}>
           토글
         </button>
       </div>
