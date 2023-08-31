@@ -32,23 +32,24 @@ export function Header() {
     supabase.auth.getSession().then(async ({ data: { session } }) => {
       if (!session) return;
       setSession(session);
+
       const access_token = session.access_token;
       const refresh_token = session.refresh_token;
       localStorage.setItem('access_token', access_token);
       localStorage.setItem('refresh_token', refresh_token);
-      if (!session.user.last_sign_in_at) {
-        const user_id = session?.user.id;
-        const { email, name: nickname, avatar_url: profile_img } = session?.user.user_metadata;
-        const { error } = await supabase.from('users').insert({ user_id, email, nickname, profile_img });
-        if (error) {
-          console.log(error);
-        }
+      const user_id = session?.user.id;
+      await supabase.from('users').select('user_id').eq('user_id', user_id);
+
+      const { email, name: nickname, avatar_url: profile_img } = session?.user.user_metadata;
+      const { error } = await supabase.from('users').insert({ user_id, email, nickname, profile_img });
+      if (error) {
+        console.log('이미 등록된 유저');
       }
     });
     supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
     });
-  }, []);
+  }, [session]);
 
   return (
     <div className="w-full sticky top-0 bg-white text-black px-10 py-8 text-lg z-10">

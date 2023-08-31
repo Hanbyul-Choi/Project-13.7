@@ -34,11 +34,28 @@ export default function useLike(item: Suggestion) {
     {
       onMutate: async () => {
         await queryClient.cancelQueries({ queryKey: ['challengeSuggestion', sortWay] });
-        const prevIdea: IdeaQueryType | undefined = queryClient.getQueryData(['challengeSuggestion', sortWay]);
+        await queryClient.cancelQueries({ queryKey: ['challengeSuggestion'] });
+        const prevIdeaInfinite: IdeaQueryType | undefined = queryClient.getQueryData(['challengeSuggestion', sortWay]);
+        const prevIdea: Suggestion[] | undefined = queryClient.getQueryData(['challengeSuggestion']);
+        if (prevIdeaInfinite === undefined) return;
         if (prevIdea === undefined) return;
 
-        const ideaData = prevIdea?.pages.map(pageData => pageData.result).flat();
-        const updatedIdea = ideaData.map(idea => {
+        const newLikedUsers = checkLiked() ? liked_users.filter(user => user !== curUserId) : [...liked_users, curUserId];
+        const newPages = prevIdeaInfinite?.pages?.map(arr => {
+          return {
+            ...arr,
+            result: arr.result.map(item => {
+              if (item.post_id === post_id) {
+                return { ...item, liked_users: newLikedUsers };
+              }
+              return item;
+            }),
+          };
+        });
+
+        const updatedIdeaInfinite = { ...prevIdea, pages: newPages };
+
+        const updatedIdea = prevIdea.map(idea => {
           if (post_id === idea.post_id) {
             if (checkLiked()) {
               console.log('dislike');
@@ -51,15 +68,18 @@ export default function useLike(item: Suggestion) {
           return idea;
         });
 
-        queryClient.setQueryData(['challengeSuggestion', sortWay], updatedIdea);
-        return { ideaData };
+        queryClient.setQueryData(['challengeSuggestion', sortWay], updatedIdeaInfinite);
+        queryClient.setQueryData(['challengeSuggestion'], updatedIdea);
+        return { prevIdea, prevIdeaInfinite };
       },
       onError: ({ context }) => {
         if (context === undefined) return;
-        queryClient.setQueryData(['challengeSuggestion', sortWay], context.ideaData);
+        queryClient.setQueryData(['challengeSuggestion', sortWay], context.prevIdeaInfinite);
+        queryClient.setQueryData(['challengeSuggestion'], context.ideaData);
       },
       onSettled: async () => {
         await queryClient.invalidateQueries({ queryKey: ['challengeSuggestion', sortWay] });
+        await queryClient.invalidateQueries({ queryKey: ['challengeSuggestion'] });
       },
     },
   );
