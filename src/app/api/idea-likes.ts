@@ -1,22 +1,8 @@
 import { supabase } from '../../../supabase/supabaseConfig';
 
-import type { Likes } from '@/types/db.type';
-
-export const getLikes = async (): Promise<Likes[]> => {
-  const { data, error } = await supabase.from('likes').select(`*`);
+export const clickLike = async (liked_users: string[], postId: string) => {
+  const { error } = await supabase.from('challengeSuggestion').update({ liked_users, liked_count: liked_users.length }).eq('post_id', postId).select();
   if (error) {
-    throw error;
-  }
-  return data;
-};
-
-export const clickLike = async (users: string[], postId: string, type: 'update' | 'insert') => {
-  if (type === 'update') {
-    const { error } = await supabase.from('likes').update({ users }).eq('post_id', postId).select();
-    if (error) {
-      console.log(error);
-    }
-  } else {
-    await supabase.from('likes').insert({ post_id: postId, users });
+    console.log(error);
   }
 };

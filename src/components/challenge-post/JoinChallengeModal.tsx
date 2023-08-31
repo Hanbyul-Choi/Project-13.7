@@ -21,15 +21,6 @@ export default function JoinChallengeModal() {
     phone: '',
   });
 
-  // const [updateUserData, setUpdateUserData] = useState<UpdateUserData>({
-  //   address: '',
-  //   email: '',
-  //   nickname: '',
-  //   point: 0,
-  //   rank: 0,
-  //   phone: '',
-  // });
-
   const { Alert } = useDialog();
   const { mainCloseModal } = useModalStore(state => state);
 
@@ -105,6 +96,7 @@ export default function JoinChallengeModal() {
   const handleCancelClick = () => {
     mainCloseModal();
   };
+
   return (
     <Modal>
       <form>
