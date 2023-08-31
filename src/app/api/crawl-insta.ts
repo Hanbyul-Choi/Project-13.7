@@ -43,7 +43,6 @@ export async function crawlInstagramPost(url: string): Promise<InstagramPost | n
   try {
     const response = await axios.get(url);
     const $ = cheerio.load(response.data);
-
     const imageUrl = $('meta[property="og:image"]').attr('content') || '';
     const caption = $('meta[property="og:description"]').attr('content') || '';
     const hashtags = caption.match(/#[\p{L}\p{N}_]+/gu)

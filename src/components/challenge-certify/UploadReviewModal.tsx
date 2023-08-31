@@ -1,5 +1,7 @@
-'user client';
+'use client'
 import React, { useEffect, useState } from 'react';
+
+import axios from 'axios';
 
 import { loadMainChallenge } from '@/app/api/challenge-certify';
 import { useModalStore } from '@/store/modal.store';
@@ -8,6 +10,7 @@ import useSessionStore from '@/store/sesson.store';
 import { supabase } from '../../../supabase/supabaseConfig';
 import { Button, Input, useDialog } from '../common';
 import Modal from '../common/Modal';
+
 
 interface UploadReviewProps {
   modalType: string;
@@ -27,13 +30,30 @@ const UploadReviewModal: React.FC<UploadReviewProps> = () => {
       const challengeData = await loadMainChallenge();
       setMainChallenge(challengeData);
     };
-
     fetchData();
   }, []);
+  const isValidateUrl = async (url: string) => {
+    if (!url.includes('https://www.instagram.com/p/')) {
+      setErrorMsg("유효한 URL을 입력해주세요")
+      return false
+    }
+    axios.get(`http://localhost:3000/api/crawler?url=${instaUrl}`)
+      .then(post => {
+        const { imageUrl, hashtags } = post.data.res
+
+      })
+      .catch(err => {
+        console.error('Error:', err);
+      });
+  }
+
 
   const onClickSaveReview = async () => {
     try {
-      // reviews table 추가
+      if (!isValidateUrl(instaUrl)) {
+        return false
+      }
+      // reviews table 추가  
       await supabase.from('reviews').insert({
         user_id: session?.user.id,
         insta_url: instaUrl,
