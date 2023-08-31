@@ -10,6 +10,7 @@ export interface DetailProps {
 }
 
 export default function page({ params: { slug } }: Props) {
+  // [ ] login한 user data get
   return (
     <SingleLayout title="챌린지 응원하기🙌" size={true}>
       <IdeaDetail slug={slug} />

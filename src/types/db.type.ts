@@ -50,7 +50,7 @@ export interface IdeaComments {
 export interface IdeaPost {
   title: string;
   content: string;
-  product: string;
+  product: string | null;
   user_id: string;
   selected: boolean;
   img_url: string | null;

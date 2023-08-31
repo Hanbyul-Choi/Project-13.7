@@ -1,13 +1,13 @@
 'use client';
 import { useCallback, useEffect, useState } from 'react';
 
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useDropzone } from 'react-dropzone';
-import { useMutation, useQuery } from 'react-query';
 import { v4 } from 'uuid';
 
 import { getLoginUser } from '@/app/api/auth';
-import { postChallengeIdea, postChallengeIdeaImg } from '@/app/api/challenge-idea';
+import { postChallengeIdea, postChallengeIdeaImg, updateChallengeIdea } from '@/app/api/challenge-idea';
 import { Button, Input, Label, useDialog } from '@/components/common';
 import SingleLayout from '@/components/layout/SingleLayout';
 
@@ -18,7 +18,7 @@ import type { IdeaPost } from '@/types/db.type';
 export default function IdeaPostPage() {
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
-  const [product, setProduct] = useState<string>('');
+  const [product, setProduct] = useState<string | null>('');
   const [userId, setUserId] = useState<string>('');
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
@@ -27,11 +27,14 @@ export default function IdeaPostPage() {
   const { Alert } = useDialog();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const postIdea = useMutation({
+  const postIdeaMutation = useMutation({
     mutationFn: postChallengeIdea,
   });
-  const postImg = useMutation({
+  const postImgMutation = useMutation({
     mutationFn: postChallengeIdeaImg,
+  });
+  const updateIdeaMutation = useMutation({
+    mutationFn: updateChallengeIdea,
   });
 
   const getParamTitle = searchParams.get('title');
@@ -40,9 +43,10 @@ export default function IdeaPostPage() {
   const getParamImgUrl = searchParams.get('img_url');
   const getParamIsEdit = searchParams.get('is_edit');
   const getParamPostId = searchParams.get('post_id');
+  console.log('🚀 ~ file: page.tsx:42 ~ IdeaPostPage ~ getParamContent:', getParamContent);
 
   // 로그인한 user 데이터 가져오기
-  const { isLoading, isError, data: loginUser } = useQuery('auth', getLoginUser);
+  const { isLoading, isError, data: loginUser } = useQuery(['auth'], getLoginUser);
 
   // 로그인한 user Id state 할당
   useEffect(() => {
@@ -53,7 +57,7 @@ export default function IdeaPostPage() {
 
   // 처음 렌더링됐을 때 param state 할당
   useEffect(() => {
-    if (getParamTitle && getParamContent && getParamProduct && getParamImgUrl) {
+    if (getParamTitle && getParamContent && getParamImgUrl) {
       setTitle(getParamTitle);
       setContent(getParamContent);
       setProduct(getParamProduct);
@@ -111,7 +115,7 @@ export default function IdeaPostPage() {
 
     // 첨부된 image storage upload
     if (imgFile) {
-      postImg.mutate({ imgFile, imgName });
+      postImgMutation.mutate({ imgFile, imgName });
     }
 
     // storage에서 이미지 주소 가져오기. 이미지 URL이 설정된 후에 데이터베이스에 전송
@@ -150,24 +154,26 @@ export default function IdeaPostPage() {
       Alert('챌린지 인증 예시 사진을 업로드해주세요');
     } else if (isEdit) {
       console.log('edit', ideaData);
-      updateChallengeIdea(ideaData);
+      ideaUpdate(ideaData);
       Alert('해당 글이 정상적으로 수정되었습니다.');
+      setIsEdit(false);
       router.push('/idea');
     } else {
       console.log('post', ideaData);
-      postIdea.mutate(ideaData);
+      postIdeaMutation.mutate(ideaData);
       Alert('작성하신 글이 정상적으로 등록되었습니다.');
       router.push('/idea');
     }
   };
 
-  const updateChallengeIdea = async (ideaData: IdeaPost) => {
-    console.log(ideaData);
-    const { error } = await supabase.from('challengeSuggestion').update(ideaData).eq('post_id', getParamPostId);
-    if (error) {
-      console.error('Error deleting comment:', error);
+  // Challenge Idea update
+  const ideaUpdate = (ideaData: IdeaPost) => {
+    if (getParamPostId) {
+      const newUdateIdea = { ideaData, getParamPostId };
+      updateIdeaMutation.mutate(newUdateIdea);
     }
   };
+
   if (isLoading) {
     return <p>로딩중입니다.</p>;
   }
@@ -183,13 +189,13 @@ export default function IdeaPostPage() {
         }}
       >
         <div className="flex items-center justify-center">
-          <Label size="" name="title" labelStyle="w-[5.97rem]">
+          <Label size="" name="title" labelStyle="w-[6.97rem]">
             <span className="text-nagative">* </span>챌린지 제목
           </Label>
           <Input placeholder="제목을 입력하세요." _size="lg" id="title" inputStyle="ml-[20px]" value={title} onChange={e => setTitle(e.target.value)} />
         </div>
         <div className="flex justify-center my-[24px]">
-          <Label size="" name="contents" labelStyle="w-[5.97rem]">
+          <Label size="" name="contents" labelStyle="w-[6.97rem]">
             <span className="text-nagative">* </span>챌린지 내용
           </Label>
           <textarea
@@ -201,13 +207,13 @@ export default function IdeaPostPage() {
           />
         </div>
         <div className="flex items-center justify-center my-[24px]">
-          <Label size="" name="product" labelStyle="w-[5.97rem]">
+          <Label size="" name="product" labelStyle="w-[6.97rem]">
             챌린지 물품
           </Label>
-          <Input placeholder="필요 물품을 입력하세요." _size="lg" id="product" value={product} inputStyle="ml-[20px]" onChange={e => setProduct(e.target.value)} />
+          <Input placeholder="필요 물품을 입력하세요." _size="lg" id="product" value={product ? product : ''} inputStyle="ml-[20px]" onChange={e => setProduct(e.target.value)} />
         </div>
         <div className="flex justify-center">
-          <Label size="" name="challengeImage" labelStyle="w-[5.97rem]">
+          <Label size="" name="challengeImage" labelStyle="w-[6.97rem]">
             <span className="text-nagative">* </span>챌린지
             <br /> 인증 예시
           </Label>
@@ -218,8 +224,8 @@ export default function IdeaPostPage() {
             </button>
 
             {typeof previewImg === 'string' ? (
-              <div className="w-[33.37rem] h-[21.87rem] rounded-lg overflow-hidden flex items-center justify-center relative ml-[20px]">
-                <img layout="responsive" src={previewImg} width={535} height={500} alt="Preview Img" />
+              <div className="w-[32rem] h-[21.87rem] rounded-lg overflow-hidden flex items-center justify-center relative ml-[20px]">
+                <img src={previewImg} width={535} height={500} alt="Preview Img" />
                 <button onClick={handleCancelImg} className="absolute top-2.5 right-[1.56rem] text-[2.5rem]">
                   x
                 </button>
@@ -228,14 +234,22 @@ export default function IdeaPostPage() {
               <>
                 <div {...getRootProps()}>
                   <input accept="image/*" type="file" {...getInputProps()} onChange={event => handleChangeImg(event)} />
-                  <div className="rounded-lg font-normal text-base border border-opacityblack w-[33.93rem] ml-[20px] h-20 flex items-center justify-center text-[#bdbdbd] leading-[150%]">챌린지 인증하는 사진 예시를 업로드 하세요.</div>
+                  <div className="rounded-lg font-normal text-base border border-opacityblack w-[33.93rem] ml-[20px] h-20 flex items-center justify-center text-[#bdbdbd] leading-[150%] w-[32rem]">챌린지 인증하는 사진 예시를 업로드 하세요.</div>
                 </div>
               </>
             )}
           </div>
         </div>
         <div className="flex items-center justify-center mt-20">
-          <Button type="submit" btnType="black" size="small" onClick={() => router.push('/idea')}>
+          <Button
+            type="submit"
+            btnType="black"
+            size="small"
+            onClick={() => {
+              router.push('/idea');
+              setIsEdit(false);
+            }}
+          >
             취소하기
           </Button>
           <Button type="submit" btnType="primary" size="small" buttonStyle="ml-6" onClick={handleGetImg}>

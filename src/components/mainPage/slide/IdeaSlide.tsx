@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { PropagateLoader } from 'react-spinners';
 
 import { getSuggestions } from '@/app/api/challenge-idea';
@@ -9,7 +9,7 @@ import { getSuggestions } from '@/app/api/challenge-idea';
 import Slide from './Slide';
 
 export default function IdeaSlide() {
-  let { isError, data } = useQuery('challengeSuggestion', getSuggestions);
+  let { isError, data } = useQuery(['challengeSuggestion'], getSuggestions);
 
   if (isError) {
     return <p>에러</p>;
@@ -33,6 +33,6 @@ export default function IdeaSlide() {
       <div className={'mt-10'}>
         <Slide showContentNum={3} type="idea" contents={data}></Slide>
       </div>
-    </section >
-  )
+    </section>
+  );
 }

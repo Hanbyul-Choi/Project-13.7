@@ -9,7 +9,7 @@ interface TPostImg {
 
 // ChallengeSuggestion data와 해당유저 데이터 get
 export const getSuggestions = async () => {
-  let { data, error } = await supabase.from('challengeSuggestion').select(`*, users(*), likes(*)`);
+  const { data, error } = await supabase.from('challengeSuggestion').select(`*, users(*), likes(*)`);
   if (error) {
     throw error;
   }
@@ -24,11 +24,19 @@ export const postChallengeIdea = async (ideaData: IdeaPost) => {
   }
 };
 
+// Challenge Idea update
+export const updateChallengeIdea = async ({ ideaData, getParamPostId }: { ideaData: IdeaPost; getParamPostId: string }) => {
+  const { error } = await supabase.from('challengeSuggestion').update(ideaData).eq('post_id', getParamPostId);
+  if (error) {
+    throw error;
+  }
+};
+
 // Challenge Idea delete
 export const deleteChallengeIdea = async (slug: string) => {
   const { error } = await supabase.from('challengeSuggestion').delete().eq('post_id', `${slug}`);
   if (error) {
-    console.error('Error deleting comment:', error);
+    throw error;
   }
 };
 
@@ -41,4 +49,22 @@ export const postChallengeIdeaImg = async ({ imgName, imgFile }: TPostImg) => {
   if (error) {
     throw error;
   }
+};
+
+export const getIdeaInfinite = async ({ queryKey, pageParam = 1 }: any) => {
+  const { count } = await supabase.from('challengeSuggestion').select('*', { count: 'exact', head: true });
+  const [_, page] = queryKey;
+  const pageToFetch = (page ?? pageParam) * 7;
+
+  const { data, error } = await supabase
+    .from('challengeSuggestion')
+    .select(`*, users(*), likes(*)`)
+    .range(pageToFetch - 7, pageToFetch)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    throw error;
+  }
+
+  return { result: data, total_pages: (count ?? 0) / 7, page: pageParam };
 };

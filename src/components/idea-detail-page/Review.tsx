@@ -1,14 +1,14 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { getLoginUser } from '@/app/api/auth';
-import { getChallengeIdeaComment, postChallengeIdeaComment } from '@/app/api/idea-comments';
+import { deleteChallengeIdeaComment, getChallengeIdeaComment, postChallengeIdeaComment, updateChallengeIdeaComment } from '@/app/api/idea-comments';
 
+import DropDownBtn from './DropDownBtn';
 import defaultImage from '../../../public/defaultProfileImage.jpeg';
-import { supabase } from '../../../supabase/supabaseConfig';
 import { Button } from '../common';
 import { Input } from '../common/Input';
 
@@ -23,14 +23,24 @@ function Review({ slug }: DetailProps) {
   const [editComment, setEditComment] = useState<string>('');
 
   const queryClient = useQueryClient();
-  const mutation = useMutation(postChallengeIdeaComment, {
+  const postMutation = useMutation(postChallengeIdeaComment, {
     onSuccess: () => {
-      queryClient.invalidateQueries('ideaComments');
+      queryClient.invalidateQueries(['ideaComments']);
+    },
+  });
+  const editMutation = useMutation(updateChallengeIdeaComment, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['ideaComments']);
+    },
+  });
+  const deleteMutation = useMutation(deleteChallengeIdeaComment, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['ideaComments']);
     },
   });
 
   // 로그인한 user 데이터 get
-  const { isLoading: userLoading, isError: userError, data: loginUser } = useQuery('auth', getLoginUser);
+  const { isLoading: userLoading, isError: userError, data: loginUser } = useQuery(['auth'], getLoginUser);
   useEffect(() => {
     if (loginUser?.session) {
       setUserId(loginUser.session.user.id);
@@ -38,35 +48,39 @@ function Review({ slug }: DetailProps) {
   }, [loginUser]);
 
   // 해당 포스트 댓글 데이터 get
-  const { isLoading: commentsLoading, isError: commentsError, data: commentsData } = useQuery('ideaComments', () => getChallengeIdeaComment(slug));
+  const { isLoading: commentsLoading, isError: commentsError, data: commentsData } = useQuery(['ideaComments'], () => getChallengeIdeaComment(slug));
   useEffect(() => {
     if (commentsData) {
       setCommentDatas(commentsData);
     }
   }, [commentsData]);
 
-  const handleUpdateChallengeIdeaCommentData = async (id: string) => {
-    const { error } = await supabase.from('ideaComments').update({ comment: editComment }).eq('id', id);
-    if (error) {
-      console.error('Error deleting comment:', error);
-    }
-  };
-
-  const handleDeleteChallengeIdeaCommentData = async (id: string) => {
-    const { error } = await supabase.from('ideaComments').delete().eq('id', id);
-    if (error) {
-      console.error('Error deleting comment:', error);
-    }
-  };
-
+  // 댓글 insert
   const commentData = {
     post_id: slug,
     user_id: userId,
     comment,
   };
-
   const handlePostComment = () => {
-    mutation.mutate(commentData);
+    postMutation.mutate(commentData);
+    setComment('');
+  };
+
+  // 댓글 update
+  const handleUpdateChallengeIdeaCommentData = (id: string) => {
+    const newUpdateComment = { id, editComment };
+    editMutation.mutate(newUpdateComment);
+    setEditCommentId('');
+  };
+
+  // 댓글 delete
+  const handleDeleteChallengeIdeaCommentData = (id: string) => {
+    deleteMutation.mutate(id);
+  };
+
+  const handleUpdateCommentDropDown = (id: string, comment: string) => {
+    setEditCommentId(id);
+    setEditComment(comment);
   };
 
   if (commentsLoading || userLoading) {
@@ -78,49 +92,40 @@ function Review({ slug }: DetailProps) {
 
   return (
     <div>
-      {/* ex.댓글 2 */}
       <h4 className="mb-3">댓글 {commentDatas.length}</h4>
       <div className="flex justify-center flex-col">
         {commentDatas.map(commentData => {
           const { id, created_at, comment, users } = commentData;
           return (
-            <div key={id} className="flex items-center flex-row justify-start my-3">
+            <div key={id} className="flex items-center flex-row justify-start my-3 relative">
               <Image src={users.profile_img ? users.profile_img : defaultImage} width={55} height={55} alt="Default Profile Image" className="mr-[16px] shadow-[0_1px_5px_0_rgba(53,60,73,0.08)] rounded-lg " />
               <div>
-                <div className="flex flex-row text-sm text-[#838384] leading-[150%]">
-                  {/* userId */}
-                  <p>{users.nickname}</p>
-                  {/* Date */}
+                <div className="flex flex-row text-sm text-[#838384] leading-[150%] items-center">
+                  <p className="after:content-[' '] after:w-[1px] after:bg-[#838384] after:h-[12px] after:inline-block after:m-[8px] flex items-center">{users.nickname}</p>
                   <p>{created_at.slice(0, 10).replaceAll('-', '.')}</p>
                 </div>
-                {/* 댓글 내용 */}
                 {editCommentId === id ? (
                   <form
+                    className="relative"
                     onSubmit={e => {
                       e.preventDefault();
                     }}
                   >
+                    <div className="absolute top-[-28px] right-0 flex">
+                      <button className="text-sm text-[#838384] after:content-[' '] after:w-[1px] after:bg-[#838384] after:h-[12px] after:inline-block after:m-[8px] flex items-center" onClick={() => handleUpdateChallengeIdeaCommentData(id)}>
+                        수정완료
+                      </button>
+                      <button className="text-sm text-[#838384]" onClick={() => setEditCommentId('')}>
+                        취소
+                      </button>
+                    </div>
                     <Input _size="lg" type="text" value={editComment} onChange={e => setEditComment(e.target.value)} />
-                    <Button btnType="primary" onClick={() => handleUpdateChallengeIdeaCommentData(id)}>
-                      수정
-                    </Button>
-                    <Button btnType="primary" onClick={() => setEditCommentId('')}>
-                      취소
-                    </Button>
                   </form>
                 ) : (
                   <p className="leading-[150%]">{comment}</p>
                 )}
               </div>
-              <button onClick={() => handleDeleteChallengeIdeaCommentData(id)}>삭제</button>
-              <button
-                onClick={() => {
-                  setEditCommentId(id);
-                  setEditComment(comment);
-                }}
-              >
-                수정
-              </button>
+              {userId === users.user_id ? <DropDownBtn editClickHandler={() => handleUpdateCommentDropDown(id, comment)} deleteClickHandler={() => handleDeleteChallengeIdeaCommentData(id)} position={'top-0 right-0'} /> : <></>}
             </div>
           );
         })}
@@ -131,7 +136,7 @@ function Review({ slug }: DetailProps) {
             e.preventDefault();
           }}
         >
-          <Input placeholder="응원의 댓글을 남겨주세요." type="text" _size="md" onChange={e => setComment(e.target.value)} />
+          <Input placeholder="응원의 댓글을 남겨주세요." type="text" _size="md" value={comment} onChange={e => setComment(e.target.value)} />
           <Button type="submit" btnType="primary" buttonStyle="ml-[16px]" size="large" onClick={handlePostComment}>
             댓글입력
           </Button>
