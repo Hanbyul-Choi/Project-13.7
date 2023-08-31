@@ -6,13 +6,11 @@ export interface Suggestion {
   product: string;
   user_id: string;
   selected: boolean;
-  likes: Likes;
+  liked_count: number;
+  liked_users: string[];
   img_url: string;
   users: User;
 }
-
-
-
 export interface User {
   user_id: string;
   created_at: string;
@@ -23,25 +21,24 @@ export interface User {
   email: string;
 }
 
-
-export interface Likes {
-  post_id: string;
-  created_at: string;
-  users: string[];
-}
-
-export interface NatureStory{
+export interface NatureStory {
   post_id: string;
   content: string;
   created_at: string;
   category: string;
   img_url: string;
-  title: string,
-  video_url: string 
+  title: string;
+  video_url: string;
   tag: string;
 }
 
+export interface IdeaQueryType {
+  pageParams: [];
+  pages: PageType[];
+}
 
-
-
-
+interface PageType {
+  result: Suggestion[];
+  total_pages: number;
+  page: number;
+}

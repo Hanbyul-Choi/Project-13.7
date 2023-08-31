@@ -1,22 +1,49 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+
+import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
+import { loadMainChallenge } from '@/app/api/challenge-certify';
 import useSessionStore from '@/store/sesson.store';
+import useSortWayStore from '@/store/sortway.store';
 
 import { Button, useDialog } from '../common';
 
-import type { SortWay } from './IdeaList';
-
-interface Props {
-  sortWay: SortWay;
-  setSortway: React.Dispatch<React.SetStateAction<SortWay>>;
-}
-
-export function IdeaHeader({ sortWay, setSortway }: Props) {
+export function IdeaHeader() {
   const { Alert } = useDialog();
   const { session } = useSessionStore();
+  const { sortWay, setLatest, setPopular } = useSortWayStore();
   const route = useRouter();
+  const [countDown, setCountDown] = useState<string | null>(null);
+  const { data } = useQuery(['mainChallenge'], loadMainChallenge);
+
+  const voteComplateDay = 3;
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCountDown(getRestTime(data.endDate));
+    }, 1000);
+    return () => {
+      clearInterval(timer);
+    };
+  }, [data?.endDate]);
+
+  function getRestTime(date: any) {
+    const timestamp = new Date(date);
+    const currentTime = new Date();
+    const timeDifference = timestamp.getTime() - currentTime.getTime() - 1000 * 60 * 60 * 24 * voteComplateDay;
+    const seconds = Math.floor(timeDifference / 1000) % 60;
+    const minutes = Math.floor(timeDifference / 1000 / 60) % 60;
+    const hours = Math.floor(timeDifference / 1000 / 60 / 60) % 24;
+    const days = Math.floor(timeDifference / 1000 / 60 / 60 / 24);
+
+    if (timeDifference <= 0) {
+      return null;
+    }
+    return `${days}일 ${hours}시간 ${minutes}분 ${seconds}초`;
+  }
 
   const clickSuggestionButton = () => {
     if (!session) return Alert('로그인 후 이용 가능합니다.');
@@ -25,31 +52,27 @@ export function IdeaHeader({ sortWay, setSortway }: Props) {
 
   return (
     <div className="w-full flex justify-between items-center mt-10 pb-4 border-b-2 border-opacityblack">
-      <div className="flex">
-        <p className="text-lg font-medium flex">투표마감까지 남은 시간 : </p>
-        <h5>&nbsp; {'16시간 12분'}</h5>
-      </div>
       <div className="flex gap-6 items-center">
-        <h5
-          className={`cursor-pointer ${sortWay === '추천순' ? '' : 'text-sub6'}`}
-          onClick={() => {
-            setSortway('추천순');
-          }}
-        >
+        <h5 className={`cursor-pointer ${sortWay === '추천순' ? '' : 'text-sub6'}`} onClick={setPopular}>
           추천순
         </h5>
-        <h5
-          className={`cursor-pointer ${sortWay === '최신순' ? '' : 'text-sub6'}`}
-          onClick={() => {
-            setSortway('최신순');
-          }}
-        >
+        <h5 className={`cursor-pointer ${sortWay === '최신순' ? '' : 'text-sub6'}`} onClick={setLatest}>
           최신순
         </h5>
-        <Button btnType="black" size="large" onClick={clickSuggestionButton}>
-          챌린지 제안하기
-        </Button>
       </div>
+      <div className="flex">
+        {countDown ? (
+          <>
+            <p className="text-lg font-medium flex">투표마감까지 남은 시간 : &nbsp; </p>
+            <h5 className="w-42">{countDown}</h5>
+          </>
+        ) : (
+          <h5>투표가 종료되었습니다.</h5>
+        )}
+      </div>
+      <Button btnType="black" size="large" onClick={clickSuggestionButton}>
+        챌린지 제안하기
+      </Button>
     </div>
   );
 }
