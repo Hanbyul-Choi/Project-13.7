@@ -32,25 +32,26 @@ const UploadReviewModal: React.FC<UploadReviewProps> = () => {
     };
     fetchData();
   }, []);
+
   const isValidateUrl = async (url: string) => {
     if (!url.includes('https://www.instagram.com/p/')) {
       setErrorMsg("유효한 URL을 입력해주세요")
       return false
     }
-    axios.get(`http://localhost:3000/api/crawler?url=${instaUrl}`)
-      .then(post => {
-        const { imageUrl, hashtags } = post.data.res
-
-      })
-      .catch(err => {
-        console.error('Error:', err);
-      });
+    const { imageUrl, hashtags } = (await axios.get(`http://localhost:3000/api/crawler?url=${instaUrl}`)).data.res
+    if (!hashtags.includes("#챌린지")) {
+      setErrorMsg("필수 해시태그를 포함해주세요")
+      return false
+    }
+    return { imageUrl, hashtags }
   }
 
 
   const onClickSaveReview = async () => {
     try {
-      if (!isValidateUrl(instaUrl)) {
+      let res = await isValidateUrl(instaUrl)
+
+      if (!res) {
         return false
       }
       // reviews table 추가  
@@ -58,6 +59,8 @@ const UploadReviewModal: React.FC<UploadReviewProps> = () => {
         user_id: session?.user.id,
         insta_url: instaUrl,
         challenge_id: mainChallenge.challenge_Id,
+        img_url: res.imageUrl,
+        tags: res.hashtags
       });
 
       // user point 업데이트
