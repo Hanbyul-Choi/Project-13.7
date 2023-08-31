@@ -7,11 +7,10 @@ import Modal from '@/components/common/Modal';
 import { useModalStore } from '@/store/modal.store';
 
 const TreeGuideModal: React.FC = () => {
-  const { closeModal } = useModalStore(state => state);
+  const { mainCloseModal } = useModalStore(state => state);
 
   return (
     <Modal>
-      {/* 변수로 뽑아주기 */}
       <div className="">
         <h1>활동하고 나무 충전하기</h1>
         <ul className="flex item-center justify-between gap-2 py-1">
@@ -36,9 +35,11 @@ const TreeGuideModal: React.FC = () => {
         </ul>
         <div className="flex gap-2">
           <Button btnType={'primary'} size={'small'}>
-            <Link href={'/challenge'}>챌린지 참여하기</Link>
+            <Link href={'/challenge'} onClick={mainCloseModal}>
+              챌린지 참여하기
+            </Link>
           </Button>
-          <Button onClick={closeModal} btnType={'borderBlack'} size={'small'}>
+          <Button onClick={mainCloseModal} btnType={'borderBlack'} size={'small'}>
             닫기
           </Button>
         </div>
