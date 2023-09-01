@@ -4,10 +4,13 @@ import React from 'react';
 import Masonry from 'react-masonry-css';
 
 import CertifyCardTest from './CertifyCardTest';
+import { Layout } from '../common';
 
 import type { CertifyType } from '@/types/db.type';
 
 import './index.css'
+
+
 
 
 const posts: CertifyType[] = [
@@ -84,19 +87,21 @@ const posts: CertifyType[] = [
 
 const CertifyListTest: React.FC = () => {
   return (
-    <div className="mx-auto p-4 max-w-screen-xl">
-      <Masonry
-        breakpointCols={{
-          default: 4
-        }}
-        className="my-masonry-grid"
-        columnClassName="my-masonry-grid_column"
-      >
-        {posts.map((post, index) => (
-          <CertifyCardTest key={index} post={post} />
-        ))}
-      </Masonry>
-    </div>
+    <Layout>
+      <div>
+        <Masonry
+          breakpointCols={{
+            default: 4
+          }}
+          className="my-masonry-grid "
+          columnClassName="my-masonry-grid_column "
+        >
+          {posts.map((post, index) => (
+            <CertifyCardTest key={index} post={post} />
+          ))}
+        </Masonry>
+      </div>
+    </Layout>
   );
 };
 

@@ -10,9 +10,12 @@ interface CertifyCardTestProps {
 
 const CertifyCardTest: React.FC<CertifyCardTestProps> = ({ post }) => {
   return (
-    <div className="my-masonry-grid_column max-h-[600px] relative group" >
-      <img src={post.img_url} alt="" className="w-full h-auto rounded-lg mb-4 hover:scale-110" />
-      <h1 className="z-2 absolute -top-1 left-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out">aaaaaaa</h1>
+    <div className="my-masonry-grid-column max-h-[600px] relative group overflow-hidden hover:scale-105">
+      <img src={post.img_url} alt="" className="rounded-lg object-fit" />
+      <div className="z-10 w-full bg-white absolute bottom-0 opacity-0 translate-y-full group-hover:translate-y-0 group-hover:opacity-70 transition duration-500 ease-in-out">
+        <h1>유저이름</h1>
+        <h2>해시태그</h2>
+      </div>
     </div>
   );
 };

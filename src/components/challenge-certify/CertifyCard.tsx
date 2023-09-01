@@ -1,24 +1,23 @@
 import React from 'react';
 
-interface Image {
-  src: string;
-  alt: string;
-  caption: string;
+import type { CertifyType } from '@/types/db.type';
+interface CertifyCardProps {
+  post: CertifyType;
 }
 
-interface ImageCardProps {
-  image: Image;
-}
-
-const ImageCard: React.FC<ImageCardProps> = ({ image }) => {
+const CertifyCard: React.FC<CertifyCardProps> = ({ post }: CertifyCardProps) => {
   return (
-    <div className="my-masonry-grid_column">
-      <div className="bg-white rounded-lg shadow-md p-4">
-        <img src={image.src} alt={image.alt} className="w-full h-auto rounded-lg mb-4" />
-        <p className="text-gray-800 text-base">{image.caption}</p>
+    <div className=" my-masonry-grid-column max-h-[600px] relative group overflow-hidden hover:scale-105">
+      <img src={post.img_url} alt="" className="rounded-lg object-fit" />
+      <div className="flex z-10 w-full bg-white absolute bottom-0 opacity-0 translate-y-full group-hover:translate-y-0 group-hover:opacity-70 transition duration-500 ease-in-out">
+        <h2 className='text-lg'>{post.users.nickname}</h2>
+        &nbsp;
+        <span>|</span>
+        &nbsp;
+        <h1 className='text-lg'>{post.created_at.toString().slice(0, 10)}</h1>
       </div>
     </div>
   );
 };
 
-export default ImageCard;
+export default CertifyCard;
