@@ -2,7 +2,6 @@ import React from 'react';
 import { useState } from 'react';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
-// import { useSearchParams } from 'next/navigation';
 import { useDropzone } from 'react-dropzone';
 import { v4 } from 'uuid';
 
@@ -27,6 +26,7 @@ export default function UserProfile() {
     const response = await supabase.from('users').select('*').eq('user_id', session?.user.id);
     return response.data?.[0];
   });
+  console.log('1. 사용자 정보 받아오기: ', userProfile);
 
   // useMutation을 사용하여 사용자 프로필 업데이트
   const editProfileMutation = useMutation(['editProfile', session?.user.id], async (updatedProfile: User) => {
@@ -41,7 +41,16 @@ export default function UserProfile() {
 
   const handleEditClick = () => {
     setEditMode(true);
-    setEditedProfile(userProfile);
+    setEditedProfile((prev: User | null) => ({
+      ...prev,
+      nickname: userProfile?.nickname || '',
+      address: userProfile?.address || '',
+      profile_img: userProfile?.profile_img || '',
+      user_id: userProfile?.user_id || '',
+      created_at: userProfile?.created_at || '',
+      point: userProfile?.point || 0,
+      email: userProfile?.email || '',
+    }));
   };
 
   const handleCancelClick = () => {
@@ -73,11 +82,18 @@ export default function UserProfile() {
         const imgUrlResponse = await uploadImageAndGetUrl(imgFile, imgName);
         const imgUrl = imgUrlResponse.data.publicUrl;
 
-        editedProfile.profile_img = imgUrl; // 프로필 이미지 URL 업데이트
-      }
-      await editProfileMutation.mutateAsync(editedProfile);
+        // 유저 프로필 정보 업데이트
+        const updatedProfile = {
+          ...editedProfile,
+          profile_img: imgUrl,
+        };
 
-      console.log('업데이트 프로필 정보:', editedProfile);
+        await editProfileMutation.mutateAsync(updatedProfile);
+        console.log('업데이트 프로필 정보 with Image:', editedProfile);
+      } else {
+        await editProfileMutation.mutateAsync(editedProfile);
+        console.log('업데이트 프로필 정보:', editedProfile);
+      }
 
       setEditMode(false);
       setImgFile(undefined); // imgFile 상태 초기화
@@ -162,7 +178,9 @@ export default function UserProfile() {
             <img src={userProfile?.profile_img ? `${userProfile?.profile_img}` : profileDefaultImg} alt="profileDefaultImg" width={100} height={100} className="rounded-full inline-block mb-4" />
             <div className="flex justify-center items-center gap-1 p-2">
               <p className="font-semibold text-lg">{userProfile?.nickname}</p>
-              <RankingGuide />
+              <div className="z-100">
+                <RankingGuide />
+              </div>
             </div>
             <p className="text-sm opacity-50">{userProfile?.address}</p>
             <div className="flex justify-center items-center my-3">

@@ -1,4 +1,5 @@
 'use client';
+import { Layout } from '@/components/common';
 // import BadgesList from '@/components/mypage/BadgesList';
 import JoinedChallenge from '@/components/mypage/JoinedChallenge';
 import PointTree from '@/components/mypage/PointTree';
@@ -8,7 +9,7 @@ import type { Props } from '@/types/Props.type';
 
 export default function Page({ params: { slug } }: Props) {
   return (
-    <>
+    <Layout>
       {slug}
       <div className="flex justify-evenly">
         <div>
@@ -21,6 +22,6 @@ export default function Page({ params: { slug } }: Props) {
         </div>
         <JoinedChallenge />
       </div>
-    </>
+    </Layout>
   );
 }
