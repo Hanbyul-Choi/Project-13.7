@@ -23,7 +23,7 @@ export const Button: React.FC<ButtonProps> = ({ children, btnType, size = 'mediu
       buttonSize = 'w-full py-4 text-lg ';
       break;
     case 'large':
-      buttonSize = 'px-[2.375rem] py-2 text-xl';
+      buttonSize = 'px-[2.375rem] py-2 text-[1.25rem]';
       break;
     case 'medium':
       buttonSize = 'px-[1.875rem] py-2 text-base';

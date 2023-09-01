@@ -1,22 +1,31 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 import Link from 'next/link';
 import { AiOutlineArrowRight } from 'react-icons/ai';
 
+import { mainChallengeCheck } from '@/app/api/challenge-post';
+
 import { Button, Layout } from '../common';
 
-export default function MainBanner() {
+const mainAnimal = '북극곰';
+
+export default async function MainBanner() {
+  const data = await mainChallengeCheck();
+
+  const content = data?.content.split('\n').map((text: string, index: number) => (
+    <Fragment key={index}>
+      <h5 className="text-sub6 font-semibold mt-4">{text}</h5>
+    </Fragment>
+  ));
+
   return (
     <div className="w-full h-[670px] bg-navy">
       <Layout>
         <div className="mt-[10%]">
           <p className="max-w-fit px-6 py-1 border-[1px] border-white text-lg text-white">이달의 챌린지</p>
-          <p className="text-white text-[3.5rem] mt-12">위기에 빠진 북극곰을 도와주세요!</p>
-          <h5 className="text-sub6 font-semibold mt-4">
-            거리에 자동차가 많아지면 이산화탄소 배출량이 늘어나 지구의 온도가 높아져요. <br />
-            우리 함께 가까운 거리는 걷거나 대중교통 이용해볼까요?
-          </h5>
-          <Link href="/challenge" className="w-fit mt-10 flex">
+          <p className="text-white text-[3.5rem] mt-12">위기에 빠진 {mainAnimal}을 도와주세요!</p>
+          {content}
+          <Link href="/ " className="w-fit mt-10 flex">
             <Button btnType="green" rounded>
               챌린지 참여하기
               <AiOutlineArrowRight size={20} />

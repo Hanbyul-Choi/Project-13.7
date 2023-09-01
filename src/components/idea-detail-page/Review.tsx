@@ -153,13 +153,13 @@ function Review({ slug }: DetailProps) {
         )}
       </div>
       <form
-        className="flex flex-row mt-7"
+        className="flex justify-between mt-7"
         onSubmit={e => {
           e.preventDefault();
         }}
       >
         <Input placeholder="응원의 댓글을 남겨주세요." type="text" _size="md" value={comment} onChange={e => setComment(e.target.value)} />
-        <Button type="submit" btnType="primary" buttonStyle="ml-[16px]" size="large" onClick={handlePostComment}>
+        <Button type="submit" btnType="primary" size="large" onClick={handlePostComment}>
           댓글입력
         </Button>
       </form>

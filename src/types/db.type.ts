@@ -19,6 +19,7 @@ export interface User {
   profile_img: string;
   nickname: string;
   email: string;
+  rank: number;
 }
 
 export interface AnimalMap {
@@ -64,26 +65,22 @@ interface PageType {
   page: number;
 }
 
-
-
-
-
 export interface CertifyType {
-  post_id: number,
-  created_at: string,
-  challenge_id: string,
-  insta_url: string,
-  user_id: string,
-  img_url: string,
-  tags: string,
-  mainChallenge: {title: string}
+  post_id: number;
+  created_at: string;
+  challenge_id: string;
+  insta_url: string;
+  user_id: string;
+  img_url: string;
+  tags: string;
+  mainChallenge: { title: string };
   users: User;
 }
 
 export interface CertifyPostType {
-  insta_url: string,
-  user_id: string,
-  img_url: string,
-  tags: string,
-  challenge_id: string,
+  insta_url: string;
+  user_id: string;
+  img_url: string;
+  tags: string;
+  challenge_id: string;
 }
