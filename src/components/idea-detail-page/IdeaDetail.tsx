@@ -23,11 +23,12 @@ function IdeaDetail({ item }: { item: Suggestion }) {
     mutationFn: deleteChallengeIdea,
   });
   const { post_id, title, content, product, img_url, users, user_id, liked_count, liked_users } = item;
+  console.log(liked_count, liked_users);
 
   // 로그인한 user 데이터 get
   const { session } = useSessionStore();
   const curUser = session?.user;
-  const { onClickLike } = useLike(item);
+  const { onClickLike } = useLike(item, 'detail');
 
   // 챌린지 아이디어 delete
   const handleDeleteChallengeIdeaData = async () => {
@@ -69,7 +70,7 @@ function IdeaDetail({ item }: { item: Suggestion }) {
         </div>
         <div className="flex justify-center flex-col items-center">
           <p className="text-green leading-[150%] text-sm">추천수 {liked_count}</p>
-          <button onClick={onClickLike} className="py-1 px-3 flex flex-row justify-center items-center bg-[#e1f6ed] text-green rounded text-xs leading-[150%]">
+          <button onClick={() => onClickLike(200)} className="py-1 px-3 flex flex-row justify-center items-center bg-[#e1f6ed] text-green rounded text-xs leading-[150%]">
             <Image src={liked_users.includes(curUser?.id!) ? like : unLike} width={16} height={16} alt="Like this idea" />
             &nbsp; 추천하기
           </button>
