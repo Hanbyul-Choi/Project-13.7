@@ -12,6 +12,7 @@ import useSessionStore from '@/store/sesson.store';
 import DropDownBtn from './DropDownBtn';
 import unLike from '../../../public/empty-heart.svg';
 import like from '../../../public/fullHeart.svg';
+import { useDialog } from '../common';
 
 import type { Suggestion } from '@/types/db.type';
 
@@ -19,20 +20,25 @@ function IdeaDetail({ item }: { item: Suggestion }) {
   const queryParams = new URLSearchParams();
   const router = useRouter();
   const defaultProfileImg = '../../../defaultProfileImage.jpeg';
+  const { Confirm } = useDialog();
   const mutation = useMutation({
     mutationFn: deleteChallengeIdea,
   });
   const { post_id, title, content, product, img_url, users, user_id, liked_count, liked_users } = item;
+  console.log(liked_count, liked_users);
 
   // 로그인한 user 데이터 get
   const { session } = useSessionStore();
   const curUser = session?.user;
-  const { onClickLike } = useLike(item);
+  const { onClickLike } = useLike(item, 'detail');
 
   // 챌린지 아이디어 delete
   const handleDeleteChallengeIdeaData = async () => {
-    mutation.mutate(post_id);
-    router.push(`/idea`);
+    const confirmed = await Confirm('해당 게시글을 삭제하시겠습니까?');
+    if (confirmed) {
+      mutation.mutate(post_id);
+      router.push(`/idea`);
+    }
   };
 
   // 수정페이지 넘어갈때 param으로 데이터 보내기
@@ -63,13 +69,13 @@ function IdeaDetail({ item }: { item: Suggestion }) {
           </div>
           <div>
             {/* <p className="leading-[150%] text-[#888889] mb-[4px]">{ideaData?.users.rank}</p> */}
-            <p className="leading-[150%] text-[#888889] mb-[4px]">{users.point}</p>
+            <p className="leading-[150%] text-[#888889] mb-[4px] ">{users.point}</p>
             <p className="text-lg font-bold leading-[140%]">{users.nickname}</p>
           </div>
         </div>
         <div className="flex justify-center flex-col items-center">
           <p className="text-green leading-[150%] text-sm">추천수 {liked_count}</p>
-          <button onClick={onClickLike} className="py-1 px-3 flex flex-row justify-center items-center bg-[#e1f6ed] text-green rounded text-xs leading-[150%]">
+          <button onClick={() => onClickLike(200)} className="py-1 px-3 flex flex-row justify-center items-center bg-[#e1f6ed] text-green rounded text-xs leading-[150%]">
             <Image src={liked_users.includes(curUser?.id!) ? like : unLike} width={16} height={16} alt="Like this idea" />
             &nbsp; 추천하기
           </button>
