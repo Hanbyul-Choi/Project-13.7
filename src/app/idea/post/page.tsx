@@ -157,7 +157,7 @@ export default function IdeaPostPage() {
       ideaUpdate(ideaData);
       Alert('해당 글이 정상적으로 수정되었습니다.');
       setIsEdit(false);
-      router.push('/idea');
+      router.back();
     } else {
       console.log('post', ideaData);
       postIdeaMutation.mutate(ideaData);
@@ -246,7 +246,7 @@ export default function IdeaPostPage() {
             btnType="black"
             size="small"
             onClick={() => {
-              router.push('/idea');
+              router.back();
               setIsEdit(false);
             }}
           >

@@ -1,24 +1,23 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import Image from 'next/image';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useInView } from 'react-intersection-observer';
 
 import { getLoginUser } from '@/app/api/auth';
-import { deleteChallengeIdeaComment, getChallengeIdeaComment, postChallengeIdeaComment, updateChallengeIdeaComment } from '@/app/api/idea-comments';
+import { deleteChallengeIdeaComment, getIdeaCommentInfinite, postChallengeIdeaComment, updateChallengeIdeaComment } from '@/app/api/idea-comments';
 
 import DropDownBtn from './DropDownBtn';
-import defaultImage from '../../../public/defaultProfileImage.jpeg';
-import { Button } from '../common';
+import { Button, useDialog } from '../common';
 import { Input } from '../common/Input';
 
 import type { DetailProps } from '@/app/idea/[slug]/page';
-import type { IdeaComments } from '@/types/db.type';
 
 function Review({ slug }: DetailProps) {
+  const defaultProfileImg = '../../../defaultProfileImage.jpeg';
+  const { Confirm } = useDialog();
   const [comment, setComment] = useState<string>('');
   const [userId, setUserId] = useState<string>('');
-  const [commentDatas, setCommentDatas] = useState<IdeaComments[]>([]);
   const [editCommentId, setEditCommentId] = useState<string>('');
   const [editComment, setEditComment] = useState<string>('');
 
@@ -48,12 +47,30 @@ function Review({ slug }: DetailProps) {
   }, [loginUser]);
 
   // 해당 포스트 댓글 데이터 get
-  const { isLoading: commentsLoading, isError: commentsError, data: commentsData } = useQuery(['ideaComments'], () => getChallengeIdeaComment(slug));
-  useEffect(() => {
-    if (commentsData) {
-      setCommentDatas(commentsData);
-    }
-  }, [commentsData]);
+  const {
+    data: commentsData,
+    isError: commentsError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: ['ideaComments', slug],
+    queryFn: getIdeaCommentInfinite,
+    getNextPageParam: lastPage => {
+      if (lastPage.page < lastPage.total_pages) {
+        return lastPage.page + 1;
+      }
+    },
+  });
+  const challengeCommentsData = commentsData?.pages?.map(pageData => pageData.data).flat();
+
+  const { ref } = useInView({
+    threshold: 1,
+    onChange: inView => {
+      if (!inView || !hasNextPage || isFetchingNextPage) return;
+      fetchNextPage();
+    },
+  });
 
   // 댓글 insert
   const commentData = {
@@ -74,8 +91,9 @@ function Review({ slug }: DetailProps) {
   };
 
   // 댓글 delete
-  const handleDeleteChallengeIdeaCommentData = (id: string) => {
-    deleteMutation.mutate(id);
+  const handleDeleteChallengeIdeaCommentData = async (id: string) => {
+    const confirmed = await Confirm('해당 댓글을 삭제하시겠습니까?');
+    if (confirmed) deleteMutation.mutate(id);
   };
 
   const handleUpdateCommentDropDown = (id: string, comment: string) => {
@@ -83,22 +101,21 @@ function Review({ slug }: DetailProps) {
     setEditComment(comment);
   };
 
-  if (commentsLoading || userLoading) {
+  if (userLoading) {
     return <p>로딩중입니다.</p>;
   }
   if (commentsError || userError) {
     return <p>에러입니다.</p>;
   }
-
   return (
     <div>
-      <h4 className="mb-3">댓글 {commentDatas.length}</h4>
-      <div className="flex justify-center flex-col">
-        {commentDatas.map(commentData => {
+      <h4 className="mb-3">댓글 {challengeCommentsData?.length}</h4>
+      <div className="max-h-[345px] overflow-auto">
+        {challengeCommentsData?.map(commentData => {
           const { id, created_at, comment, users } = commentData;
           return (
             <div key={id} className="flex items-center flex-row justify-start my-3 relative">
-              <Image src={users.profile_img ? users.profile_img : defaultImage} width={55} height={55} alt="Default Profile Image" className="mr-[16px] shadow-[0_1px_5px_0_rgba(53,60,73,0.08)] rounded-lg " />
+              <img src={users.profile_img ? users.profile_img : defaultProfileImg} width={55} height={55} alt="Profile Image" className="mr-[16px] shadow-[0_1px_5px_0_rgba(53,60,73,0.08)] rounded-lg " />
               <div>
                 <div className="flex flex-row text-sm text-[#838384] leading-[150%] items-center">
                   <p className="after:content-[' '] after:w-[1px] after:bg-[#838384] after:h-[12px] after:inline-block after:m-[8px] flex items-center">{users.nickname}</p>
@@ -129,19 +146,23 @@ function Review({ slug }: DetailProps) {
             </div>
           );
         })}
-
-        <form
-          className="flex flex-row mt-7"
-          onSubmit={e => {
-            e.preventDefault();
-          }}
-        >
-          <Input placeholder="응원의 댓글을 남겨주세요." type="text" _size="md" value={comment} onChange={e => setComment(e.target.value)} />
-          <Button type="submit" btnType="primary" buttonStyle="ml-[16px]" size="large" onClick={handlePostComment}>
-            댓글입력
-          </Button>
-        </form>
+        {hasNextPage && (
+          <p className="h-[55px] flex justify-center items-center" ref={ref}>
+            More Comment...
+          </p>
+        )}
       </div>
+      <form
+        className="flex flex-row mt-7"
+        onSubmit={e => {
+          e.preventDefault();
+        }}
+      >
+        <Input placeholder="응원의 댓글을 남겨주세요." type="text" _size="md" value={comment} onChange={e => setComment(e.target.value)} />
+        <Button type="submit" btnType="primary" buttonStyle="ml-[16px]" size="large" onClick={handlePostComment}>
+          댓글입력
+        </Button>
+      </form>
     </div>
   );
 }
