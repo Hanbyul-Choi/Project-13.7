@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { useQuery } from '@tanstack/react-query';
+import { AiOutlineArrowRight } from 'react-icons/ai';
 
 import { useModalStore } from '@/store/modal.store';
 import useSessionStore from '@/store/sesson.store';
@@ -29,8 +30,8 @@ export default function PointTree() {
           <p className="text-xl align-text-bottom font-semibold">{userProfile?.point}</p>
           <p>그루</p>
         </div>
-        <button onClick={onClickTreeGuide} className="bg-green text-white px-4 py-1 border rounded-full text-sm mb-2">
-          나무를 얻으려면?
+        <button onClick={onClickTreeGuide} className="bg-green text-white px-4 py-1 gap-2 border rounded-full text-sm mb-2 flex justify-center items-center">
+          <p className="font-semibold">나무를 얻으려면?</p> <AiOutlineArrowRight size={15} />
         </button>
         {isOpenMainModal && <TreeGuideModal />}
       </div>
