@@ -9,7 +9,7 @@ interface TPostImg {
 
 // ChallengeSuggestion data와 해당유저 데이터 get
 export const getSuggestions = async () => {
-  const { data, error } = await supabase.from('challengeSuggestion').select(`*, users(*), likes(*)`);
+  const { data, error } = await supabase.from('challengeSuggestion').select(`*, users(*)`);
   if (error) {
     throw error;
   }
@@ -56,7 +56,7 @@ export const getIdeaInfinite = async ({ queryKey, pageParam = 1 }: any) => {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, sort] = queryKey;
-  const pageToFetch = pageParam * 7 + (pageParam - 1 * 1);
+  const pageToFetch = pageParam * 7 + (pageParam - 1);
 
   let sortedData: any = [];
   if (sort === '최신순') {

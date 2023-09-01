@@ -17,7 +17,7 @@ export function IdeaHeader() {
   const { sortWay, setLatest, setPopular } = useSortWayStore();
   const route = useRouter();
   const [countDown, setCountDown] = useState<string | null>(null);
-  const { data } = useQuery(['mainChallenge'], loadMainChallenge);
+  const { isLoading, data } = useQuery(['mainChallenge'], loadMainChallenge);
 
   const voteComplateDay = 3;
 
@@ -50,6 +50,10 @@ export function IdeaHeader() {
     route.push('/idea/post');
   };
 
+  if (isLoading) {
+    return <></>;
+  }
+
   return (
     <div className="w-full flex justify-between items-center mt-10 pb-4 border-b-2 border-opacityblack">
       <div className="flex gap-6 items-center">
@@ -61,10 +65,10 @@ export function IdeaHeader() {
         </h5>
       </div>
       <div className="flex">
-        {countDown ? (
+        {data ? (
           <>
             <p className="text-lg font-medium flex">투표마감까지 남은 시간 : &nbsp; </p>
-            <h5 className="w-42">{countDown}</h5>
+            <h5 className="w-48">{countDown}</h5>
           </>
         ) : (
           <h5>투표가 종료되었습니다.</h5>
