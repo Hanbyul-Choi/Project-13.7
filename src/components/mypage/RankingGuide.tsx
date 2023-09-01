@@ -30,23 +30,25 @@ export default function RankingGuide() {
           <p className="text-black text-sm">{animals[userProfile?.rank]} 마스터ⓘ</p>
         </div>
       </div>
-      {showRankGuide && (
-        <div className="absolute bg-white border rounded shadow w-[32rem] p-2 m-2">
-          <p className="font-semibold my-4">등급별 혜택</p>
-          <div className="flex flex-col justify-between gap-2 py-1 mx-4">
-            <p className="text-lg font-bold">챌린지 1회 달성 시</p>
-            <p className="text-base font-regular mb-2">{animals[1]} 수호신 승급 | 나무 10그루 지급</p>
+      <div className="fixed z-100">
+        {showRankGuide && (
+          <div className="absolute bg-white border rounded shadow w-[32rem] p-2 m-2">
+            <p className="font-semibold my-4">등급별 혜택</p>
+            <div className="flex flex-col justify-between gap-2 py-1 mx-4">
+              <p className="text-lg font-bold">챌린지 1회 달성 시</p>
+              <p className="text-base font-regular mb-2">{animals[1]} 수호신 승급 | 나무 10그루 지급</p>
+            </div>
+            <div className="flex flex-col justify-between gap-2 py-1 mx-4">
+              <p className="text-lg font-bold">챌린지 5회 달성 시</p>
+              <p className="text-base font-regular mb-2">{animals[2]} 수호신 승급 | 나무 30그루 지급</p>
+            </div>
+            <div className="flex flex-col justify-between gap-2 py-1 mx-4">
+              <p className="text-lg font-bold">챌린지 10회 달성 시</p>
+              <p className="text-base font-regular mb-4">{animals[3]} 마스터 승급 | 나무 50그루 지급</p>
+            </div>
           </div>
-          <div className="flex flex-col justify-between gap-2 py-1 mx-4">
-            <p className="text-lg font-bold">챌린지 5회 달성 시</p>
-            <p className="text-base font-regular mb-2">{animals[2]} 수호신 승급 | 나무 30그루 지급</p>
-          </div>
-          <div className="flex flex-col justify-between gap-2 py-1 mx-4">
-            <p className="text-lg font-bold">챌린지 10회 달성 시</p>
-            <p className="text-base font-regular mb-4">{animals[3]} 마스터 승급 | 나무 50그루 지급</p>
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
