@@ -12,6 +12,7 @@ import useSessionStore from '@/store/sesson.store';
 import DropDownBtn from './DropDownBtn';
 import unLike from '../../../public/empty-heart.svg';
 import like from '../../../public/fullHeart.svg';
+import { useDialog } from '../common';
 
 import type { Suggestion } from '@/types/db.type';
 
@@ -19,6 +20,7 @@ function IdeaDetail({ item }: { item: Suggestion }) {
   const queryParams = new URLSearchParams();
   const router = useRouter();
   const defaultProfileImg = '../../../defaultProfileImage.jpeg';
+  const { Confirm } = useDialog();
   const mutation = useMutation({
     mutationFn: deleteChallengeIdea,
   });
@@ -32,8 +34,11 @@ function IdeaDetail({ item }: { item: Suggestion }) {
 
   // 챌린지 아이디어 delete
   const handleDeleteChallengeIdeaData = async () => {
-    mutation.mutate(post_id);
-    router.push(`/idea`);
+    const confirmed = await Confirm('해당 게시글을 삭제하시겠습니까?');
+    if (confirmed) {
+      mutation.mutate(post_id);
+      router.push(`/idea`);
+    }
   };
 
   // 수정페이지 넘어갈때 param으로 데이터 보내기
@@ -64,7 +69,7 @@ function IdeaDetail({ item }: { item: Suggestion }) {
           </div>
           <div>
             {/* <p className="leading-[150%] text-[#888889] mb-[4px]">{ideaData?.users.rank}</p> */}
-            <p className="leading-[150%] text-[#888889] mb-[4px]">{users.point}</p>
+            <p className="leading-[150%] text-[#888889] mb-[4px] ">{users.point}</p>
             <p className="text-lg font-bold leading-[140%]">{users.nickname}</p>
           </div>
         </div>
