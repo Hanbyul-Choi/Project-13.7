@@ -21,6 +21,10 @@ export interface User {
   email: string;
 }
 
+export interface AnimalMap {
+  [key: string]: string;
+}
+
 export interface NatureStory {
   post_id: string;
   content: string;
