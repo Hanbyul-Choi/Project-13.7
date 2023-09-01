@@ -4,8 +4,8 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 import { getSuggestions } from '@/app/api/challenge-idea';
-import IdeaDetail from '@/components/idea-detail-page/IdeaDetail';
-import Review from '@/components/idea-detail-page/Review';
+import IdeaDetail from '@/components/idea-detail-page/detail/IdeaDetail';
+import Review from '@/components/idea-detail-page/review/Review';
 import SingleLayout from '@/components/layout/SingleLayout';
 
 import type { Props } from '@/types/Props.type';

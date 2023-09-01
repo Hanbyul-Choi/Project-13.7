@@ -2,40 +2,23 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 
-import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { v4 } from 'uuid';
 
-import { getLoginUser } from '@/app/api/auth';
-import { postChallengeIdea, postChallengeIdeaImg, updateChallengeIdea } from '@/app/api/challenge-idea';
-import { Button, Input, Label, useDialog } from '@/components/common';
+import { Button, Input, Label } from '@/components/common';
 
 import IdeaImagePost from './IdeaImagePost';
-import { supabase } from '../../../supabase/supabaseConfig';
-
-import type { IdeaPost } from '@/types/db.type';
+import useIdeaPost from './useIdeaPostUpdate.hook';
 
 function IdeaContentsPost() {
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
   const [product, setProduct] = useState<string | null>('');
-  const [userId, setUserId] = useState<string>('');
   const [isEdit, setIsEdit] = useState<boolean>(false);
-
   const [imgFile, setImgFile] = useState<File | undefined>(undefined);
   const [previewImg, setPreviewImg] = useState<string | ArrayBuffer | undefined>(undefined);
-  const { Alert } = useDialog();
+
   const router = useRouter();
   const searchParams = useSearchParams();
-  const postIdeaMutation = useMutation({
-    mutationFn: postChallengeIdea,
-  });
-  const postImgMutation = useMutation({
-    mutationFn: postChallengeIdeaImg,
-  });
-  const updateIdeaMutation = useMutation({
-    mutationFn: updateChallengeIdea,
-  });
 
   const getParamTitle = searchParams.get('title');
   const getParamContent = searchParams.get('content');
@@ -43,17 +26,8 @@ function IdeaContentsPost() {
   const getParamImgUrl = searchParams.get('img_url');
   const getParamIsEdit = searchParams.get('is_edit');
   const getParamPostId = searchParams.get('post_id');
-  console.log('🚀 ~ file: page.tsx:42 ~ IdeaPostPage ~ getParamContent:', getParamContent);
 
-  // 로그인한 user 데이터 가져오기
-  const { isLoading, isError, data: loginUser } = useQuery(['auth'], getLoginUser);
-
-  // 로그인한 user Id state 할당
-  useEffect(() => {
-    if (loginUser?.session) {
-      setUserId(loginUser.session.user.id);
-    }
-  }, [loginUser]);
+  const { isLoading, isError, handleGetImg } = useIdeaPost(imgFile, getParamImgUrl, previewImg, title, content, product, isEdit, setIsEdit, getParamPostId);
 
   // 처음 렌더링됐을 때 param state 할당
   useEffect(() => {
@@ -67,75 +41,11 @@ function IdeaContentsPost() {
   }, []);
 
   // 등록하기 버튼 click시 실행. supabase storage Image Insert.
-  const handleGetImg = async () => {
-    const imgName = v4();
-
-    // 첨부된 image storage upload
-    if (imgFile) {
-      postImgMutation.mutate({ imgFile, imgName });
-    }
-
-    // storage에서 이미지 주소 가져오기. 이미지 URL이 설정된 후에 데이터베이스에 전송
-    const { data } = await supabase.storage.from('project').getPublicUrl(`challengeSuggestion/${imgName}`);
-
-    let checkImg = null;
-    if (getParamImgUrl) {
-      if (previewImg) {
-        checkImg = imgFile ? data.publicUrl : getParamImgUrl;
-      }
-    } else if (previewImg) {
-      checkImg = data.publicUrl;
-    }
-
-    const ideaData = {
-      title,
-      content,
-      product,
-      user_id: userId,
-      selected: false,
-      img_url: checkImg,
-    };
-
-    handleIdeaPost(ideaData);
-  };
-
-  // 유효성 검사 후 DB insert or update
-  const handleIdeaPost = (ideaData: IdeaPost) => {
-    if (userId === '') {
-      Alert('로그인이 필요합니다.');
-    } else if (title === '') {
-      Alert('제목을 입력해주세요');
-    } else if (content === '') {
-      Alert('내용을 입력해주세요');
-    } else if (ideaData.img_url === null) {
-      Alert('챌린지 인증 예시 사진을 업로드해주세요');
-    } else if (isEdit) {
-      console.log('edit', ideaData);
-      ideaUpdate(ideaData);
-      Alert('해당 글이 정상적으로 수정되었습니다.');
-      setIsEdit(false);
-      router.push('/idea');
-    } else {
-      console.log('post', ideaData);
-      postIdeaMutation.mutate(ideaData);
-      Alert('작성하신 글이 정상적으로 등록되었습니다.');
-      router.push('/idea');
-    }
-  };
-
-  // Challenge Idea update
-  const ideaUpdate = (ideaData: IdeaPost) => {
-    if (getParamPostId) {
-      const newUdateIdea = { ideaData, getParamPostId };
-      updateIdeaMutation.mutate(newUdateIdea);
-    }
-  };
-
   if (isLoading) {
-    return <p>로딩중입니다.</p>;
+    return <div>로딩중입니다.</div>;
   }
   if (isError) {
-    return <p>에러입니다.</p>;
+    return <div>에러입니다.</div>;
   }
   return (
     <form
@@ -174,7 +84,7 @@ function IdeaContentsPost() {
           btnType="black"
           size="small"
           onClick={() => {
-            router.push('/idea');
+            router.back();
             setIsEdit(false);
           }}
         >
