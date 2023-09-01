@@ -42,7 +42,7 @@ export default function JoinedChallenge() {
         <div>
           {userReviews?.map(item => (
             <ul key={item.id} className="flex flex-row justify-between items-center text-lg rounded-lg bg-sub1 px-6 py-3 mb-3">
-              <li className="text-lg">{item.mainChallenge.title}</li>
+              <li className="text-lg">{item.mainChallenge?.title}</li>
               {/* <li className="text-base opacity-50">게시글URL: {item.insta_url}</li> */}
               <li className="text-base opacity-50">{item.created_at}</li>
               <div className="bg-opacityblack w-20 py-1 text-center rounded">바로가기</div>
