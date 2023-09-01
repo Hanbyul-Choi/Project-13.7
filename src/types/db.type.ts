@@ -63,3 +63,27 @@ interface PageType {
   total_pages: number;
   page: number;
 }
+
+
+
+
+
+export interface CertifyType {
+  post_id: number,
+  created_at: string,
+  challenge_id: string,
+  insta_url: string,
+  user_id: string,
+  img_url: string,
+  tags: string,
+  mainChallenge: {title: string}
+  users: User;
+}
+
+export interface CertifyPostType {
+  insta_url: string,
+  user_id: string,
+  img_url: string,
+  tags: string,
+  challenge_id: string,
+}

@@ -4,10 +4,8 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 
-import { loadMainChallenge } from '@/app/api/challenge-certify';
 
 import { mainChallengeCheck } from '@/app/api/challenge-post';
-
 import { useModalStore } from '@/store/modal.store';
 import useSessionStore from '@/store/sesson.store';
 
