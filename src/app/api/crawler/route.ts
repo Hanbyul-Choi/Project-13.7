@@ -11,7 +11,7 @@ export const getHtml = async (url : string) => {
     const imageUrl:string  = $('meta[property="og:image"]').attr('content') || '';
     const caption = $('meta[property="og:description"]').attr('content') || '';
     const hashtags: string[] | null = caption.match(/#[\p{L}\p{N}_]+/gu)
-    console.log(imageUrl, hashtags)
+
     return {
       imageUrl,
       hashtags,
@@ -28,7 +28,6 @@ export async function GET (
 ) {
   const url = request.url.split("=")[1]
   if (!url || typeof url !== 'string') {
-    console.log(1)
     const myRes = new Response("res", {status: 500})
     return myRes
   }

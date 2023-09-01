@@ -40,7 +40,7 @@ export interface NatureStory {
 export interface IdeaComments {
   id: string;
   created_at: string;
-  post_id: string;
+  post_id?: string;
   comment: string;
   user_id: string;
   users: User;
