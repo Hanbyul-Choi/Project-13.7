@@ -11,7 +11,7 @@ const TreeGuideModal: React.FC = () => {
 
   return (
     <Modal>
-      <div>
+      <div className="w-[32rem]">
         <p className="text-lg font-semibold mb-4">활동하고 나무 충전하기</p>
         <ul className="flex item-center justify-between gap-2 bg-sub1 rounded-lg w-full px-8 py-4 mb-3">
           <li className="text-lg">회원가입</li>
