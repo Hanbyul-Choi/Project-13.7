@@ -6,7 +6,7 @@ import { useModalStore } from '@/store/modal.store';
 import NaverSignIn from './social-sign-in/NaverSignIn';
 import SocialSignIn from './social-sign-in/SocialSignIn';
 import { supabase } from '../../../supabase/supabaseConfig';
-import { Button, Input, Label, useDialog } from '../common';
+import { Button, Input, Label } from '../common';
 import Modal from '../common/Modal';
 
 type SignUpModalProps = {
@@ -15,7 +15,7 @@ type SignUpModalProps = {
 };
 
 const AuthModal: React.FC<SignUpModalProps> = ({ switchHandler, modalType }) => {
-  const { Alert } = useDialog();
+  //const { Alert } = useDialog();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');

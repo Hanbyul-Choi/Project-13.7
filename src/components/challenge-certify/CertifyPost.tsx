@@ -29,7 +29,6 @@ export function CertifyPost() {
       setJoinChallenge(joinChallenge);
     }
   };
-
   console.log('joinChallenge data check:', joinChallenge.length);
 
   // mainChallenge Data Check

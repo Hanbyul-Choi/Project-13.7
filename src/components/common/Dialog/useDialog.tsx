@@ -1,6 +1,6 @@
 'use client';
-import { Dialog } from './Dialog';
-import { useOverlayContext } from '../Dialog/';
+
+import { Dialog, useOverlayContext } from '.';
 
 export const useDialog = () => {
   const { mount: _mount, unmount: _unmount } = useOverlayContext();
