@@ -1,8 +1,11 @@
 import { supabase } from '../../../supabase/supabaseConfig';
 
-import type { User } from '@/types/db.type';
+export const getUsers = async () => {
+  const { data } = await supabase.from('users').select(`*`).range(0, 4).order('rank', { ascending: false });
+  return data;
+};
 
-export const getUsers = async (): Promise<User[] | null> => {
-  const { data } = await supabase.from('users').select('*').order('rank', { ascending: false }).limit(5);
+export const getUser = async (user_id: string) => {
+  const { data } = await supabase.from('users').select('*').eq('user_id', user_id).single();
   return data;
 };

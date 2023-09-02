@@ -8,5 +8,6 @@ export const mainChallengeCheck = async () => {
   if (error) {
     throw error;
   }
+
   return challenge;
 };

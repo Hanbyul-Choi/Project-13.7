@@ -72,6 +72,7 @@ const AuthModal: React.FC<SignUpModalProps> = ({ switchHandler, modalType }) => 
     let uid = authData.user?.id;
 
     // database
+    if (!uid) return;
     const { error: dbError } = await supabase.from('users').insert({ user_id: uid, email, nickname });
 
     if (authError) {

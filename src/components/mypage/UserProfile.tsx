@@ -11,7 +11,6 @@ import useSessionStore from '@/store/sesson.store';
 
 import RankingGuide from './RankingGuide';
 import { supabase } from '../../../supabase/supabaseConfig';
-import profileDefaultImg from '../../assets/profileDefaultImg.png';
 
 import type { User } from '@/types/db.type';
 
@@ -19,29 +18,28 @@ export default function UserProfile() {
   const session = useSessionStore((state: { session: any }) => state.session);
 
   const [editMode, setEditMode] = useState(false);
-  const [editedProfile, setEditedProfile] = useState<User | null>(null);
+  const [editedProfile, setEditedProfile] = useState<any>(null);
 
   // useQuery를 사용하여 사용자 프로필 가져오기
-  const { data: userProfile } = useQuery(['userProfile', session?.user.id], async () => {
-    const response = await supabase.from('users').select('*').eq('user_id', session?.user.id);
+  const { data: userProfile } = useQuery(['userProfile', session?.user_id], async () => {
+    const response = await supabase.from('users').select('*').eq('user_id', session?.user_id);
     return response.data?.[0];
   });
-  console.log('1. 사용자 정보 받아오기: ', userProfile);
 
   // useMutation을 사용하여 사용자 프로필 업데이트
-  const editProfileMutation = useMutation(['editProfile', session?.user.id], async (updatedProfile: User) => {
+  const editProfileMutation = useMutation(['editProfile', session?.user_id], async (updatedProfile: User) => {
     const imgName = v4();
     try {
       if (imgFile) {
         postImgMutation.mutate({ imgFile, imgName });
       }
-      return supabase.from('users').update(updatedProfile).eq('user_id', session?.user.id);
+      return supabase.from('users').update(updatedProfile).eq('user_id', session?.user_id);
     } catch (error) {}
   });
 
   const handleEditClick = () => {
     setEditMode(true);
-    setEditedProfile((prev: User | null) => ({
+    setEditedProfile((prev: any) => ({
       ...prev,
       nickname: userProfile?.nickname || '',
       address: userProfile?.address || '',
@@ -68,7 +66,6 @@ export default function UserProfile() {
 
     // 이미지 URL 받아오기
     const imgUrlResponse = await supabase.storage.from('project').getPublicUrl(`userProfileImg/${imgName}`);
-    console.log('이미지url확인', imgUrlResponse);
     return imgUrlResponse;
   };
 
@@ -89,10 +86,8 @@ export default function UserProfile() {
         };
 
         await editProfileMutation.mutateAsync(updatedProfile);
-        console.log('업데이트 프로필 정보 with Image:', editedProfile);
       } else {
         await editProfileMutation.mutateAsync(editedProfile);
-        console.log('업데이트 프로필 정보:', editedProfile);
       }
 
       setEditMode(false);
@@ -152,15 +147,15 @@ export default function UserProfile() {
                 <>
                   <div {...getRootProps()}>
                     <input accept="image/*" type="file" {...getInputProps()} onChange={event => handleChangeImg(event)} />
-                    <img src={userProfile?.profile_img ? `${userProfile?.profile_img}` : profileDefaultImg} alt="profileDefaultImg" width={100} height={100} className="rounded-full inline-block mb-4" />
+                    <img src={userProfile?.profile_img ? `${userProfile?.profile_img}` : '../../assets/profileDefaultImg.png'} alt="profileDefaultImg" width={100} height={100} className="rounded-full inline-block mb-4" />
                   </div>
                 </>
               )}
               <input type="file" accept="image/*" id="profileImg" className="cursor-pointer" onChange={e => handleChangeImg(e)} />
             </div>
             <div className="space-y-1 flex flex-col">
-              <Input type="text" value={editedProfile?.nickname || ''} onChange={e => setEditedProfile(prev => ({ ...prev, nickname: e.target.value }))} placeholder="이름" _size={'sm'} />
-              <Input type="text" value={editedProfile?.address || ''} onChange={e => setEditedProfile(prev => ({ ...prev, address: e.target.value }))} placeholder="주소" _size={'sm'} />
+              <Input type="text" value={editedProfile?.nickname || ''} onChange={e => setEditedProfile((prev: any) => ({ ...prev, nickname: e.target.value }))} placeholder="이름" _size={'sm'} />
+              <Input type="text" value={editedProfile?.address || ''} onChange={e => setEditedProfile((prev: any) => ({ ...prev, address: e.target.value }))} placeholder="주소" _size={'sm'} />
             </div>
             <div className="flex gap-2 justify-center mx-auto my-2">
               <Button btnType={'borderBlack'} size={'small'} onClick={handleCancelClick}>
@@ -175,7 +170,7 @@ export default function UserProfile() {
       ) : (
         <>
           <div className="text-center mb-4 mx-auto">
-            <img src={userProfile?.profile_img ? `${userProfile?.profile_img}` : profileDefaultImg} alt="profileDefaultImg" width={100} height={100} className="rounded-full inline-block mb-4" />
+            <img src={userProfile?.profile_img ? `${userProfile?.profile_img}` : '../../assets/profileDefaultImg.png'} alt="profileDefaultImg" width={100} height={100} className="rounded-full inline-block mb-4" />
             <div className="flex justify-center items-center gap-1 p-2">
               <p className="font-semibold text-lg">{userProfile?.nickname}</p>
               <div className="z-100">

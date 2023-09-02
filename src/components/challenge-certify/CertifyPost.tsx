@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
-import { mainChallengeCheck } from '@/app/api/challenge-post';
+import { mainChallengeCheck } from '@/app/api/main-challenge';
 import { useModalStore } from '@/store/modal.store';
 import useSessionStore from '@/store/sesson.store';
 
@@ -13,23 +13,22 @@ import { Button, useDialog } from '../common';
 
 export function CertifyPost() {
   const session = useSessionStore((state: { session: any }) => state.session);
-  const [mainChallenge, setMainChallenge] = useState('');
-  const [joinChallenge, setJoinChallenge] = useState<[]>([]);
+  const [mainChallenge, setMainChallenge] = useState<{ challenge_Id: string } | null>();
+  const [joinChallenge, setJoinChallenge] = useState<any>();
 
   const { mainOpenModal, isOpenMainModal } = useModalStore(state => state);
-  const [modalType, setModalType] = useState('');
+
   const route = useRouter();
   const { Alert, Confirm } = useDialog();
 
   // userJoinChallenge Data Check
   const userJoinChallengeCheck = async () => {
-    let { data: joinChallenge } = await supabase.from('joinChallenge').select('*').eq('user_id', session?.user.id).eq('challenge_id', mainChallenge.challenge_Id);
+    let { data: joinChallenge } = await supabase.from('joinChallenge').select('*').eq('user_id', session?.user_id).eq('challenge_id', mainChallenge?.challenge_Id);
 
     if (joinChallenge) {
       setJoinChallenge(joinChallenge);
     }
   };
-  console.log('joinChallenge data check:', joinChallenge.length);
 
   // mainChallenge Data Check
   useEffect(() => {
@@ -49,11 +48,10 @@ export function CertifyPost() {
     if (mainChallenge) {
       fetchData();
     }
-  }, [mainChallenge]);
+  }, []);
 
   const onClickUploadReview = () => {
     if (session?.user) {
-      setModalType('reviews');
       mainOpenModal();
     } else {
       Alert('로그인이 필요합니다');
@@ -71,7 +69,7 @@ export function CertifyPost() {
 
   return (
     <>
-      {joinChallenge.length > 0 ? (
+      {joinChallenge?.length > 0 ? (
         <Button onClick={onClickUploadReview} btnType={'primary'} size="small">
           인증하기
         </Button>
@@ -81,7 +79,7 @@ export function CertifyPost() {
         </Button>
       )}
 
-      {isOpenMainModal && <UploadReviewModal modalType={modalType} />}
+      {isOpenMainModal && <UploadReviewModal />}
     </>
   );
 }

@@ -115,10 +115,10 @@ function Review({ slug }: DetailProps) {
           const { id, created_at, comment, users } = commentData;
           return (
             <div key={id} className="flex items-center flex-row justify-start my-3 relative">
-              <img src={users.profile_img ? users.profile_img : defaultProfileImg} width={55} height={55} alt="Profile Image" className="mr-[16px] shadow-[0_1px_5px_0_rgba(53,60,73,0.08)] rounded-lg " />
+              <img src={users?.profile_img ? users?.profile_img : defaultProfileImg} width={55} height={55} alt="Profile Image" className="mr-[16px] shadow-[0_1px_5px_0_rgba(53,60,73,0.08)] rounded-lg " />
               <div>
                 <div className="flex flex-row text-sm text-[#838384] leading-[150%] items-center">
-                  <p className="after:content-[' '] after:w-[1px] after:bg-[#838384] after:h-[12px] after:inline-block after:m-[8px] flex items-center">{users.nickname}</p>
+                  <p className="after:content-[' '] after:w-[1px] after:bg-[#838384] after:h-[12px] after:inline-block after:m-[8px] flex items-center">{users?.nickname}</p>
                   <p>{created_at.slice(0, 10).replaceAll('-', '.')}</p>
                 </div>
                 {editCommentId === id ? (
@@ -142,7 +142,7 @@ function Review({ slug }: DetailProps) {
                   <p className="leading-[150%]">{comment}</p>
                 )}
               </div>
-              {userId === users.user_id ? <DropDownBtn editClickHandler={() => handleUpdateCommentDropDown(id, comment)} deleteClickHandler={() => handleDeleteChallengeIdeaCommentData(id)} position={'top-0 right-0'} /> : <></>}
+              {userId === users?.user_id ? <DropDownBtn editClickHandler={() => handleUpdateCommentDropDown(id, comment as string)} deleteClickHandler={() => handleDeleteChallengeIdeaCommentData(id)} position={'top-0 right-0'} /> : <></>}
             </div>
           );
         })}

@@ -10,6 +10,7 @@ import type { AnimalMap } from '@/types/db.type';
 
 export default function RankingGuide() {
   const animals: AnimalMap = {
+    0: '두루미',
     1: '물범',
     2: '호랑이',
     3: '북극곰',
@@ -18,8 +19,8 @@ export default function RankingGuide() {
   const session = useSessionStore((state: { session: any }) => state.session);
   const [showRankGuide, setShowRankGuide] = useState(false);
 
-  const { data: userProfile } = useQuery(['userProfile', session?.user.id], async () => {
-    const response = await supabase.from('users').select('*').eq('user_id', session?.user.id);
+  const { data: userProfile } = useQuery(['userProfile', session?.user_id], async () => {
+    const response = await supabase.from('users').select('*').eq('user_id', session?.user_id);
     return response.data?.[0];
   });
 
@@ -27,7 +28,7 @@ export default function RankingGuide() {
     <div>
       <div onMouseEnter={() => setShowRankGuide(true)} onMouseLeave={() => setShowRankGuide(false)} style={{ cursor: 'pointer' }}>
         <div className="flex ax-w-fit px-2 opacity-50">
-          <p className="text-black text-sm">{animals[userProfile?.rank]} 마스터ⓘ</p>
+          <p className="text-black text-sm">{animals[userProfile?.rank ?? 0 >= 10 ? 3 : userProfile?.rank ?? 0 >= 5 ? 2 : userProfile?.rank ?? 0 >= 1 ? 1 : 0]} 마스터ⓘ</p>
         </div>
       </div>
       <div className="fixed z-100">

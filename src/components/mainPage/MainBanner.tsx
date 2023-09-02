@@ -3,7 +3,7 @@ import React, { Fragment } from 'react';
 import Link from 'next/link';
 import { AiOutlineArrowRight } from 'react-icons/ai';
 
-import { mainChallengeCheck } from '@/app/api/challenge-post';
+import { mainChallengeCheck } from '@/app/api/main-challenge';
 
 import { Button, Layout } from '../common';
 
@@ -12,7 +12,7 @@ const mainAnimal = '북극곰';
 export default async function MainBanner() {
   const data = await mainChallengeCheck();
 
-  const content = data?.content.split('\n').map((text: string, index: number) => (
+  const content = data?.content?.split('\n').map((text: string, index: number) => (
     <Fragment key={index}>
       <h5 className="text-sub6 font-semibold mt-4">{text}</h5>
     </Fragment>

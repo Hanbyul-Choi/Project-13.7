@@ -12,7 +12,7 @@ import useIdeaPost from './useIdeaPostUpdate.hook';
 function IdeaContentsPost() {
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
-  const [product, setProduct] = useState<string | null>('');
+  const [product, setProduct] = useState<string>('');
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [imgFile, setImgFile] = useState<File | undefined>(undefined);
   const [previewImg, setPreviewImg] = useState<string | ArrayBuffer | undefined>(undefined);
@@ -22,10 +22,10 @@ function IdeaContentsPost() {
 
   const getParamTitle = searchParams.get('title');
   const getParamContent = searchParams.get('content');
-  const getParamProduct = searchParams.get('product');
-  const getParamImgUrl = searchParams.get('img_url');
+  const getParamProduct = searchParams.get('product') ?? '';
+  const getParamImgUrl = searchParams.get('img_url') ?? '';
   const getParamIsEdit = searchParams.get('is_edit');
-  const getParamPostId = searchParams.get('post_id');
+  const getParamPostId = searchParams.get('post_id') ?? '';
 
   const { isLoading, isError, handleGetImg } = useIdeaPost(imgFile, getParamImgUrl, previewImg, title, content, product, isEdit, setIsEdit, getParamPostId);
 

@@ -1,9 +1,5 @@
 import React from 'react';
 
-import { useRouter } from 'next/navigation';
-
-import { Button } from '../common';
-
 type SingleLayoutProps = {
   title: string;
   animal?: string;
@@ -12,7 +8,6 @@ type SingleLayoutProps = {
 };
 
 const SingleLayout: React.FC<SingleLayoutProps> = ({ title, children, animal, size }) => {
-  const router = useRouter();
   const sizeControl = size ? 'py-[50px]' : 'h-[calc(100vh-96px)] items-center';
 
   return (
@@ -23,9 +18,6 @@ const SingleLayout: React.FC<SingleLayoutProps> = ({ title, children, animal, si
         <hr className="w-full mt-6 mb-10 border border-blue" />
         {children}
       </div>
-      <Button onClick={() => router.back()} btnType="borderBlack" rounded={true} size="large" buttonStyle="w-[fit-content] m-auto mt-10">
-        목록보기
-      </Button>
     </div>
   );
 };

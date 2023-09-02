@@ -1,9 +1,6 @@
-import { supabase } from "../../../supabase/supabaseConfig";
+import { supabase } from '../../../supabase/supabaseConfig';
 
-import type { NatureStory } from "@/types/db.type";
-
-
-export const getNatureStory = async (): Promise<NatureStory[]> => {
+export const getNatureStory = async () => {
   const { data, error } = await supabase.from('natureStory').select(`*`);
   if (error) {
     throw error;

@@ -17,7 +17,7 @@ export default function IdeaSlideCard({ data }: Props) {
   return (
     <div className="flex flex-col gap-3 hover:drop-shadow-lg">
       <Link href={`/idea/${data.post_id}`}>
-        <img src={data.img_url} alt="ideaCardImg" className="h-[339px] w-[422px] font-normal object-cover" />
+        <img src={data.img_url!} alt="ideaCardImg" className="h-[339px] w-[422px] font-normal object-cover" />
 
         <div className="flex text-black opacity-50 text-sm">
           <p>{data.users?.nickname}</p>

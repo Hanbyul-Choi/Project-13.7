@@ -17,8 +17,8 @@ export default function PointTree() {
   };
 
   // useQuery를 사용하여 사용자 프로필 가져오기
-  const { data: userProfile } = useQuery(['userProfile', session?.user.id], async () => {
-    const response = await supabase.from('users').select('*').eq('user_id', session?.user.id);
+  const { data: userProfile } = useQuery(['userProfile', session?.user_id], async () => {
+    const response = await supabase.from('users').select('*').eq('user_id', session?.user_id);
     return response.data?.[0];
   });
 

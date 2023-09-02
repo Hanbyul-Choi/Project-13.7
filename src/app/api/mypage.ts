@@ -27,7 +27,7 @@ export const getImgUrl = async (imgName: string) => {
 };
 
 // export const updateImgUrlData = async () => {
-//   const { error } = await supabase.from('users').update('profile_img').eq('uer_id', session?.user.id);
+//   const { error } = await supabase.from('users').update('profile_img').eq('uer_id', session?.user_id);
 //   if (error) {
 //     throw error;
 //   }

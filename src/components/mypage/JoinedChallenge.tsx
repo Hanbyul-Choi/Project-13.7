@@ -24,17 +24,15 @@ export default function JoinedChallenge() {
     setIsMyChallengeOpen(true);
   };
 
-  const { data: userChallenges } = useQuery(['userChallenges', session?.user.id], async () => {
-    const { data: challenges } = await supabase.from('joinChallenge').select(`*, mainChallenge (*)`).eq('user_id', session?.user.id);
+  const { data: userChallenges } = useQuery(['userChallenges', session?.user_id], async () => {
+    const { data: challenges } = await supabase.from('joinChallenge').select(`*, mainChallenge (*)`).eq('user_id', session?.user_id);
     return challenges;
   });
 
-  const { data: userReviews } = useQuery(['userReviews', session?.user.id], async () => {
-    const { data: reviews } = await supabase.from('reviews').select(`*, mainChallenge (title)`).eq('user_id', session?.user.id);
+  const { data: userReviews } = useQuery(['userReviews', session?.user_id], async () => {
+    const { data: reviews } = await supabase.from('reviews').select(`*, mainChallenge (title)`).eq('user_id', session?.user_id);
     return reviews;
   });
-
-  console.log('인증 게시글 조회:', userReviews);
 
   const goToReviews = () => {
     router.push('/challenge/certify');
@@ -61,13 +59,13 @@ export default function JoinedChallenge() {
             {userChallenges?.length || 0 > 0 ? (
               <>
                 {userChallenges?.map(item => (
-                  <ul key={item.id} className="flex flex-row justify-between items-center text-lg rounded-lg bg-sub1 px-8 py-4 mb-4">
+                  <ul key={item.join_id} className="flex flex-row justify-between items-center text-lg rounded-lg bg-sub1 px-8 py-4 mb-4">
                     <li className="text-lg overflow-hidden overflow-ellipsis whitespace-nowrap max-w-[200px]">{item.mainChallenge?.title}</li>
                     <li className="text-base opacity-50">
-                      {item.mainChallenge.startDate} - {item.mainChallenge.endDate}
+                      {item.mainChallenge?.startDate} - {item.mainChallenge?.endDate}
                     </li>
                     {/* <div className=" w-20 py-1 text-center bg-lightgreen text-green rounded">{item.mainChallenge.isCompleted ? `완료` : `진행중`}</div> */}
-                    <div className={`w-20 py-1 text-center rounded ${item.mainChallenge.isCompleted ? 'bg-lightblue text-blue' : 'bg-lightgreen text-green'}`}>{item.mainChallenge.isCompleted ? '완료' : '진행중'}</div>
+                    <div className={`w-20 py-1 text-center rounded ${item.mainChallenge?.isCompleted ? 'bg-lightblue text-blue' : 'bg-lightgreen text-green'}`}>{item.mainChallenge?.isCompleted ? '완료' : '진행중'}</div>
                   </ul>
                 ))}
               </>
@@ -91,7 +89,7 @@ export default function JoinedChallenge() {
             {userReviews?.length || 0 > 0 ? (
               <>
                 {userReviews?.map(item => (
-                  <ul key={item.id} className="flex flex-row justify-between items-center text-lg rounded-lg bg-sub1 px-6 py-3 mb-3">
+                  <ul key={item.post_id} className="flex flex-row justify-between items-center text-lg rounded-lg bg-sub1 px-6 py-3 mb-3">
                     {/* <li className="text-lg">{item.mainChallenge?.title}</li> */}
                     <li className="text-base opacity-50">{item.created_at ? item.created_at.slice(0, 10) : ''}</li>
                     <li className="text-base opacity-50">{item.insta_url ? item.insta_url.slice(28, 39) : ''}</li>

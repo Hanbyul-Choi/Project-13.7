@@ -1,11 +1,10 @@
-// 상태 관리
 import { create } from 'zustand';
 
-import type { Session } from '@supabase/supabase-js';
+import type { User } from '@/types/db.type';
 
 interface SessionStore {
-  session: Session | null;
-  setSession: (newSession: Session | null) => void;
+  session: User | null;
+  setSession: (newSession: User | null) => void;
   signOut: () => void;
 }
 
