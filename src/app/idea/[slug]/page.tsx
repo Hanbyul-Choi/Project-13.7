@@ -1,7 +1,31 @@
+'use client';
 import React from 'react';
 
-import type { Props } from '@/types/PropsType';
+import { useQuery } from '@tanstack/react-query';
 
-export default function page({ params: { slug } }: Props) {
-  return <div>{slug} Idea Detail Page</div>;
+import { getSuggestions } from '@/app/api/challenge-idea';
+import IdeaDetail from '@/components/idea-detail-page/detail/IdeaDetail';
+import Review from '@/components/idea-detail-page/review/Review';
+import SingleLayout from '@/components/layout/SingleLayout';
+
+import type { Props } from '@/types/props.type';
+export interface DetailProps {
+  slug: string;
+}
+
+export default function Page({ params: { slug } }: Props) {
+  const { data } = useQuery(['challengeSuggestion'], getSuggestions);
+
+  if (!data) {
+    return <div>로딩중...</div>;
+  }
+
+  const filteredData = data.find(idea => idea.post_id === slug);
+
+  return (
+    <SingleLayout title="챌린지 응원하기🙌" size={true}>
+      {filteredData ? <IdeaDetail item={filteredData} /> : null}
+      <Review slug={slug} />
+    </SingleLayout>
+  );
 }
