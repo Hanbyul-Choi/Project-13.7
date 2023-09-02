@@ -19,7 +19,7 @@ export default async function MainBanner() {
   ));
 
   return (
-    <div className="w-full h-[670px] bg-navy">
+    <div className={`w-full h-[636px] bg-[#B5E3F9] bg-[url('/main-banner.png')] bg-no-repeat bg-center`}>
       <Layout>
         <div className="mt-[10%]">
           <p className="max-w-fit px-6 py-1 border-[1px] border-white text-lg text-white">이달의 챌린지</p>

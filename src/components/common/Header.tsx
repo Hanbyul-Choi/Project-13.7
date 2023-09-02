@@ -1,12 +1,15 @@
 'use client';
 import React, { useEffect } from 'react';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { getUser } from '@/app/api/users';
 import useSessionStore from '@/store/sesson.store';
 
+import logoTitle from '../../../public/logo/logo-title.svg';
+import logo from '../../../public/logo/logo.svg';
 import { supabase } from '../../../supabase/supabaseConfig';
 import { Auth, SignOut } from '../auth';
 
@@ -57,8 +60,9 @@ export function Header() {
       <Layout>
         <div className=" flex items-center justify-between">
           <div className="flex gap-8">
-            <Link href="/" className="font-semibold text-2xl">
-              LOGO
+            <Link href="/" className="flex font-semibold gap-2">
+              <Image src={logo} alt="logo" />
+              <Image src={logoTitle} alt="logo title" />
             </Link>
           </div>
           <nav className="flex gap-8">
