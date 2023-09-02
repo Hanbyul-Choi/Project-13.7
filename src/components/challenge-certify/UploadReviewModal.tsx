@@ -1,13 +1,13 @@
-'use client'
+'use client';
 import React, { useState } from 'react';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
-import { loadMainChallenge, postCertify } from '@/app/api/challenge-certify';
+import { postCertify } from '@/app/api/challenge-certify';
+import { mainChallengeCheck } from '@/app/api/main-challenge';
 import { useModalStore } from '@/store/modal.store';
 import useSessionStore from '@/store/sesson.store';
-
 
 import { supabase } from '../../../supabase/supabaseConfig';
 import { Button, Input, useDialog } from '../common';
@@ -15,56 +15,50 @@ import Modal from '../common/Modal';
 
 import type { CertifyPostType } from '@/types/db.type';
 
-
-interface UploadReviewProps {
-  modalType: string;
-}
-
-const UploadReviewModal: React.FC<UploadReviewProps> = () => {
+const UploadReviewModal = () => {
   const session = useSessionStore((state: { session: any }) => state.session);
   const { Alert } = useDialog();
   const [instaUrl, setInstaUrl] = useState('');
-  const [errorMsg, setErrorMsg] = useState('')
+  const [errorMsg, setErrorMsg] = useState('');
   const { isOpenMainModal, mainCloseModal } = useModalStore();
 
-  const { data: mainChallenge } = useQuery(['mainChallenge'], loadMainChallenge);
-  const queryClient = useQueryClient()
+  const { data: mainChallenge } = useQuery(['mainChallenge'], mainChallengeCheck);
+  const queryClient = useQueryClient();
   const certifyPostMutation = useMutation(postCertify, {
     onSuccess: () => {
       queryClient.invalidateQueries(['reviews']);
     },
   });
 
-
   const isValidateUrl = async (url: string) => {
     if (!url.includes('https://www.instagram.com/p/')) {
-      setErrorMsg("유효한 URL을 입력해주세요")
-      return false
+      setErrorMsg('유효한 URL을 입력해주세요');
+      return false;
     }
-    const { imageUrl, hashtags } = (await axios.get(`http://localhost:3000/api/crawler?url=${instaUrl}`)).data.res
-    if (!hashtags.includes("#챌린지")) {
-      setErrorMsg("필수 해시태그를 포함해주세요")
-      return false
+    const { imageUrl, hashtags } = (await axios.get(`http://localhost:3000/api/crawler?url=${instaUrl}`)).data.res;
+    if (!hashtags.includes('#챌린지')) {
+      setErrorMsg('필수 해시태그를 포함해주세요');
+      return false;
     }
-    return { imageUrl, hashtags }
-  }
+    return { imageUrl, hashtags };
+  };
 
   const onClickSaveReview = async () => {
     try {
-      let res = await isValidateUrl(instaUrl)
+      let res = await isValidateUrl(instaUrl);
       if (!res) {
-        return false
+        return false;
       }
-
+      if (!mainChallenge) return;
       const certifyPost: CertifyPostType = {
-        user_id: session?.user.id as string,
+        user_id: session?.user_id as string,
         insta_url: instaUrl,
-        challenge_id: mainChallenge?.challenge_id,
+        challenge_id: mainChallenge?.challenge_Id,
         img_url: res.imageUrl,
-        tags: res.hashtags
-      }
-      // reviews table 추가  
-      certifyPostMutation.mutate(certifyPost)
+        tags: res.hashtags,
+      };
+      // reviews table 추가
+      certifyPostMutation.mutate(certifyPost);
 
       // user point 업데이트
       const { data: existingUserPoint, error: existingUserPointError } = await supabase.from('users').select('point').eq('user_id', session?.user.id).single();
@@ -90,7 +84,7 @@ const UploadReviewModal: React.FC<UploadReviewProps> = () => {
         .from('joinChallenge')
         .select('reviews')
         .match({
-          user_id: session?.user.id,
+          user_id: session?.user_id,
           challenge_id: mainChallenge.challenge_Id,
         })
         .single();
@@ -103,7 +97,7 @@ const UploadReviewModal: React.FC<UploadReviewProps> = () => {
         const updatedReviews = currentReviews + 1;
 
         const { data: updateData, error: updateError } = await supabase.from('joinChallenge').update({ reviews: updatedReviews }).match({
-          user_id: session?.user.id,
+          user_id: session?.user_id,
           challenge_id: mainChallenge.challenge_Id,
         });
 
@@ -115,11 +109,6 @@ const UploadReviewModal: React.FC<UploadReviewProps> = () => {
       }
       setInstaUrl('');
       mainCloseModal();
-
-
-
-
-
 
       if (existingData?.reviews === 9) {
         try {
@@ -138,9 +127,9 @@ const UploadReviewModal: React.FC<UploadReviewProps> = () => {
   // reviews 갯수에 따른 성공여부(completedMission) 업데이트
   const updateChallengeStatus = async () => {
     let { data: updatedChallenge } = await supabase.from('joinChallenge').update({ completedMission: true }).eq('user_id', session?.user.id).gte('reviews', 10).select(`*, mainChallenge(*)`);
-
-    Alert('챌린지 10회 성공! 마이페이지에서 뱃지를 확인하세요.');
-    console.log('Updated Challenge Status:', updatedChallenge);
+    if (updatedChallenge) {
+      Alert('챌린지 10회 성공! 마이페이지에서 뱃지를 확인하세요.');
+    }
   };
 
   return (
@@ -158,7 +147,7 @@ const UploadReviewModal: React.FC<UploadReviewProps> = () => {
                 setInstaUrl(e.target.value);
               }}
             />
-            <p className='text-red-800'>{errorMsg}</p>
+            <p className="text-red-800">{errorMsg}</p>
             <div className="flex justify-center">
               <Button onClick={onClickSaveReview} btnType={'primary'} size={'small'}>
                 인증하기

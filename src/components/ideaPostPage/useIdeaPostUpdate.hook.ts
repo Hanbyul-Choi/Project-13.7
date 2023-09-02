@@ -15,14 +15,14 @@ import type { IdeaPost } from '@/types/db.type';
 
 export default function useIdeaPost(
   imgFile: File | undefined,
-  getParamImgUrl: string | null,
+  getParamImgUrl: string,
   previewImg: string | ArrayBuffer | undefined,
   title: string,
   content: string,
-  product: string | null,
+  product: string,
   isEdit: boolean,
   setIsEdit: React.Dispatch<React.SetStateAction<boolean>>,
-  getParamPostId: string | null,
+  getParamPostId: string,
 ) {
   const [userId, setUserId] = useState<string>('');
   const { Alert } = useDialog();
@@ -58,7 +58,7 @@ export default function useIdeaPost(
     // storage에서 이미지 주소 가져오기. 이미지 URL이 설정된 후에 데이터베이스에 전송
     const { data } = await supabase.storage.from('project').getPublicUrl(`challengeSuggestion/${imgName}`);
 
-    let checkImg = null;
+    let checkImg = '';
     if (getParamImgUrl) {
       if (previewImg) {
         checkImg = imgFile ? data.publicUrl : getParamImgUrl;

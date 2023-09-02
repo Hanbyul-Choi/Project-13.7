@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
-import { loadMainChallenge } from '@/app/api/challenge-certify';
+import { useQuery } from '@tanstack/react-query';
+
+import { mainChallengeCheck } from '@/app/api/main-challenge';
 import { useModalStore } from '@/store/modal.store';
 import useSessionStore from '@/store/sesson.store';
 
@@ -9,9 +11,10 @@ import { Button, Input, Label, useDialog } from '../common';
 import Modal from '../common/Modal';
 
 export default function JoinChallengeModal() {
-  const session = useSessionStore((state: { session: any }) => state.session);
-  const [mainChallenge, setMainChallenge] = useState('');
-  const [currentPoint, setCurrentPoint] = useState(null);
+  const { session } = useSessionStore();
+
+  const { Alert } = useDialog();
+  const { mainCloseModal } = useModalStore(state => state);
   const [userData, setUserData] = useState<UpdateUserData>({
     address: '',
     email: '',
@@ -21,77 +24,37 @@ export default function JoinChallengeModal() {
     phone: '',
   });
 
-  const { Alert } = useDialog();
-  const { mainCloseModal } = useModalStore(state => state);
-
-  // 기존 포인트 정보 가져오기
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { data: previousData, error } = await supabase.from('users').select('*').eq('user_id', session?.user.id).single();
-        if (error) {
-          console.error('Error fetching previous data', error);
-        } else if (previousData) {
-          const fetchedPoint = previousData.point;
-          const fetchedUserData = previousData;
-          setCurrentPoint(fetchedPoint);
-          setUserData(fetchedUserData);
-
-          console.log('user data', fetchedUserData);
-        }
-      } catch (error) {
-        console.error('Data Fetching Error', error);
-      }
-    };
-
-    fetchData();
-  }, [session]);
+  const { data: mainChallenge } = useQuery({ queryKey: ['mainChallenge'], queryFn: mainChallengeCheck });
 
   const onClickJoinChallenge = async () => {
-    if (!session?.user) {
+    if (!session) {
       Alert('챌린지에 참여하려면 로그인이 필요합니다.');
       mainCloseModal();
       return;
     }
 
     try {
-      const updatedPoint = currentPoint - 10;
-
-      console.log('사용자 포인트 업데이트 중...');
-      const { data: updateData, error: updateError } = await supabase.from('users').update({ point: updatedPoint }).eq('user_id', session?.user.id);
+      const updatedPoint = session.point ?? 0 - 10;
+      const { error: updateError } = await supabase.from('users').update({ point: updatedPoint }).eq('user_id', session.user_id);
       if (updateError) {
         console.error('데이터 업데이트 오류:', updateError);
         return;
       }
 
-      console.log('joinChallenge 항목 생성 중...');
-      await supabase.from('joinChallenge').insert({ user_id: session?.user.id, challenge_id: mainChallenge.challenge_Id });
+      if (!mainChallenge) return;
+      await supabase.from('joinChallenge').insert({ user_id: session.user_id, challenge_id: mainChallenge.challenge_Id });
 
-      console.log('사용자 데이터 업데이트 중...');
-      const { data: userDataUpdateData, error: userDataUpdateError } = await supabase.from('users').update(userData).eq('user_id', session?.user.id);
+      const { error: userDataUpdateError } = await supabase.from('users').update(userData).eq('user_id', session.user_id);
       if (userDataUpdateError) {
         console.error('사용자 데이터 업데이트 오류:', userDataUpdateError);
         return;
       }
-
-      console.log('데이터가 성공적으로 업데이트되었습니다:', updateData);
-      console.log('사용자 데이터가 성공적으로 업데이트되었습니다:', userDataUpdateData);
-
       Alert('챌린지 참여신청이 완료되었습니다! 참여 인증페이지에서 활동을 인증하고 지구 온도를 지켜주세요!');
       mainCloseModal();
     } catch (error) {
       console.error('데이터 전송 오류', error);
     }
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const challengeData = await loadMainChallenge();
-      setMainChallenge(challengeData);
-    };
-
-    fetchData();
-  }, []);
 
   const handleCancelClick = () => {
     mainCloseModal();
@@ -120,7 +83,7 @@ export default function JoinChallengeModal() {
         <Label name={'결제 방식'} size={'base'}>
           결제 방식 : 포인트 결제
         </Label>
-        <p>보유중인 나무: {currentPoint}</p>
+        <p>보유중인 나무: {session?.point}</p>
         <div className="flex gap-2 justify-center mt-4">
           <Button type="submit" onClick={onClickJoinChallenge} btnType={'primary'}>
             참여 신청하기

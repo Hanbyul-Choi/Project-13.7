@@ -13,7 +13,7 @@ export default function useLike(item: Suggestion, type: 'list' | 'detail') {
   const { Alert } = useDialog();
   const { session } = useSessionStore();
   const { sortWay } = useSortWayStore();
-  const curUserId = session?.user.id;
+  const curUserId = session?.user_id;
   let timerId: any = null;
 
   const checkLiked = () => {
@@ -39,14 +39,12 @@ export default function useLike(item: Suggestion, type: 'list' | 'detail') {
         if (type === 'detail') {
           await queryClient.cancelQueries({ queryKey: ['challengeSuggestion'] });
           prevIdea = await queryClient.getQueryData(['challengeSuggestion']);
-          console.log('prevIdea', prevIdea);
           const updatedIdea = prevIdea?.map((idea: Suggestion) => {
             if (post_id === idea.post_id) {
               return { ...idea, liked_users: newLikedUsers, liked_count: newLikedUsers.length };
             }
             return idea;
           });
-          console.log('updatedIdea', updatedIdea);
           queryClient.setQueryData(['challengeSuggestion'], updatedIdea);
         } else if (type === 'list') {
           await queryClient.cancelQueries({ queryKey: ['challengeSuggestion', sortWay] });

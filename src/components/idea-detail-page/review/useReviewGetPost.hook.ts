@@ -3,7 +3,7 @@ import { useInView } from 'react-intersection-observer';
 
 import { getIdeaCommentInfinite, postChallengeIdeaComment } from '@/app/api/idea-comments';
 
-export default function useReview(slug: string, userId: string, comment: string, setComment: React.Dispatch<React.SetStateAction<string>>) {
+export default function useReview(slug: string, userId: string | undefined, comment: string, setComment: React.Dispatch<React.SetStateAction<string>>) {
   // 해당 포스트 댓글 데이터 get
   const {
     data: commentsData,
@@ -44,6 +44,7 @@ export default function useReview(slug: string, userId: string, comment: string,
     comment,
   };
   const handlePostComment = () => {
+    if (!userId) return;
     postMutation.mutate(commentData);
     setComment('');
   };

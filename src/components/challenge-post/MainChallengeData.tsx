@@ -1,22 +1,11 @@
-import React, { useEffect, useState } from 'react';
-
-import { loadMainChallenge } from '@/app/api/challenge-certify';
+import { mainChallengeCheck } from '@/app/api/main-challenge';
 
 import JoinChallenge from './JoinChallenge';
 import SingleLayout from '../layout/SingleLayout';
 
-export default function MainChallengeData() {
-  const [mainChallenge, setMainChallenge] = useState('');
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const challengeData = await loadMainChallenge();
-      setMainChallenge(challengeData);
-    };
-
-    fetchData();
-  }, []);
-
+export default async function MainChallengeData() {
+  const mainChallenge = await mainChallengeCheck();
+  if (!mainChallenge) return;
   return (
     <>
       <SingleLayout title={mainChallenge.title} animal="북극곰을">

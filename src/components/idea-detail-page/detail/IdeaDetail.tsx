@@ -20,7 +20,7 @@ function IdeaDetail({ item }: { item: Suggestion }) {
 
   // 로그인한 user 데이터 get
   const { session } = useSessionStore();
-  const curUser = session?.user;
+  const curUser = session;
   const { onClickLike } = useLike(item, 'detail');
 
   // 챌린지 아이디어 delete, 수정페이지 넘어갈때 param으로 데이터 보내기
@@ -30,22 +30,22 @@ function IdeaDetail({ item }: { item: Suggestion }) {
     <>
       {/* 챌린지 아이디어 타이틀 */}
       <h4>{title}</h4>
-      {curUser?.id === user_id ? <DropDownBtn editClickHandler={() => handleAppendParamMovePage(item, title, content, product, img_url)} deleteClickHandler={handleDeleteChallengeIdeaData} position={'top-[175px] right-20'} /> : <></>}
+      {curUser?.user_id === user_id ? <DropDownBtn editClickHandler={() => handleAppendParamMovePage(item, title, content, product, img_url)} deleteClickHandler={handleDeleteChallengeIdeaData} position={'top-[175px] right-20'} /> : <></>}
       <div className="mt-6 flex items-center justify-between">
         <div className="flex items-center">
           <div className="w-[55px] h-[55px] overflow-hidden rounded-lg mr-[16px] shadow-[0_1px_5px_0_rgba(53,60,73,0.08)]">
-            <img src={users.profile_img || defaultProfileImg} width={70} height={70} alt="Profile Image" />
+            <img src={users?.profile_img || defaultProfileImg} width={70} height={70} alt="Profile Image" />
           </div>
           <div>
             {/* <p className="leading-[150%] text-[#888889] mb-[4px]">{users.rank}</p> */}
-            <p className="leading-[150%] text-[#888889] mb-[4px] ">{users.point}</p>
-            <p className="text-lg font-bold leading-[140%]">{users.nickname}</p>
+            <p className="leading-[150%] text-[#888889] mb-[4px] ">{users?.point}</p>
+            <p className="text-lg font-bold leading-[140%]">{users?.nickname}</p>
           </div>
         </div>
         <div className="flex justify-center flex-col items-center">
           <p className="text-green leading-[150%] text-sm">추천수 {liked_count}</p>
           <button onClick={() => onClickLike(200)} className="py-1 px-3 flex flex-row justify-center items-center bg-[#e1f6ed] text-green rounded text-xs leading-[150%]">
-            <Image src={liked_users.includes(curUser?.id!) ? like : unLike} width={16} height={16} alt="Like this idea" />
+            <Image src={liked_users.includes(curUser?.user_id!) ? like : unLike} width={16} height={16} alt="Like this idea" />
             &nbsp; 추천하기
           </button>
         </div>
