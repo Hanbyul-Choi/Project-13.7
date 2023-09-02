@@ -8,7 +8,7 @@ import IdeaDetail from '@/components/idea-detail-page/detail/IdeaDetail';
 import Review from '@/components/idea-detail-page/review/Review';
 import SingleLayout from '@/components/layout/SingleLayout';
 
-import type { Props } from '@/types/props.type';
+import type { Props } from '@/types/page-props.type';
 export interface DetailProps {
   slug: string;
 }
