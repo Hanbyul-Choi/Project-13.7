@@ -20,9 +20,9 @@ export default function NaverSignIn() {
 
     naverLogin.getLoginStatus(async function (status: any) {
       if (status) {
-        const userid = naverLogin.user.getEmail();
-        const username = naverLogin.user.getName();
-        console.log(userid, username);
+        // const userid = naverLogin.user.getEmail();
+        // const username = naverLogin.user.getName();
+        // console.log(userid, username);
       }
     });
   };

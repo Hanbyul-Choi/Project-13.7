@@ -17,7 +17,7 @@ export default function IdeaSlideCard({ data }: Props) {
   return (
     <div className="flex flex-col gap-3 hover:drop-shadow-lg">
       <Link href={`/idea/${data.post_id}`}>
-        <img src={data.img_url} style={{ objectFit: 'cover' }} alt="ideaCardImg" className="h-[339px] w-full font-normal" />
+        <img src={data.img_url!} alt="ideaCardImg" className="h-[339px] w-[422px] font-normal object-cover" />
 
         <div className="flex text-black opacity-50 text-sm">
           <p>{data.users?.nickname}</p>
@@ -32,7 +32,7 @@ export default function IdeaSlideCard({ data }: Props) {
         </div>
         <div className="flex items-center">
           <Image src={fullHeart} alt="heart" />
-          <h3 className="text-sm text-green">추천수 {data.likes?.users.length}</h3>
+          <h3 className="text-sm text-green">추천수 {data.liked_count}</h3>
         </div>
         <div />
       </Link>

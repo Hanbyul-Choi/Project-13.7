@@ -22,7 +22,9 @@ export default function ContentSlide() {
     };
     fetchData();
   }, []);
+
   const [selectedItem, setSelectedItem] = useState<NatureStory>(contentData[0]);
+
   const onClickItem = (id: string) => {
     if (!contentData) return;
     const pickData = contentData.filter(data => data.post_id === id);

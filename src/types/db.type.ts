@@ -4,27 +4,13 @@ export interface Suggestion {
   title: string;
   content: string;
   product: string;
-  user_id: string;
-  selected: boolean;
+  user_id: string | null;
+  selected: boolean | null;
   liked_count: number;
   liked_users: string[];
   img_url: string;
-  users: User;
+  users: User | null;
 }
-export interface User {
-  user_id: string;
-  created_at: string;
-  point: number;
-  address: string;
-  profile_img: string;
-  nickname: string;
-  email: string;
-}
-
-export interface AnimalMap {
-  [key: string]: string;
-}
-
 export interface NatureStory {
   post_id: string;
   content: string;
@@ -35,6 +21,20 @@ export interface NatureStory {
   video_url: string;
   tag: string;
 }
+export interface User {
+  user_id: string;
+  created_at: string;
+  point: number;
+  address: string | null;
+  profile_img: string | null;
+  nickname: string | null;
+  email: string;
+  rank: number;
+}
+
+export interface AnimalMap {
+  [key: string]: string;
+}
 
 export interface IdeaComments {
   id: string;
@@ -42,16 +42,16 @@ export interface IdeaComments {
   post_id?: string;
   comment: string;
   user_id: string;
-  users: User;
+  users: User | null;
 }
 
 export interface IdeaPost {
   title: string;
   content: string;
-  product: string | null;
+  product: string;
   user_id: string;
   selected: boolean;
-  img_url: string | null;
+  img_url: string;
 }
 export interface IdeaQueryType {
   pageParams: [];
@@ -64,26 +64,22 @@ interface PageType {
   page: number;
 }
 
-
-
-
-
 export interface CertifyType {
-  post_id: number,
-  created_at: string,
-  challenge_id: string,
-  insta_url: string,
-  user_id: string,
-  img_url: string,
-  tags: string,
-  mainChallenge: {title: string}
+  post_id: number;
+  created_at: string;
+  challenge_id: string | null;
+  insta_url: string | null;
+  user_id: string | null;
+  img_url: string | null;
+  tags: string | null;
+  mainChallenge: { title: string };
   users: User;
 }
 
 export interface CertifyPostType {
-  insta_url: string,
-  user_id: string,
-  img_url: string,
-  tags: string,
-  challenge_id: string,
+  insta_url: string;
+  user_id: string;
+  img_url: string;
+  tags: string;
+  challenge_id: string;
 }

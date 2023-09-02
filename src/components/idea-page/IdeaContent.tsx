@@ -26,15 +26,15 @@ export function IdeaContent({ item }: Props) {
   const { onClickLike } = useLike(item, 'list');
 
   return (
-    <div className="flex flex-col w-72">
+    <Link href={`/idea/${post_id}`} className="flex flex-col w-72">
       <div className="bg-sub2 rounded-t-lg text-center relative h-[250px] overflow-hidden">
-        <img src={img_url} alt="인증예시 사진" style={{ objectFit: 'cover', width: '288px', height: '250px' }} />
+        <img src={img_url!} alt="인증예시 사진" style={{ objectFit: 'cover', width: '288px', height: '250px' }} />
         <button onClick={() => onClickLike(200)} className="absolute text-green bottom-4 right-4 flex flex-col items-center rounded-lg bg-white px-3 py-2 hover: scale-110">
-          <Image src={liked_users?.includes(session?.user.id!) ? liked : disLiked} alt="Like this idea" />
+          <Image src={liked_users?.includes(session?.user_id!) ? liked : disLiked} alt="Like this idea" />
           <p className="text-sm">{liked_count}</p>
         </button>
       </div>
-      <Link href={`/idea/${post_id}`} className="flex flex-col px-3 py-6 rounded-b-lg shadow-lg ">
+      <div className="flex flex-col px-3 py-6 rounded-b-lg shadow-lg ">
         <p className="text-sm opacity-50 ">
           {users?.nickname} | {new Date(created_at).toLocaleDateString()}
         </p>
@@ -43,7 +43,7 @@ export function IdeaContent({ item }: Props) {
         <div className="max-w-fit px-4 py-1 rounded bg-lightblue mt-4">
           <p className="text-blue text-sm ">{animals.animal}을 위한 챌린지</p>
         </div>
-      </Link>
-    </div>
+      </div>
+    </Link>
   );
 }

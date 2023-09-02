@@ -6,7 +6,7 @@ import { useModalStore } from '@/store/modal.store';
 import NaverSignIn from './social-sign-in/NaverSignIn';
 import SocialSignIn from './social-sign-in/SocialSignIn';
 import { supabase } from '../../../supabase/supabaseConfig';
-import { Button, Input, Label } from '../common';
+import { Button, Input, Label, useDialog } from '../common';
 import Modal from '../common/Modal';
 
 type SignUpModalProps = {
@@ -15,7 +15,7 @@ type SignUpModalProps = {
 };
 
 const AuthModal: React.FC<SignUpModalProps> = ({ switchHandler, modalType }) => {
-  //const { Alert } = useDialog();
+  const { Alert } = useDialog();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
@@ -72,6 +72,7 @@ const AuthModal: React.FC<SignUpModalProps> = ({ switchHandler, modalType }) => 
     let uid = authData.user?.id;
 
     // database
+    if (!uid) return;
     const { error: dbError } = await supabase.from('users').insert({ user_id: uid, email, nickname });
 
     if (authError) {
@@ -79,7 +80,6 @@ const AuthModal: React.FC<SignUpModalProps> = ({ switchHandler, modalType }) => 
       else if (authError?.message === 'user already exist') return Alert('일치하는 회원이 존재합니다.');
     }
     if (dbError) {
-      console.log(dbError);
       return Alert('오류가 발생했습니다.', '잠시후 다시 시도해주세요.');
     }
     closeModal();

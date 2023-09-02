@@ -1,11 +1,7 @@
 import { supabase } from '../../../supabase/supabaseConfig';
 
-interface PostComment {
-  [key: string]: string;
-}
-
 // 댓글 post
-export const postChallengeIdeaComment = async (commentData: PostComment) => {
+export const postChallengeIdeaComment = async (commentData: any) => {
   const response = await supabase.from('ideaComments').insert(commentData);
   console.error(response.error);
   return response.data;

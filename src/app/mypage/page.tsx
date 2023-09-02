@@ -5,7 +5,7 @@ import JoinedChallenge from '@/components/mypage/JoinedChallenge';
 import PointTree from '@/components/mypage/PointTree';
 import UserProfile from '@/components/mypage/UserProfile';
 
-import type { Props } from '@/types/Props.type';
+import type { Props } from '@/types/props.type';
 
 export default function Page({ params: { slug } }: Props) {
   return (

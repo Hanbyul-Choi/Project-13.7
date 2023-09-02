@@ -1,11 +1,15 @@
 'use client';
 import React, { useEffect } from 'react';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
+import { getUser } from '@/app/api/users';
 import useSessionStore from '@/store/sesson.store';
 
+import logoTitle from '../../../public/logo/logo-title.svg';
+import logo from '../../../public/logo/logo.svg';
 import { supabase } from '../../../supabase/supabaseConfig';
 import { Auth, SignOut } from '../auth';
 
@@ -20,8 +24,11 @@ export function Header() {
     const refresh_token = localStorage.getItem('refresh_token');
     if (access_token && refresh_token) {
       const { data } = await supabase.auth.setSession({ access_token, refresh_token });
+      if (!data) return;
       const session = data.session;
-      setSession(session);
+      const user_id = session?.user.id!;
+      const userData = await getUser(user_id);
+      setSession(userData);
     }
   };
   useEffect(() => {
@@ -31,23 +38,20 @@ export function Header() {
   useEffect(() => {
     supabase.auth.getSession().then(async ({ data: { session } }) => {
       if (!session) return;
-      setSession(session);
-
       const access_token = session.access_token;
       const refresh_token = session.refresh_token;
       localStorage.setItem('access_token', access_token);
       localStorage.setItem('refresh_token', refresh_token);
-      const user_id = session?.user.id;
-      await supabase.from('users').select('user_id').eq('user_id', user_id);
 
-      const { email, name: nickname, avatar_url: profile_img } = session?.user.user_metadata;
-      const { error } = await supabase.from('users').insert({ user_id, email, nickname, profile_img });
-      if (error) {
-        console.log('이미 등록된 유저');
+      const user_id = session?.user.id;
+      const userData = await getUser(user_id);
+      if (!userData) {
+        const { email, name: nickname, avatar_url: profile_img } = session?.user.user_metadata;
+        const { data } = await supabase.from('users').insert({ user_id, email, nickname, profile_img });
+        setSession(data);
+      } else {
+        setSession(userData);
       }
-    });
-    supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
     });
   }, [session]);
 
@@ -56,8 +60,9 @@ export function Header() {
       <Layout>
         <div className=" flex items-center justify-between">
           <div className="flex gap-8">
-            <Link href="/" className="font-semibold text-2xl">
-              LOGO
+            <Link href="/" className="flex font-semibold gap-2">
+              <Image src={logo} alt="logo" />
+              <Image src={logoTitle} alt="logo title" />
             </Link>
           </div>
           <nav className="flex gap-8">
@@ -98,8 +103,8 @@ const navCategory = [
     title: '참여 인증',
     pathname: '/challenge/certify',
   },
-  {
-    title: '환경 이야기',
-    pathname: '/naturestory',
-  },
+  // {
+  //   title: '환경 이야기',
+  //   pathname: '/naturestory',
+  // },
 ];

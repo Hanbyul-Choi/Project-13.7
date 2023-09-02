@@ -8,7 +8,7 @@ import { loadChallengeReviews } from '@/app/api/challenge-certify';
 
 import CertifyCard from './CertifyCard';
 
-import './index.css'
+import './index.css';
 
 export function CertifyList() {
   const { isError, data } = useQuery(['reviews'], loadChallengeReviews);
@@ -17,13 +17,13 @@ export function CertifyList() {
   }
   return (
     <>
-      <div className='mt-28'>
+      <div className="mt-28">
         <Masonry
           breakpointCols={{
-            default: 4
+            default: 4,
           }}
-          className="my-masonry-grid "
-          columnClassName="my-masonry-grid_column "
+          className="my-masonry-grid"
+          columnClassName="my-masonry-grid_column"
         >
           {data?.map((post, index) => (
             <CertifyCard key={index} post={post} />

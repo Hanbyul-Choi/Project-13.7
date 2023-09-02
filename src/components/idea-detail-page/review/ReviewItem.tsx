@@ -18,11 +18,11 @@ function ReviewItem({ id, created_at, comment, users, user_id }: IdeaComments) {
   return (
     <div className="flex flex-row justify-start my-3 relative">
       <div className="w-[55px] h-[55px] overflow-hidden mr-[16px] shadow-[0_1px_5px_0_rgba(53,60,73,0.08)] rounded-lg">
-        <img src={users.profile_img ? users.profile_img : defaultProfileImg} width={55} height={55} alt="Profile Image" />
+        <img src={users?.profile_img ? users?.profile_img : defaultProfileImg} width={55} height={55} alt="Profile Image" />
       </div>
       <div>
         <div className="flex flex-row text-sm text-[#838384] leading-[150%] items-center">
-          <p className="after:content-[' '] after:w-[1px] after:bg-[#838384] after:h-[12px] after:inline-block after:m-[8px] flex items-center">{users.nickname}</p>
+          <p className="after:content-[' '] after:w-[1px] after:bg-[#838384] after:h-[12px] after:inline-block after:m-[8px] flex items-center">{users?.nickname}</p>
           <p>{created_at.slice(0, 10).replaceAll('-', '.')}</p>
         </div>
         {editCommentId === id ? (
@@ -46,7 +46,7 @@ function ReviewItem({ id, created_at, comment, users, user_id }: IdeaComments) {
           <p className="leading-[150%] break-words w-[31.25rem]">{comment}</p>
         )}
       </div>
-      {user_id === users.user_id ? <DropDownBtn editClickHandler={() => handleCommentDropDown(id, comment)} deleteClickHandler={() => handleDeleteChallengeIdeaCommentData(id)} position={'top-0 right-[10px]'} /> : <></>}
+      {user_id === users?.user_id ? <DropDownBtn editClickHandler={() => handleCommentDropDown(id, comment)} deleteClickHandler={() => handleDeleteChallengeIdeaCommentData(id)} position={'top-0 right-[10px]'} /> : <></>}
     </div>
   );
 }

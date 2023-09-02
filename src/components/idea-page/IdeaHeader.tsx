@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
-import { loadMainChallenge } from '@/app/api/challenge-certify';
+import { mainChallengeCheck } from '@/app/api/main-challenge';
 import useSessionStore from '@/store/sesson.store';
 import useSortWayStore from '@/store/sortway.store';
 
@@ -17,13 +17,13 @@ export function IdeaHeader() {
   const { sortWay, setLatest, setPopular } = useSortWayStore();
   const route = useRouter();
   const [countDown, setCountDown] = useState<string | null>(null);
-  const { isLoading, data } = useQuery(['mainChallenge'], loadMainChallenge);
+  const { isLoading, data } = useQuery(['mainChallenge'], mainChallengeCheck);
 
   const voteComplateDay = 3;
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCountDown(getRestTime(data.endDate));
+      setCountDown(getRestTime(data?.endDate));
     }, 1000);
     return () => {
       clearInterval(timer);
@@ -65,7 +65,7 @@ export function IdeaHeader() {
         </h5>
       </div>
       <div className="flex">
-        {data ? (
+        {countDown ? (
           <>
             <p className="text-lg font-medium flex">투표마감까지 남은 시간 : &nbsp; </p>
             <h5 className="w-48">{countDown}</h5>
