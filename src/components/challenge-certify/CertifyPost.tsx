@@ -48,7 +48,7 @@ export function CertifyPost() {
     if (mainChallenge) {
       fetchData();
     }
-  }, []);
+  }, [mainChallenge]);
 
   const onClickUploadReview = () => {
     if (session) {

@@ -131,33 +131,39 @@ const UploadReviewModal = () => {
       Alert('챌린지 10회 성공! 마이페이지에서 뱃지를 확인하세요.');
     }
   };
+  const animals = {
+    animal: '북극곰',
+  };
 
   return (
     <Modal>
       {isOpenMainModal && (
-        <>
-          <h3>{mainChallenge?.title}</h3>
+        <div className="flex flex-col justify-center text-center">
+          <div className="max-w-fit px-4 py-1 rounded bg-lightblue m-auto mb-4">
+            <p className="text-blue text-sm ">{animals.animal}을 위한 챌린지</p>
+          </div>
+          <h3 className="mb-8">{mainChallenge?.title}</h3>
           <div className="text-center">
-            <p>주의사항: 타인 도용 및 해당 챌린지와 연관이 없는 인증시 챌린지 이용이 제한될 수 있습니다.</p>
             <Input
               value={instaUrl}
-              _size={''}
+              _size="lg"
               placeholder="인증 게시글 링크 붙여넣기"
               onChange={e => {
                 setInstaUrl(e.target.value);
               }}
             />
+            <p className="text-sm text-nagative leading-[150%] mt-[8px]">주의사항: 타인 도용 및 해당 챌린지와 연관이 없는 인증시 챌린지 이용이 제한될 수 있습니다.</p>
             <p className="text-red-800">{errorMsg}</p>
-            <div className="flex justify-center">
-              <Button onClick={onClickSaveReview} btnType={'primary'} size={'small'}>
-                인증하기
-              </Button>
-              <Button onClick={mainCloseModal} btnType={'borderBlack'} size={'small'}>
+            <div className="flex justify-center mt-12">
+              <Button onClick={mainCloseModal} btnType={'borderBlack'} size={'large'}>
                 취소
+              </Button>
+              <Button onClick={onClickSaveReview} btnType={'primary'} size={'large'} buttonStyle="ml-6">
+                인증하기
               </Button>
             </div>
           </div>
-        </>
+        </div>
       )}
     </Modal>
   );
