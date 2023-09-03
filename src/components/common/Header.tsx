@@ -19,21 +19,23 @@ export function Header() {
   const { session, setSession } = useSessionStore();
   const params = usePathname();
 
-  const refresh = async () => {
-    const access_token = localStorage.getItem('access_token');
-    const refresh_token = localStorage.getItem('refresh_token');
-    if (access_token && refresh_token) {
-      const { data } = await supabase.auth.setSession({ access_token, refresh_token });
-      if (!data) return;
-      const session = data.session;
-      const user_id = session?.user.id!;
-      const userData = await getUser(user_id);
-      setSession(userData);
-    }
-  };
   useEffect(() => {
+    const refresh = async () => {
+      const access_token = localStorage.getItem('access_token');
+      const refresh_token = localStorage.getItem('refresh_token');
+      if (access_token && refresh_token) {
+        const { data } = await supabase.auth.setSession({ access_token, refresh_token });
+        if (!data) return;
+        const session = data.session;
+        const user_id = session?.user.id!;
+        const userData = await getUser(user_id);
+        setSession(userData);
+      }
+    };
     refresh();
   }, []);
+
+  console.log(1);
 
   useEffect(() => {
     supabase.auth.getSession().then(async ({ data: { session } }) => {
@@ -53,7 +55,7 @@ export function Header() {
         setSession(userData);
       }
     });
-  }, [session]);
+  }, []);
 
   return (
     <div className="w-full sticky top-0 bg-white text-black px-10 py-8 text-lg z-10">

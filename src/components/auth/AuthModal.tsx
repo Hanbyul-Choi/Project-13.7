@@ -1,7 +1,9 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 
+import { getUser } from '@/app/api/users';
 import { useModalStore } from '@/store/modal.store';
+import useSessionStore from '@/store/sesson.store';
 
 import NaverSignIn from './social-sign-in/NaverSignIn';
 import SocialSignIn from './social-sign-in/SocialSignIn';
@@ -23,7 +25,7 @@ const AuthModal: React.FC<SignUpModalProps> = ({ switchHandler, modalType }) => 
   const [errMessage, setErrMessage] = useState<string | null>(null);
   const { closeModal, isOpen } = useModalStore(state => state);
   let disabled = true;
-
+  const { setSession } = useSessionStore();
   useEffect(() => {
     setEmail('');
     setPassword('');
@@ -89,10 +91,21 @@ const AuthModal: React.FC<SignUpModalProps> = ({ switchHandler, modalType }) => 
   const signInHandler = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
     if (!email.includes('@')) return setErrMessage('이메일을 확인하세요');
-    const { error } = await supabase.auth.signInWithPassword({
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.signInWithPassword({
       email: email,
       password: password,
     });
+    if (!session) return;
+    const access_token = session.access_token;
+    const refresh_token = session.refresh_token;
+    localStorage.setItem('access_token', access_token);
+    localStorage.setItem('refresh_token', refresh_token);
+
+    const userData = await getUser(session.user.id);
+    setSession(userData);
 
     if (error) return Alert('아이디 또는 비밀번호가 일치하지 않습니다.');
     else Alert('로그인 되었습니다.');
