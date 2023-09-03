@@ -35,8 +35,6 @@ export function Header() {
     refresh();
   }, []);
 
-  console.log(1);
-
   useEffect(() => {
     supabase.auth.getSession().then(async ({ data: { session } }) => {
       if (!session) return;
@@ -66,14 +64,14 @@ export function Header() {
               <Image src={logo} alt="logo" />
               <Image src={logoTitle} alt="logo title" />
             </Link>
+            <nav className="flex gap-8 ml-8">
+              {navCategory.map(item => (
+                <Link href={item.pathname} className="text-sub6" key={item.title}>
+                  <h5 className={`${params === item.pathname ? 'text-black' : ''} font-semibold `}>{item.title}</h5>
+                </Link>
+              ))}
+            </nav>
           </div>
-          <nav className="flex gap-8">
-            {navCategory.map(item => (
-              <Link href={item.pathname} className="text-sub6" key={item.title}>
-                <h5 className={`${params === item.pathname ? 'text-black' : ''} font-semibold `}>{item.title}</h5>
-              </Link>
-            ))}
-          </nav>
           <div className="flex gap-4 text-base">
             {session ? (
               <>
@@ -105,8 +103,8 @@ const navCategory = [
     title: '참여 인증',
     pathname: '/challenge/certify',
   },
-  // {
-  //   title: '환경 이야기',
-  //   pathname: '/naturestory',
-  // },
+  {
+    title: '환경 이야기',
+    pathname: '/naturestory',
+  },
 ];

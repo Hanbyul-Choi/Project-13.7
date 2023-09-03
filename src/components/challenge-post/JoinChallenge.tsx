@@ -53,7 +53,7 @@ export default function JoinChallenge() {
           </>
         ) : (
           <>
-            <div className="text-center flex flex-col">
+            <div className="text-center flex flex-col mt-10">
               <Button onClick={joinChallengeModalHandler} btnType={'primary'}>
                 참여 신청하기
               </Button>

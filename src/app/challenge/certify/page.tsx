@@ -6,9 +6,12 @@ import { useQuery } from '@tanstack/react-query';
 import { mainChallengeCheck } from '@/app/api/main-challenge';
 import { CertifyList, CertifyPost } from '@/components/challenge-certify';
 import { Layout } from '@/components/common';
+import useSessionStore from '@/store/sesson.store';
 
 export default function CertifyPage() {
-  const { isLoading, isError, data } = useQuery(['mainChallenge'], mainChallengeCheck);
+  const { isLoading, isError, data: mainChallenge } = useQuery(['mainChallenge'], mainChallengeCheck);
+  const { session } = useSessionStore();
+
   if (isLoading) {
     return <h1>is Loading...</h1>;
   }
@@ -21,9 +24,9 @@ export default function CertifyPage() {
       <div className="flex justify-between">
         <div className="flex">
           <div className="max-w-fit px-4 py-1 rounded bg-lightblue mt-4 mr-2 text-blue text-sm">북극곰을 위한 챌린지</div>
-          <h3>{data?.title}</h3>
+          <h3>{mainChallenge?.title}</h3>
         </div>
-        <CertifyPost />
+        {mainChallenge && <CertifyPost user_id={session?.user_id} challengeId={mainChallenge.challenge_Id} />}
       </div>
       <CertifyList />
     </Layout>
