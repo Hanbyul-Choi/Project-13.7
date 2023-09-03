@@ -61,7 +61,7 @@ const UploadReviewModal = () => {
       certifyPostMutation.mutate(certifyPost);
 
       // user point 업데이트
-      const { data: existingUserPoint, error: existingUserPointError } = await supabase.from('users').select('point').eq('user_id', session?.user.id).single();
+      const { data: existingUserPoint, error: existingUserPointError } = await supabase.from('users').select('point').eq('user_id', session?.user_id).single();
 
       if (existingUserPointError) {
         console.error('Error fetching existing data:', existingUserPointError);
@@ -70,7 +70,7 @@ const UploadReviewModal = () => {
 
         const updatedPoint = currentPoint + 10;
 
-        const { data: updatePointData, error: updatePointError } = await supabase.from('users').update({ point: updatedPoint }).eq('user_id', session?.user.id).single();
+        const { data: updatePointData, error: updatePointError } = await supabase.from('users').update({ point: updatedPoint }).eq('user_id', session?.user_id).single();
 
         if (updatePointError) {
           console.error('Error updating user point data:', updatePointError);

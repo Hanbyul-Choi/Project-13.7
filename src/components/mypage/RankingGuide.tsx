@@ -1,34 +1,24 @@
+'use client';
 import React, { useState } from 'react';
 
-import { useQuery } from '@tanstack/react-query';
+import { redirect } from 'next/navigation';
 
 import useSessionStore from '@/store/sesson.store';
 
-import { supabase } from '../../../supabase/supabaseConfig';
-
-import type { AnimalMap } from '@/types/db.type';
+import { animals } from '../mainPage/Ranking';
 
 export default function RankingGuide() {
-  const animals: AnimalMap = {
-    0: '두루미',
-    1: '물범',
-    2: '호랑이',
-    3: '북극곰',
-  };
-
   const session = useSessionStore((state: { session: any }) => state.session);
   const [showRankGuide, setShowRankGuide] = useState(false);
-
-  const { data: userProfile } = useQuery(['userProfile', session?.user_id], async () => {
-    const response = await supabase.from('users').select('*').eq('user_id', session?.user_id);
-    return response.data?.[0];
-  });
+  if (!session) return redirect('/');
+  const { rank } = session;
+  const userTitle = animals[rank >= 10 ? 3 : rank >= 5 ? 2 : rank >= 1 ? 1 : 0];
 
   return (
     <div>
       <div onMouseEnter={() => setShowRankGuide(true)} onMouseLeave={() => setShowRankGuide(false)} style={{ cursor: 'pointer' }}>
         <div className="flex ax-w-fit px-2 opacity-50">
-          <p className="text-black text-sm">{animals[userProfile?.rank ?? 0 >= 10 ? 3 : userProfile?.rank ?? 0 >= 5 ? 2 : userProfile?.rank ?? 0 >= 1 ? 1 : 0]} 마스터ⓘ</p>
+          <p className="text-black text-sm">{userTitle} ⓘ</p>
         </div>
       </div>
       <div className="fixed z-100">

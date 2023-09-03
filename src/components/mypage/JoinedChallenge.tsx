@@ -42,10 +42,10 @@ export default function JoinedChallenge() {
     <>
       <div className="p-10 bg-white w-2/3">
         <div className="flex">
-          <button className={`text-lg font-semibold px-6 py-3 ${isJoinedChallengeOpen ? 'text-primary' : ''}`} onClick={handleJoinChallengeClick}>
+          <button className={`text-lg font-semibold px-6 py-3 ${isJoinedChallengeOpen ? '' : 'text-sub6'}`} onClick={handleJoinChallengeClick}>
             참여 챌린지
           </button>
-          <button className={`text-lg font-semibold px-6 py-3 ${isMyChallengeOpen ? 'text-primary' : ''}`} onClick={handleMyChallengeClick}>
+          <button className={`text-lg font-semibold px-6 py-3 ${isMyChallengeOpen ? '' : 'text-sub6'}`} onClick={handleMyChallengeClick}>
             나의 챌린지 인증
           </button>
         </div>
