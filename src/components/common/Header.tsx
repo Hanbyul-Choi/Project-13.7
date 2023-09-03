@@ -35,8 +35,6 @@ export function Header() {
     refresh();
   }, []);
 
-  console.log(1);
-
   useEffect(() => {
     supabase.auth.getSession().then(async ({ data: { session } }) => {
       if (!session) return;
