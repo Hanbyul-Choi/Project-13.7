@@ -1,15 +1,16 @@
 import React from 'react';
 
+
 import { Layout } from '@/components/common';
 import { IdeaList } from '@/components/idea-page';
 
 export default function IdeaPage() {
   return (
-    <Layout>
-      <div className="w-full h-[200px] rounded-lg bg-sub3 flex justify-center items-center mt-10">
-        <h3>다음 챌린지 투표하기 🙌</h3>
-      </div>
-      <IdeaList />
-    </Layout>
+    <div>
+      <div className={`w-full h-[400px] bg-[#white] bg-[url('/idea-banner.png')] bg-no-repeat bg-center border-[1px] border-y-black/.5 mb-6`} />
+      <Layout>
+        <IdeaList />
+      </Layout>
+    </div>
   );
 }

@@ -15,17 +15,19 @@ export default function CertifyPage() {
   if (isError) {
     return <h1>Error Fetching Challenge Data</h1>;
   }
-
   return (
-    <Layout>
-      <div className="flex justify-between">
-        <div className="flex">
-          <div className="max-w-fit px-4 py-1 rounded bg-lightblue mt-4 mr-2 text-blue text-sm">북극곰을 위한 챌린지</div>
-          <h3>{data?.title}</h3>
+    <div>
+      <div className={`w-full h-[400px] bg-[#white] bg-[url('/certify-banner.png')] bg-no-repeat bg-center border-[1px] border-y-black/.5 mb-20`} />
+      <Layout>
+        <div className="flex justify-between pb-4 border-b-[1px]">
+          <div className="flex">
+            <div className="max-w-fit mr-4 px-4 py-1 rounded bg-lightblue flex justify-center items-center text-blue text-sm">북극곰을 위한 챌린지</div>
+            <h3>{data?.title}</h3>
+          </div>
+          <CertifyPost />
         </div>
-        <CertifyPost />
-      </div>
-      <CertifyList />
-    </Layout>
+        <CertifyList />
+      </Layout>
+    </div>
   );
 }
