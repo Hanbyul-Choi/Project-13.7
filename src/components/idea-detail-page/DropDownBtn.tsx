@@ -10,13 +10,16 @@ type DropDownProps = {
 
 function DropDownBtn({ editClickHandler, deleteClickHandler, position }: DropDownProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
   const dropBackgroundRef = useRef<HTMLDivElement>(null);
   const dropDownToggle = () => {
     setIsOpen(!isOpen);
   };
-  useEffect(() => {
+
+  const handleEditClick = (e: React.MouseEvent<HTMLElement>) => {
     setIsOpen(false);
-  }, [editClickHandler]);
+    if (editClickHandler) editClickHandler(e);
+  };
 
   useEffect(() => {
     const handleOutSideClose = (event: MouseEvent) => {
@@ -35,11 +38,11 @@ function DropDownBtn({ editClickHandler, deleteClickHandler, position }: DropDow
       </div>
       {isOpen && (
         <div className="flex flex-col px-2 py-3 border border-[#D8DCE2] bg-white shadow-[0_1px_5px_0_rgba(53,60,73,0.08)] z-[5]">
-          <button onClick={editClickHandler} className="w-16 h-[25px] text-lg leading-[140%] text-[#8E95A3] hover:bg-sub2">
+          <button onClick={handleEditClick} className="w-16 h-[25px] text-lg leading-[140%] text-[#8E95A3] hover:bg-sub2">
             수정
           </button>
           <hr className="my-2" />
-          <button onClick={deleteClickHandler} className="w-16 h-[25px] text-lg leading-[140%] text-[#8E95A3] hover:bg-sub2 hover:text-nagative">
+          <button onClick={() => deleteClickHandler} className="w-16 h-[25px] text-lg leading-[140%] text-[#8E95A3] hover:bg-sub2 hover:text-nagative">
             삭제
           </button>
         </div>

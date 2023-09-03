@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 
 import useReviewUpdateDelete from './useReviewUpdateDelete.hook';
 import { Input } from '../../common';
-import DropDownBtn from '../DropDownBtn';
 
 import type { IdeaComments } from '@/types/db.type';
 
@@ -26,13 +25,8 @@ function ReviewItem({ id, created_at, comment, users, user_id }: IdeaComments) {
           <p>{created_at.slice(0, 10).replaceAll('-', '.')}</p>
         </div>
         {editCommentId === id ? (
-          <form
-            className="relative"
-            onSubmit={e => {
-              e.preventDefault();
-            }}
-          >
-            <div className="absolute top-[-28px] right-0 flex">
+          <>
+            <div className="absolute top-0 right-[10px] flex">
               <button className="text-sm text-[#838384] after:content-[' '] after:w-[1px] after:bg-[#838384] after:h-[12px] after:inline-block after:m-[8px] flex items-center" onClick={() => handleUpdateChallengeIdeaCommentData(id)}>
                 수정완료
               </button>
@@ -41,12 +35,23 @@ function ReviewItem({ id, created_at, comment, users, user_id }: IdeaComments) {
               </button>
             </div>
             <Input _size="lg" type="text" value={editComment} onChange={e => setEditComment(e.target.value)} />
-          </form>
+          </>
         ) : (
           <p className="leading-[150%] break-words w-[31.25rem]">{comment}</p>
         )}
+        {user_id === users?.user_id && editCommentId === '' ? (
+          <div className="absolute top-0 right-[10px] flex">
+            <button onClick={() => handleCommentDropDown(id, comment)} className="text-sm text-[#838384] after:content-[' '] after:w-[1px] after:bg-[#838384] after:h-[12px] after:inline-block after:m-[8px] flex items-center">
+              수정
+            </button>
+            <button onClick={() => handleDeleteChallengeIdeaCommentData(id)} className="text-sm text-[#838384]">
+              삭제
+            </button>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
-      {user_id === users?.user_id ? <DropDownBtn editClickHandler={() => handleCommentDropDown(id, comment)} deleteClickHandler={() => handleDeleteChallengeIdeaCommentData(id)} position={'top-0 right-[10px]'} /> : <></>}
     </div>
   );
 }

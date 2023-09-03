@@ -63,36 +63,75 @@ export default function JoinChallengeModal() {
   return (
     <Modal>
       <form>
-        <Label name={'주문자정보'} size={'base'}>
-          주문자정보
+        <h5 className="mb-8">주문자 정보</h5>
+        <div className="flex">
+          <Label name="name" size="base" labelStyle="flex flex-col leading-[150%]">
+            이름
+            <input
+              value={userData.nickname || ''}
+              onChange={e => setUserData(prev => ({ ...prev, nickname: e.target.value }))}
+              className="rounded-lg font-normal text-base border border-opacityblack outline-none mt-[8px] w-[9.375rem] h-[1.375rem] py-2 px-6 box-content"
+            />
+          </Label>
+          <Label name="phoneNumber" size="base" labelStyle="flex flex-col leading-[150%] ml-4">
+            연락처
+            <input
+              value={userData.phone || ''}
+              onChange={e => setUserData(prev => ({ ...prev, phone: e.target.value }))}
+              className="rounded-lg font-normal text-base border border-opacityblack outline-none mt-[8px] w-[16.31rem] h-[1.375rem] py-2 px-6 box-content"
+            />
+          </Label>
+        </div>
+        <Label name="mail" size="base" labelStyle="flex flex-col leading-[150%] mt-6">
+          이메일
+          <Input value={userData.email || ''} onChange={e => setUserData(prev => ({ ...prev, email: e.target.value }))} _size={'lg'} />
         </Label>
-        <Input value={userData.nickname || ''} onChange={e => setUserData(prev => ({ ...prev, nickname: e.target.value }))} _size={'sm'} placeholder="이름" />
-        <Input value={userData.phone || ''} onChange={e => setUserData(prev => ({ ...prev, phone: e.target.value }))} _size={'sm'} placeholder="연락처" />
-        <Input value={userData.email || ''} onChange={e => setUserData(prev => ({ ...prev, email: e.target.value }))} _size={'sm'} placeholder="이메일" />
-        <Label name={'배송정보'} size={'base'}>
-          배송정보
+      </form>
+      <form className="my-10 flex flex-col">
+        <h5 className="mb-8">배송지 정보</h5>
+        <Label name="delivery" size={'base'} labelStyle="flex flex-col leading-[150%]">
+          상세 주소
         </Label>
-        <Input type="text" value={userData.address || ''} onChange={e => setUserData(prev => ({ ...prev, address: e.target.value }))} _size={'sm'} placeholder="굿즈를 배송받으실 주소를 입력해주세요" />
-        {/* <Input _size={'sm'} placeholder="주소" />
-        <Input  _size={'sm'} placeholder="상세주소" />
-        <Input _size={'sm'} placeholder="우편번호" /> */}
-        <Label name={'배송메세지'} size={'base'}>
-          배송메세지
-        </Label>
-        <p>배송 메세지를 선택해주세요. ▼드롭다운▼</p>
-        <Label name={'결제 방식'} size={'base'}>
-          결제 방식 : 포인트 결제
-        </Label>
-        <p>보유중인 나무: {session?.point}</p>
-        <div className="flex gap-2 justify-center mt-4">
-          <Button type="submit" onClick={onClickJoinChallenge} btnType={'primary'}>
-            참여 신청하기
-          </Button>
-          <Button btnType={'borderBlack'} size={'small'} onClick={handleCancelClick}>
-            취소
-          </Button>
+        <input
+          type="text"
+          value={userData.address || ''}
+          onChange={e => setUserData(prev => ({ ...prev, address: e.target.value }))}
+          className="rounded-lg font-normal text-base border border-opacityblack outline-none my-[8px] w-[23.56rem] h-[1.375rem] py-2 px-6 box-content"
+        />
+        <div className="flex text-sm">
+          <input type="checkbox" className="mr-[8px]" /> 위 배송지를 기본 배송지로 저장합니다.
         </div>
       </form>
+      <hr className="border border-[#E6E6E6] w-full" />
+      <div className="my-10">
+        <label htmlFor="paymentMethod" className="font-bold leading-[150%] ">
+          결제 방식
+        </label>
+        <div className="flex items-center text-sm leading-[150%] mt-[12px]">
+          <input type="radio" id="paymentMethod" className="mr-[8px]" checked />
+          포인트 결제
+        </div>
+        <p className="leading-[150%] my-[16px]">
+          <span className="font-bold ">보유중인 나무 :</span>
+          {`${session?.point} 그루`}
+        </p>
+        <p className="leading-[150%]">
+          <span className="font-bold leading-[150%]">배송비 :</span> 무료
+        </p>
+      </div>
+      <hr className="border border-[#E6E6E6] w-full mb-[1.25rem]" />
+      <div className="flex justify-between w-full">
+        <p className="leading-[150%]">총 결제 나무 :</p>
+        <p className="text-lg font-bold leading-[140%]">25그루</p>
+      </div>
+      <div className="flex gap-2 justify-center mt-8 w-full">
+        <Button type="submit" onClick={onClickJoinChallenge} btnType={'primary'}>
+          참여 신청하기
+        </Button>
+        <Button btnType={'borderBlack'} size={'small'} onClick={handleCancelClick}>
+          취소
+        </Button>
+      </div>
     </Modal>
   );
 }

@@ -31,13 +31,13 @@ function Review({ slug }: DetailProps) {
   return (
     <div>
       <h4 className="mb-3">댓글 {challengeCommentsData?.length}</h4>
-      <div className="max-h-[345px] overflow-auto overflow-x-hidden">
+      <div className="max-h-[350px] overflow-auto overflow-x-hidden">
         {challengeCommentsData?.map(commentData => {
           const { id, created_at, comment, users }: IdeaComments = commentData;
           return <ReviewItem key={id} id={id} created_at={created_at} comment={comment} users={users} user_id={curUser?.user_id} />;
         })}
         {hasNextPage && (
-          <p className="h-[55px] flex justify-center items-center" ref={ref}>
+          <p className="h-[55px] flex justify-center items-center mb-[10px]" ref={ref}>
             More Comment...
           </p>
         )}
