@@ -51,7 +51,7 @@ export function CertifyPost() {
   }, []);
 
   const onClickUploadReview = () => {
-    if (session?.user) {
+    if (session) {
       mainOpenModal();
     } else {
       Alert('로그인이 필요합니다');
@@ -69,7 +69,7 @@ export function CertifyPost() {
 
   return (
     <>
-      {joinChallenge?.length > 0 ? (
+      {joinChallenge ? (
         <Button onClick={onClickUploadReview} btnType={'primary'} size="small">
           인증하기
         </Button>
