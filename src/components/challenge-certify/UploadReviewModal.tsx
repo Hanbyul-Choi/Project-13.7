@@ -36,8 +36,13 @@ const UploadReviewModal = () => {
       return false;
     }
     const { imageUrl, hashtags } = (await axios.get(`http://localhost:3000/api/crawler?url=${instaUrl}`)).data.res;
-    if (!hashtags.includes('13.7') || !hashtags.includes('챌린지')) {
-      setErrorMsg('필수 해시태그를 포함해주세요');
+    console.log(hashtags)
+    if (!hashtags) {
+      setErrorMsg('#13.7챌린지 해시태그를 추가해주세요');
+      return false;
+    }
+    if (!hashtags.includes('#13.7챌린지')) {
+      setErrorMsg('#13.7챌린지 해시태그를 추가해주세요');
       return false;
     }
     return { imageUrl, hashtags };
@@ -61,7 +66,7 @@ const UploadReviewModal = () => {
       certifyPostMutation.mutate(certifyPost);
 
       // user point 업데이트
-      const { data: existingUserPoint, error: existingUserPointError } = await supabase.from('users').select('point').eq('user_id', session?.user.id).single();
+      const { data: existingUserPoint, error: existingUserPointError } = await supabase.from('users').select('point').eq('user_id', session?.user_id).single();
 
       if (existingUserPointError) {
         console.error('Error fetching existing data:', existingUserPointError);
@@ -70,7 +75,7 @@ const UploadReviewModal = () => {
 
         const updatedPoint = currentPoint + 10;
 
-        const { data: updatePointData, error: updatePointError } = await supabase.from('users').update({ point: updatedPoint }).eq('user_id', session?.user.id).single();
+        const { data: updatePointData, error: updatePointError } = await supabase.from('users').update({ point: updatedPoint }).eq('user_id', session?.user_id).single();
 
         if (updatePointError) {
           console.error('Error updating user point data:', updatePointError);

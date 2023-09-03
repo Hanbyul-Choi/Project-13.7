@@ -7,7 +7,7 @@ export const getHtml = async (url: string): Promise<{ imageUrl: string; hashtags
     const $ = cheerio.load(html.data);
     const imageUrl: string = $('meta[property="og:image"]').attr('content') || '';
     const caption = $('meta[property="og:description"]').attr('content') || '';
-    const hashtags: string[] | null = caption.match(/#[\p{L}\p{N}_]+/gu);
+    const hashtags: string[] | null = caption.match(/#[\p{L}\p{N}_\.]+/gu);
 
     return {
       imageUrl,

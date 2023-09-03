@@ -2,6 +2,15 @@ import React from 'react';
 
 import { getUsers } from '@/app/api/users';
 
+import type { AnimalMap } from '@/types/db.type';
+
+export const animals: AnimalMap = {
+  0: '두루미 수호신',
+  1: '물범 수호신',
+  2: '호랑이 수호신',
+  3: '북극곰 마스터',
+};
+
 export default async function Ranking() {
   const topRanker = await getUsers();
 
@@ -15,7 +24,7 @@ export default async function Ranking() {
           <div key={i} className="px-7 py-3 bg-white rounded-lg border-[1px]">
             <p className="text-black opacity-50">{item.nickname}</p>
             <div className="flex items-center gap-3">
-              <p className="text-lg ">{item.rank ?? 0 >= 10 ? '북극곰마스터' : item.rank ?? 0 >= 5 ? '호랑이수호신' : item.rank ?? 0 >= 1 ? '물범수호신' : '두루미수호신'}</p>
+              <p className="text-lg ">{animals[item.rank >= 10 ? 3 : item.rank >= 5 ? 2 : item.rank >= 1 ? 1 : 0]}</p>
               <div className={`rounded-[4px] text-xs py-1 px-3 ${colorMatch[i]}`}>{item.rank}회 성공</div>
             </div>
           </div>
