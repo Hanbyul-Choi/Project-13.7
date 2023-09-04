@@ -27,7 +27,7 @@ export default async function MainBanner() {
             위기에 빠진 {mainAnimal}을 <br /> 도와주세요!
           </p>
           {content}
-          <Link href="/ " className="w-fit mt-20 flex">
+          <Link href="/challenge" className="w-fit mt-20 flex">
             <Button btnType="green" rounded>
               챌린지 참여하기
               <AiOutlineArrowRight size={20} />
