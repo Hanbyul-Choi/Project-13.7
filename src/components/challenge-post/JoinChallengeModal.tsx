@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { redirect } from 'next/navigation';
 
 import { mainChallengeCheck } from '@/app/api/main-challenge';
@@ -13,7 +13,6 @@ import Modal from '../common/Modal';
 
 export default function JoinChallengeModal() {
   const { session } = useSessionStore(state => state);
-  const queryClient = useQueryClient();
 
   const { Alert } = useDialog();
   const { mainCloseModal } = useModalStore(state => state);
