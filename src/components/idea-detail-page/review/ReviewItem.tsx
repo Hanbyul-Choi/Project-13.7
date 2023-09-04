@@ -44,7 +44,7 @@ function ReviewItem({ id, created_at, comment, users, user_id }: IdeaComments) {
             <button onClick={() => handleCommentDropDown(id, comment)} className="text-sm text-[#838384] after:content-[' '] after:w-[1px] after:bg-[#838384] after:h-[12px] after:inline-block after:m-[8px] flex items-center">
               수정
             </button>
-            <button onClick={() => handleDeleteChallengeIdeaCommentData(id)} className="text-sm text-[#838384]">
+            <button onClick={() => handleDeleteChallengeIdeaCommentData(id)} className="text-sm text-nagative">
               삭제
             </button>
           </div>

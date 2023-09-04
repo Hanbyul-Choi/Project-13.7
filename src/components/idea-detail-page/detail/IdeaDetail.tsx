@@ -3,6 +3,7 @@ import React from 'react';
 
 import Image from 'next/image';
 
+import { animals } from '@/components/mainPage/Ranking';
 import useLike from '@/hooks/useLike.hook';
 import useSessionStore from '@/store/sesson.store';
 
@@ -37,8 +38,7 @@ function IdeaDetail({ item }: { item: Suggestion }) {
             <img src={users?.profile_img || defaultProfileImg} width={70} height={70} alt="Profile Image" />
           </div>
           <div>
-            {/* <p className="leading-[150%] text-[#888889] mb-[4px]">{users.rank}</p> */}
-            <p className="leading-[150%] text-[#888889] mb-[4px] ">{users?.point}</p>
+            <p className="leading-[150%] text-[#888889] mb-[4px]">{users?.rank ? animals[users?.rank >= 10 ? 3 : users?.rank >= 5 ? 2 : users?.rank >= 1 ? 1 : 0] : ''}</p>
             <p className="text-lg font-bold leading-[140%]">{users?.nickname}</p>
           </div>
         </div>
