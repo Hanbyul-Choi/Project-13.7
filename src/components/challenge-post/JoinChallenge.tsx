@@ -1,7 +1,7 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
 import { userJoinChallengeCheck } from '@/app/api/join-challenge';
@@ -14,11 +14,13 @@ import { Button, useDialog } from '../common';
 
 export default function JoinChallenge() {
   const { session } = useSessionStore();
+
+  const queryClient = useQueryClient();
   const route = useRouter();
   const { mainOpenModal, isOpenMainModal } = useModalStore(state => state);
   const { Alert } = useDialog();
   const { data: mainChallenge } = useQuery({ queryKey: ['mainChallenge'], queryFn: mainChallengeCheck });
-  const { data: joinChallenge } = useQuery({ queryKey: ['joinChallenge'], queryFn: () => userJoinChallengeCheck(session?.user_id!, mainChallenge?.challenge_Id!) });
+  const { data: joinChallenge, isLoading } = useQuery({ queryKey: ['joinChallenge'], queryFn: () => userJoinChallengeCheck(session?.user_id!, mainChallenge?.challenge_Id!) });
 
   const joinChallengeCurrentPoint = () => {
     if (!session || session?.point === null || session?.point < 25) {
@@ -39,10 +41,14 @@ export default function JoinChallenge() {
     route.push('/challenge/certify');
   };
 
+  useEffect(() => {
+    queryClient.refetchQueries(['joinChallenge']);
+  }, [isOpenMainModal, session, queryClient]);
+
   return (
     <>
       <div>
-        {joinChallenge ? (
+        {!isLoading && joinChallenge ? (
           <>
             <div className="text-center flex flex-col text-blue">
               <p className="my-8">참여 신청이 완료되었습니다!</p>

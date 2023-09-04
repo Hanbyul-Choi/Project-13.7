@@ -147,7 +147,13 @@ export default function UserProfile() {
                 <>
                   <div {...getRootProps()}>
                     <input accept="image/*" type="file" {...getInputProps()} onChange={event => handleChangeImg(event)} />
-                    <img src={userProfile?.profile_img ? `${userProfile?.profile_img}` : '../../assets/profileDefaultImg.png'} alt="profileDefaultImg" width={100} height={100} className="rounded-full inline-block mb-4" />
+                    <img
+                      src={userProfile?.profile_img ? `${userProfile?.profile_img}` : 'https://fvkzqozjdtlaogexuuin.supabase.co/storage/v1/object/public/project/userProfileImg/polar-bear_1f43b-200d-2744-fe0f.png?t=2023-09-04T01%3A38%3A29.808Z'}
+                      alt="profileDefaultImg"
+                      width={100}
+                      height={100}
+                      className="rounded-full inline-block mb-4"
+                    />
                   </div>
                 </>
               )}
@@ -170,7 +176,13 @@ export default function UserProfile() {
       ) : (
         <>
           <div className="text-center mb-4 mx-auto">
-            <img src={userProfile?.profile_img ? `${userProfile?.profile_img}` : '../../assets/profileDefaultImg.png'} alt="profileDefaultImg" width={100} height={100} className="rounded-full inline-block mb-4" />
+            <img
+              src={userProfile?.profile_img ? `${userProfile?.profile_img}` : 'https://fvkzqozjdtlaogexuuin.supabase.co/storage/v1/object/public/project/userProfileImg/userProfileDefault?t=2023-09-04T01%3A41%3A06.168Z'}
+              alt="profileDefaultImg"
+              width={100}
+              height={100}
+              className="rounded-full inline-block mb-4"
+            />
             <div className="flex justify-center items-center gap-1 p-2">
               <p className="font-semibold text-lg">{userProfile?.nickname}</p>
               <div className="z-100">
