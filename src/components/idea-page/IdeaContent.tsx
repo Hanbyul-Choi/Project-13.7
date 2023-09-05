@@ -39,7 +39,7 @@ export function IdeaContent({ item }: Props) {
           {users?.nickname} | {new Date(created_at).toLocaleDateString()}
         </p>
         <p className="mt-3 w-full text-lg font-bold text-ellipsis overflow-hidden whitespace-nowrap">{title}</p>
-        <p className="mt-2 w-full h-12 opacity-50">{content}</p>
+        <p className="mt-2 w-full h-12 opacity-50 text-ellipsis overflow-hidden">{content}</p>
         <div className="max-w-fit px-4 py-1 rounded bg-lightblue mt-4">
           <p className="text-blue text-sm ">{animals.animal}을 위한 챌린지</p>
         </div>

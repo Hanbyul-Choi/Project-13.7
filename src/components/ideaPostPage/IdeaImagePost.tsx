@@ -11,12 +11,12 @@ interface IdeaImagePostProps {
   setImgFile: React.Dispatch<React.SetStateAction<File | undefined>>;
   setPreviewImg: React.Dispatch<React.SetStateAction<string | ArrayBuffer | undefined>>;
   previewImg: string | ArrayBuffer | undefined;
+  imgUrl: string;
 }
 
-function IdeaImagePost({ setImgFile, setPreviewImg, previewImg }: IdeaImagePostProps) {
-  const { handleChangeImg, onDrop, handleCancelImg } = useImagePost(setImgFile, setPreviewImg);
+function IdeaImagePost({ setImgFile, setPreviewImg, previewImg, imgUrl }: IdeaImagePostProps) {
+  const { handleChangeImg, onDrop, handleCancelImg } = useImagePost(setImgFile, setPreviewImg, imgUrl);
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
-
   return (
     <div className="flex justify-center">
       <Label size="" name="challengeImage" labelStyle="w-[6.97rem] h-full">

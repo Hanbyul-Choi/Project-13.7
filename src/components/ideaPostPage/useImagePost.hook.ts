@@ -1,10 +1,16 @@
 import type React from 'react';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import { useDialog } from '../common';
 
-export default function useImagePost(setImgFile: React.Dispatch<React.SetStateAction<File | undefined>>, setPreviewImg: React.Dispatch<React.SetStateAction<string | ArrayBuffer | undefined>>) {
+export default function useImagePost(setImgFile: React.Dispatch<React.SetStateAction<File | undefined>>, setPreviewImg: React.Dispatch<React.SetStateAction<string | ArrayBuffer | undefined>>, imgUrl: string) {
   const { Alert } = useDialog();
+
+  useEffect(() => {
+    if (imgUrl) {
+      setPreviewImg(imgUrl);
+    }
+  }, []);
 
   const handleChangeImg = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0]; // Access the selected file

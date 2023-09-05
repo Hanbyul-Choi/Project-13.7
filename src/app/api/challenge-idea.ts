@@ -25,8 +25,8 @@ export const postChallengeIdea = async (ideaData: IdeaPost) => {
 };
 
 // Challenge Idea update
-export const updateChallengeIdea = async ({ ideaData, getParamPostId }: { ideaData: IdeaPost; getParamPostId: string }) => {
-  const { error } = await supabase.from('challengeSuggestion').update(ideaData).eq('post_id', getParamPostId);
+export const updateChallengeIdea = async ({ ideaData, postId }: { ideaData: IdeaPost; postId: string }) => {
+  const { error } = await supabase.from('challengeSuggestion').update(ideaData).eq('post_id', postId);
   if (error) {
     throw error;
   }

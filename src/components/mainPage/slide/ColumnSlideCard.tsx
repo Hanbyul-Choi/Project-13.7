@@ -15,7 +15,7 @@ export default function ColumnSlideCard({ data }: Props) {
     <article>
       <div className='relative'>
         <div className='w-[228px] h-[140px] '>
-          <img src={data.img_url} style={{ objectFit: "cover" }} alt='natureStoryImg' />
+          <Image fill src={data.img_url} style={{ objectFit: "cover" }} alt='natureStoryImg' />
         </div>
         <div className='absolute inset-0 flex justify-center items-center'>
           <Image src={playBtn} alt='play' />

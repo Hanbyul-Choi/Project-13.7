@@ -1,4 +1,3 @@
-import type React from 'react';
 import { useEffect, useState } from 'react';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -11,19 +10,11 @@ import { postChallengeIdea, postChallengeIdeaImg, updateChallengeIdea } from '@/
 import { supabase } from '../../../supabase/supabaseConfig';
 import { useDialog } from '../common';
 
+import type { Inputs } from './IdeaContentsPost';
 import type { IdeaPost } from '@/types/db.type';
+import type { SubmitHandler } from 'react-hook-form';
 
-export default function useIdeaPost(
-  imgFile: File | undefined,
-  getParamImgUrl: string,
-  previewImg: string | ArrayBuffer | undefined,
-  title: string,
-  content: string,
-  product: string,
-  isEdit: boolean,
-  setIsEdit: React.Dispatch<React.SetStateAction<boolean>>,
-  getParamPostId: string,
-) {
+export default function useIdeaPost(imgFile: File | undefined, imgUrl: string, previewImg: string | ArrayBuffer | undefined, isEdit: boolean, postId: string) {
   const [userId, setUserId] = useState<string>('');
   const { Alert } = useDialog();
   const router = useRouter();
@@ -47,7 +38,7 @@ export default function useIdeaPost(
     }
   }, [loginUser]);
 
-  const handleGetImg = async () => {
+  const handleGetImg: SubmitHandler<Inputs> = async data => {
     const imgName = v4();
 
     // 첨부된 image storage upload
@@ -56,21 +47,19 @@ export default function useIdeaPost(
     }
 
     // storage에서 이미지 주소 가져오기. 이미지 URL이 설정된 후에 데이터베이스에 전송
-    const { data } = await supabase.storage.from('project').getPublicUrl(`challengeSuggestion/${imgName}`);
+    const { data: storageImgUrl } = await supabase.storage.from('project').getPublicUrl(`challengeSuggestion/${imgName}`);
 
     let checkImg = '';
-    if (getParamImgUrl) {
+    if (imgUrl) {
       if (previewImg) {
-        checkImg = imgFile ? data.publicUrl : getParamImgUrl;
+        checkImg = imgFile ? storageImgUrl.publicUrl : imgUrl;
       }
     } else if (previewImg) {
-      checkImg = data.publicUrl;
+      checkImg = storageImgUrl.publicUrl;
     }
 
     const ideaData = {
-      title,
-      content,
-      product,
+      ...data,
       user_id: userId,
       selected: false,
       img_url: checkImg,
@@ -83,16 +72,15 @@ export default function useIdeaPost(
   const handleIdeaPost = (ideaData: IdeaPost) => {
     if (userId === '') {
       Alert('로그인이 필요합니다.');
-    } else if (title === '') {
+    } else if (ideaData.title === '') {
       Alert('제목을 입력해주세요');
-    } else if (content === '') {
+    } else if (ideaData.content === '') {
       Alert('내용을 입력해주세요');
-    } else if (ideaData.img_url === null) {
+    } else if (ideaData.img_url === '') {
       Alert('챌린지 인증 예시 사진을 업로드해주세요');
     } else if (isEdit) {
       ideaUpdate(ideaData);
       Alert('해당 글이 정상적으로 수정되었습니다.');
-      setIsEdit(false);
       router.push('/idea');
     } else {
       postIdeaMutation.mutate(ideaData);
@@ -103,8 +91,8 @@ export default function useIdeaPost(
 
   // Challenge Idea update
   const ideaUpdate = (ideaData: IdeaPost) => {
-    if (getParamPostId) {
-      const newUdateIdea = { ideaData, getParamPostId };
+    if (postId) {
+      const newUdateIdea = { ideaData, postId };
       updateIdeaMutation.mutate(newUdateIdea);
     }
   };
