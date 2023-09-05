@@ -1,18 +1,19 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 
+import { v4 } from 'uuid';
+
 import ColumnSlideCard from './ColumnSlideCard';
 import IdeaSlideCard from './IdeaSlideCard';
 import SlideBtn from './slideBtn';
 
 import type { NatureStory, Suggestion } from '../../../types/db.type';
 import type { Tables } from '@/types/supabase.type';
-
 interface Props {
   showContentNum: number;
   type: 'idea' | 'column';
   contents: Tables<'challengeSuggestion'>[] | Tables<'natureStory'>[];
-  onClickHandler?: (id: string) => void;
+  onClickHandler?: (i: number) => void;
 }
 
 type innerMatch = {
@@ -24,7 +25,7 @@ type innerMatch = {
 
 type Match = Record<string, innerMatch>;
 
-export default function Slide({ showContentNum = 3, contents, type, onClickHandler = () => {} }: Props) {
+export default function Slide({ showContentNum = 3, contents, type, onClickHandler = () => { } }: Props) {
   const slideObj: Match = {
     idea: {
       size: [343, 85.5],
@@ -82,9 +83,9 @@ export default function Slide({ showContentNum = 3, contents, type, onClickHandl
   const renderContent = () => {
     return cloneContents.map((item, i) => {
       return (
-        <div key={i} className={`${slideObj[type].containerWidth} `}>
+        <div key={v4()} className={`${slideObj[type].containerWidth} `}>
           <div className={`${slideObj[type].contentWidth} `}>
-            <button onClick={() => onClickHandler(item.post_id)}>{type === 'idea' ? <IdeaSlideCard data={item as Suggestion} /> : <ColumnSlideCard data={item as NatureStory} />}</button>
+            <button onClick={() => onClickHandler(i)}>{type === 'idea' ? <IdeaSlideCard data={item as Suggestion} /> : <ColumnSlideCard data={item as NatureStory} />}</button>
           </div>
         </div>
       );
