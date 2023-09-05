@@ -1,7 +1,10 @@
 'use client';
 import React, { useState } from 'react';
 
+import Image from 'next/image';
+
 import useReviewUpdateDelete from './useReviewUpdateDelete.hook';
+import defaultProfileImg from '../../../../public/defaultProfileImage.jpeg';
 import { Input } from '../../common';
 
 import type { IdeaComments } from '@/types/db.type';
@@ -9,15 +12,14 @@ import type { IdeaComments } from '@/types/db.type';
 function ReviewItem({ id, created_at, comment, users, user_id }: IdeaComments) {
   const [editCommentId, setEditCommentId] = useState<string>('');
   const [editComment, setEditComment] = useState<string>('');
-  const defaultProfileImg = '../../../defaultProfileImage.jpeg';
 
   // 댓글 Update, Delete
   const { handleUpdateChallengeIdeaCommentData, handleDeleteChallengeIdeaCommentData, handleCommentDropDown } = useReviewUpdateDelete(editComment, setEditCommentId, setEditComment);
 
   return (
     <div className="flex flex-row justify-start my-3 relative">
-      <div className="w-[55px] h-[55px] overflow-hidden mr-[16px] shadow-[0_1px_5px_0_rgba(53,60,73,0.08)] rounded-lg">
-        <img src={users?.profile_img ? users?.profile_img : defaultProfileImg} width={55} height={55} alt="Profile Image" />
+      <div className="w-[55px] h-[55px] relative overflow-hidden mr-[16px] shadow-[0_1px_5px_0_rgba(53,60,73,0.08)] rounded-lg">
+        <Image src={users?.profile_img ? users?.profile_img : defaultProfileImg} fill alt="Profile Image" className="object-cover" />
       </div>
       <div>
         <div className="flex flex-row text-sm text-[#838384] leading-[150%] items-center">

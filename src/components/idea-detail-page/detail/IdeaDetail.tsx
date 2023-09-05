@@ -8,6 +8,7 @@ import useLike from '@/hooks/useLike.hook';
 import useSessionStore from '@/store/sesson.store';
 
 import useIdeaDelete from './useIdeaDelete.hook';
+import defaultProfileImg from '../../../../public/defaultProfileImage.jpeg';
 import unLike from '../../../../public/empty-heart.svg';
 import like from '../../../../public/fullHeart.svg';
 import DropDownBtn from '../DropDownBtn';
@@ -15,8 +16,6 @@ import DropDownBtn from '../DropDownBtn';
 import type { Suggestion } from '@/types/db.type';
 
 function IdeaDetail({ item }: { item: Suggestion }) {
-  const defaultProfileImg = '../../../defaultProfileImage.jpeg';
-
   const { post_id, title, content, product, img_url, users, user_id, liked_count, liked_users } = item;
 
   // 로그인한 user 데이터 get
@@ -34,8 +33,8 @@ function IdeaDetail({ item }: { item: Suggestion }) {
       {curUser?.user_id === user_id ? <DropDownBtn editClickHandler={() => handleAppendParamMovePage(item, title, content, product, img_url)} deleteClickHandler={handleDeleteChallengeIdeaData} position={'top-[175px] right-20'} /> : <></>}
       <div className="mt-6 flex items-center justify-between">
         <div className="flex items-center">
-          <div className="w-[55px] h-[55px] overflow-hidden rounded-lg mr-[16px] shadow-[0_1px_5px_0_rgba(53,60,73,0.08)]">
-            <img src={users?.profile_img || defaultProfileImg} width={70} height={70} alt="Profile Image" />
+          <div className="w-[55px] h-[55px] relative overflow-hidden rounded-lg mr-[16px] shadow-[0_1px_5px_0_rgba(53,60,73,0.08)]">
+            <Image src={users?.profile_img || defaultProfileImg} fill alt="Profile Image" />
           </div>
           <div>
             <p className="leading-[150%] text-[#888889] mb-[4px]">{users?.rank ? animals[users?.rank >= 10 ? 3 : users?.rank >= 5 ? 2 : users?.rank >= 1 ? 1 : 0] : ''}</p>
@@ -51,8 +50,8 @@ function IdeaDetail({ item }: { item: Suggestion }) {
         </div>
       </div>
       <hr className="w-full my-10 border border-[#bdbdbd]" />
-      <div className="flex justify-center items-center w-[33.37rem] h-[21.87rem] overflow-hidden mx-auto my-10 rounded-lg">
-        <Image src={`${img_url}`} width={550} height={550} alt="Challenge example image" className="w-full" />
+      <div className="w-[33.37rem] h-[21.87rem] relative overflow-hidden mx-auto my-10 rounded-lg">
+        <Image src={`${img_url}`} fill alt="Challenge example image" className="object-cover" />
       </div>
       <div>
         <div className="flex flex-row justify-center items-center">

@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 
+import Image from 'next/image';
 import { useDropzone } from 'react-dropzone';
 
 import useImagePost from './useImagePost.hook';
@@ -29,8 +30,8 @@ function IdeaImagePost({ setImgFile, setPreviewImg, previewImg }: IdeaImagePostP
         </button>
 
         {typeof previewImg === 'string' ? (
-          <div className="w-[32rem] h-[21.87rem] rounded-lg overflow-hidden flex items-center justify-center relative ml-[20px]">
-            <img src={previewImg} alt="Preview Img" className="w-full h-full" />
+          <div className="w-[32rem] h-[21.87rem] rounded-lg overflow-hidden relative ml-[20px] ">
+            <Image src={previewImg} fill alt="Preview Img" className="object-cover" />
             <button onClick={handleCancelImg} className="absolute top-2.5 right-[1.56rem] text-[2.5rem]">
               x
             </button>
