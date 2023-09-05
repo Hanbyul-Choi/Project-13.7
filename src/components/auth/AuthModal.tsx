@@ -5,7 +5,6 @@ import { getUser } from '@/app/api/users';
 import { useModalStore } from '@/store/modal.store';
 import useSessionStore from '@/store/sesson.store';
 
-import NaverSignIn from './social-sign-in/NaverSignIn';
 import SocialSignIn from './social-sign-in/SocialSignIn';
 import { supabase } from '../../../supabase/supabaseConfig';
 import { Button, Input, Label, useDialog } from '../common';
@@ -179,7 +178,6 @@ const AuthModal: React.FC<SignUpModalProps> = ({ switchHandler, modalType }) => 
           <div className="flex gap-6 rounded-lg items-center mx-auto mt-[34px]">
             <SocialSignIn social="google" />
             <SocialSignIn social="kakao" />
-            <NaverSignIn />
           </div>
           <p className="text-lg mx-auto mt-12">
             아직 회원이 아니신가요?
