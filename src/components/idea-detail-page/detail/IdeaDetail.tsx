@@ -52,8 +52,7 @@ function IdeaDetail({ item }: { item: Suggestion }) {
       </div>
       <hr className="w-full my-10 border border-[#bdbdbd]" />
       <div className="flex justify-center items-center w-[33.37rem] h-[21.87rem] overflow-hidden mx-auto my-10 rounded-lg">
-        <img src={`${img_url}`} alt="Challenge example image" className="w-full" />
-        {/* <Image src={`${img_url}`} width={550} height={550} alt="Challenge example image" className="w-full" /> */}
+        <Image src={`${img_url}`} width={550} height={550} alt="Challenge example image" className="w-full" />
       </div>
       <div>
         <div className="flex flex-row justify-center items-center">
