@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 import useSessionStore from '@/store/sesson.store';
 
@@ -9,7 +9,6 @@ import { supabase } from '../../../supabase/supabaseConfig';
 
 export default function JoinedChallenge() {
   const session = useSessionStore((state: { session: any }) => state.session);
-  const router = useRouter();
 
   const [isJoinedChallengeOpen, setIsJoinedChallengeOpen] = useState(true);
   const [isMyChallengeOpen, setIsMyChallengeOpen] = useState(false);
@@ -33,10 +32,7 @@ export default function JoinedChallenge() {
     const { data: reviews } = await supabase.from('reviews').select(`*, mainChallenge (title)`).eq('user_id', session?.user_id);
     return reviews;
   });
-
-  const goToReviews = () => {
-    router.push('/challenge/certify');
-  };
+  console.log('userReviews:', userReviews);
 
   return (
     <>
@@ -51,10 +47,10 @@ export default function JoinedChallenge() {
         </div>
         {isJoinedChallengeOpen && (
           <div>
-            <ul className="flex justify-between text-base opacity-50 px-6 py-3 mb-2">
-              <li>챌린지 제목</li>
-              <li>참여 기간</li>
-              <li>진행상황</li>
+            <ul className="flex text-base opacity-50 px-6 py-3 mb-2">
+              <li className="flex-none w-80">챌린지</li>
+              <li className="flex-none w-40">기간</li>
+              <li className="flex-none w-40">진행상황</li>
             </ul>
             {userChallenges?.length || 0 > 0 ? (
               <>
@@ -64,7 +60,6 @@ export default function JoinedChallenge() {
                     <li className="text-base opacity-50">
                       {item.mainChallenge?.startDate} - {item.mainChallenge?.endDate}
                     </li>
-                    {/* <div className=" w-20 py-1 text-center bg-lightgreen text-green rounded">{item.mainChallenge.isCompleted ? `완료` : `진행중`}</div> */}
                     <div className={`w-20 py-1 text-center rounded ${item.mainChallenge?.isCompleted ? 'bg-lightblue text-blue' : 'bg-lightgreen text-green'}`}>{item.mainChallenge?.isCompleted ? '완료' : '진행중'}</div>
                   </ul>
                 ))}
@@ -82,19 +77,18 @@ export default function JoinedChallenge() {
         {isMyChallengeOpen && (
           <div>
             <ul className="flex justify-between text-base opacity-50 px-6 py-3 mb-2">
-              <li>참여 날짜</li>
-              <li>챌린지 링크</li>
-              <li>진행상황</li>
+              <li>챌린지</li>
+              <li>인증 날짜</li>
+              <li>바로가기</li>
             </ul>
             {userReviews?.length || 0 > 0 ? (
               <>
                 {userReviews?.map(item => (
                   <ul key={item.post_id} className="flex flex-row justify-between items-center text-lg rounded-lg bg-sub1 px-6 py-3 mb-3">
-                    {/* <li className="text-lg">{item.mainChallenge?.title}</li> */}
+                    <li className="text-lg">{item.mainChallenge?.title}</li>
                     <li className="text-base opacity-50">{item.created_at ? item.created_at.slice(0, 10) : ''}</li>
-                    <li className="text-base opacity-50">{item.insta_url ? item.insta_url.slice(28, 39) : ''}</li>
-                    <button onClick={goToReviews} className="bg-opacityblack w-20 py-1 text-center rounded">
-                      바로가기
+                    <button className="bg-opacityblack w-20 py-1 text-center rounded text-base text-sub8">
+                      <Link href={item?.insta_url}>바로가기</Link>
                     </button>
                   </ul>
                 ))}

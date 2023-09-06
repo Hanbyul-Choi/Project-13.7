@@ -16,7 +16,6 @@ export default function Page({ params: { slug } }: Props) {
           <h3 className="mb-4">마이페이지</h3>
           <div className="p-10 bg-white drop-shadow-md">
             <UserProfile />
-            {/* <BadgesList /> */}
             <PointTree />
           </div>
         </div>

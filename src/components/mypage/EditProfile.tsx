@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { updateUserProfile } from '@/app/api/mypage';
-import { Button, Input } from '@/components/common';
+import { Input } from '@/components/common';
 import useSessionStore from '@/store/sesson.store';
 
 import { ImageUpload } from './ImageUpload';
@@ -34,8 +34,8 @@ export default function EditProfile({ setEditMode, userProfile, setUserProfile }
         return;
       }
 
-      console.log('userProfile.profile_img', userProfile);
-      console.log('editedProfile.profile_img', editedProfile); //이미지 url만 안들어가는 중
+      console.log('userProfile.profile_img', userProfile?.profile_img);
+      console.log('editedProfile.profile_img', editedProfile.profile_img); // 확인용 로그
 
       await updateUserProfile({ userData: editedProfile, getParamUserSession: session?.user_id });
       setEditMode(false);
@@ -53,21 +53,23 @@ export default function EditProfile({ setEditMode, userProfile, setUserProfile }
     <>
       <div className="text-center mb-8">
         <ImageUpload
+          profileImg={userProfile?.profile_img || undefined}
           onSuccess={(imageUrl: string) => {
+            console.log('Received Image URL:', imageUrl);
             setEditedProfile((prev: any) => ({ ...prev, profile_img: imageUrl }));
           }}
         />
-        <div className="space-y-1 flex flex-col">
-          <Input type="text" value={editedProfile?.nickname || ''} onChange={e => setEditedProfile((prev: any) => ({ ...prev, nickname: e.target.value }))} placeholder="이름" _size={'sm'} />
-          <Input type="text" value={editedProfile?.address || ''} onChange={e => setEditedProfile((prev: any) => ({ ...prev, address: e.target.value }))} placeholder="주소" _size={'sm'} />
+        <div className="space-y-1 flex flex-col my-4 mx-auto">
+          <Input type="text" value={editedProfile?.nickname || ''} _size="sm" onChange={e => setEditedProfile((prev: any) => ({ ...prev, nickname: e.target.value }))} placeholder="이름" _size={'sm'} />
+          <Input type="text" value={editedProfile?.address || ''} _size="sm" onChange={e => setEditedProfile((prev: any) => ({ ...prev, address: e.target.value }))} placeholder="주소" _size={'sm'} />
         </div>
-        <div className="flex gap-2 justify-center mx-auto my-2">
-          <Button btnType={'borderBlack'} size={'small'} onClick={handleCancelClick}>
+        <div className="flex gap-2 justify-center mx-auto my-4">
+          <button className="border-sub5 text-sub6 px-4 py-1 gap-2 border rounded-md text-sm flex justify-center items-center" onClick={handleCancelClick}>
             수정 취소
-          </Button>
-          <Button btnType={'black'} size={'small'} onClick={handleSaveClick}>
+          </button>
+          <button className="border-sub5 text-sub6 px-4 py-1 gap-2 border rounded-md text-sm flex justify-center items-center" onClick={handleSaveClick}>
             저장하기
-          </Button>
+          </button>
         </div>
       </div>
     </>
