@@ -10,15 +10,16 @@ import type { Suggestion } from '@/types/db.type';
 interface Props {
   data: Suggestion;
 }
-
+// h 339
 export default function IdeaSlideCard({ data }: Props) {
   const createdAt = data.created_at;
   const date = createdAt.match(/(\d{4}-\d{2}-\d{2})/);
   return (
-    <div className="flex flex-col gap-3 hover:drop-shadow-lg">
+    <div className="flex flex-col gap-3 hover:drop-shadow-lg ">
       <Link href={`/idea/${data.post_id}`}>
-        <img src={data.img_url!} alt="ideaCardImg" className="h-[339px] w-[422px] font-normal object-cover" />
-
+        <div className="w-[343px] h-[339px] relative">
+          <Image src={data.img_url!} alt="ideaCardImg" fill style={{ objectFit: 'cover' }} />
+        </div>
         <div className="flex text-black opacity-50 text-sm">
           <p>{data.users?.nickname}</p>
           &nbsp;

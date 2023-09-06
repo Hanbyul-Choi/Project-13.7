@@ -11,7 +11,6 @@ type CertifyCardProps = {
 
 const CertifyCard = ({ post }: CertifyCardProps) => {
   return (
-
     <div className=" my-masonry-grid-column max-h-[600px] relative group overflow-hidden hover:scale-105">
       <Link href={post.insta_url}>
         <img src={post.img_url ?? ''} alt="" className="rounded-lg object-fit" />

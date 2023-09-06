@@ -4,7 +4,7 @@ import Ranking from '@/components/mainPage/Ranking';
 import ColumnSlide from '@/components/mainPage/slide/ColumnSlide';
 import IdeaSlide from '@/components/mainPage/slide/IdeaSlide';
 
-export default function Home() {
+export default function Main() {
   return (
     <div className="flex flex-col justify-center items-center">
       <MainBanner />
