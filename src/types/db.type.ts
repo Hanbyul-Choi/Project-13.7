@@ -35,6 +35,10 @@ export interface User {
 export interface AnimalMap {
   [key: string]: string;
 }
+export interface HowToGetTrees {
+  title: string;
+  trees: number;
+}
 
 export interface IdeaComments {
   id: string;
