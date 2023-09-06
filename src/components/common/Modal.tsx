@@ -29,11 +29,9 @@ const Modal: React.FC<ModalProps> = ({ children }) => {
       {isOpen &&
         !isOpenMainModal &&
         createPortal(
-          <div>
-            <div onClick={() => closeModal()} className="fixed top-0 left-0 w-full h-full bg-[#00000060] z-20">
-              <div onClick={e => e.stopPropagation()} className="bg-white fixed top-1/2 left-1/2 px-[5.5rem] py-12 flex flex-col justify-center items-start rounded-2xl translate-x-[-50%] translate-y-[-50%] z-30">
-                {children}
-              </div>
+          <div onClick={() => closeModal()} className="fixed top-0 left-0 w-full h-full bg-[#00000060] z-20">
+            <div onClick={e => e.stopPropagation()} className="bg-white fixed top-1/2 left-1/2 px-[5.5rem] py-12 flex flex-col justify-center items-start rounded-2xl translate-x-[-50%] translate-y-[-50%] z-30">
+              {children}
             </div>
           </div>,
           document.getElementById('modal-portal') as HTMLDivElement,
@@ -42,11 +40,9 @@ const Modal: React.FC<ModalProps> = ({ children }) => {
 
       {isOpenMainModal &&
         createPortal(
-          <div>
-            <div onClick={() => mainCloseModal()} className="fixed top-0 left-0 w-full h-full bg-[#00000060] z-20">
-              <div onClick={e => e.stopPropagation()} className="bg-white fixed top-1/2 left-1/2 px-[5.5rem] py-12 flex flex-col justify-center items-start rounded-2xl translate-x-[-50%] translate-y-[-50%] z-30">
-                {children}
-              </div>
+          <div onClick={() => mainCloseModal()} className="fixed top-0 left-0 w-full h-full bg-[#00000060] z-20">
+            <div onClick={e => e.stopPropagation()} className="bg-white fixed top-1/2 left-1/2 px-[5.5rem] py-12 flex flex-col justify-center items-start rounded-2xl translate-x-[-50%] translate-y-[-50%] z-30">
+              {children}
             </div>
           </div>,
           document.getElementById('modal-portal') as HTMLDivElement,

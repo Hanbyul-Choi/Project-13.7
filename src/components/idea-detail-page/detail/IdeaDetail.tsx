@@ -18,17 +18,14 @@ import type { Suggestion } from '@/types/db.type';
 function IdeaDetail({ item }: { item: Suggestion }) {
   const { post_id, title, content, product, img_url, users, user_id, liked_count, liked_users } = item;
 
-  // 로그인한 user 데이터 get
   const { session } = useSessionStore();
   const curUser = session;
   const { onClickLike } = useLike(item, 'detail');
 
-  // 챌린지 아이디어 delete, 수정페이지 넘어갈때 param으로 데이터 보내기
   const { handleDeleteChallengeIdeaData, handleAppendParamMovePage } = useIdeaDelete(post_id);
 
   return (
     <>
-      {/* 챌린지 아이디어 타이틀 */}
       <h4>{title}</h4>
       {curUser?.user_id === user_id ? <DropDownBtn editClickHandler={() => handleAppendParamMovePage(item, title, content, product, img_url)} deleteClickHandler={handleDeleteChallengeIdeaData} position={'top-[175px] right-20'} /> : <></>}
       <div className="mt-6 flex items-center justify-between">

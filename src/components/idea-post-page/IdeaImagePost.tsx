@@ -4,7 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import { useDropzone } from 'react-dropzone';
 
-import useImagePost from './useImagePost.hook';
+import useImagePost from './useImagePost';
 import { Label } from '../common';
 
 interface IdeaImagePostProps {
@@ -37,12 +37,10 @@ function IdeaImagePost({ setImgFile, setPreviewImg, previewImg, imgUrl }: IdeaIm
             </button>
           </div>
         ) : (
-          <>
-            <div {...getRootProps()}>
-              <input accept="image/*" type="file" {...getInputProps()} onChange={event => handleChangeImg(event)} />
-              <div className="rounded-lg font-normal text-base border border-opacityblack ml-[20px] h-20 flex items-center justify-center text-[#bdbdbd] leading-[150%] w-[32rem]">챌린지 인증하는 사진 예시를 업로드 하세요.</div>
-            </div>
-          </>
+          <div {...getRootProps()}>
+            <input accept="image/*" type="file" {...getInputProps()} onChange={event => handleChangeImg(event)} />
+            <div className="rounded-lg font-normal text-base border border-opacityblack ml-[20px] h-20 flex items-center justify-center text-[#bdbdbd] leading-[150%] w-[32rem]">챌린지 인증하는 사진 예시를 업로드 하세요.</div>
+          </div>
         )}
       </div>
     </div>

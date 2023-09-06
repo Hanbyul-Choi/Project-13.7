@@ -8,7 +8,8 @@ import { useForm } from 'react-hook-form';
 import { Button, Label } from '@/components/common';
 
 import IdeaImagePost from './IdeaImagePost';
-import useIdeaPost from './useIdeaPostUpdate.hook';
+import useIdeaPost from './useIdeaPostUpdate';
+
 export interface Inputs {
   title: string;
   content: string;
@@ -27,18 +28,12 @@ function IdeaContentsPost() {
   const title = searchParams.get('title');
   const content = searchParams.get('content');
   const product = searchParams.get('product') ?? '';
-  const imgUrl = searchParams.get('img_url') ?? '';
+  const imgUrl = searchParams.get('img_url');
   const isEdit = Boolean(searchParams.get('is_edit'));
-  const postId = searchParams.get('post_id') ?? '';
+  const postId = searchParams.get('post_id');
 
-  const { isLoading, isError, handleGetImg } = useIdeaPost(imgFile, imgUrl, previewImg, isEdit, postId);
+  const { handleGetImg } = useIdeaPost(imgFile, imgUrl!, previewImg, isEdit, postId!);
 
-  if (isLoading) {
-    return <div>로딩중입니다.</div>;
-  }
-  if (isError) {
-    return <div>에러입니다.</div>;
-  }
   return (
     <form
       onSubmit={e => {
@@ -69,7 +64,7 @@ function IdeaContentsPost() {
         </Label>
         <input placeholder="필요 물품을 입력하세요." id="product" defaultValue={product} className={`${inputStyle}`} {...register('product')} />
       </div>
-      <IdeaImagePost setImgFile={setImgFile} setPreviewImg={setPreviewImg} previewImg={previewImg} imgUrl={imgUrl} />
+      <IdeaImagePost setImgFile={setImgFile} setPreviewImg={setPreviewImg} previewImg={previewImg} imgUrl={imgUrl!} />
       <div className="flex items-center justify-center mt-20">
         <Button
           type="submit"

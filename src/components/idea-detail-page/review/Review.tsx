@@ -14,11 +14,9 @@ import type { IdeaComments } from '@/types/db.type';
 function Review({ slug }: DetailProps) {
   const [comment, setComment] = useState<string>('');
 
-  // 로그인한 user 데이터 get
   const { session } = useSessionStore();
   const curUser = session;
 
-  // 해당 포스트 댓글 데이터 get, 댓글 insert
   const { commentsError, challengeCommentsData, hasNextPage, ref, handlePostComment } = useReview(slug, curUser?.user_id, comment, setComment);
 
   if (commentsError) {
