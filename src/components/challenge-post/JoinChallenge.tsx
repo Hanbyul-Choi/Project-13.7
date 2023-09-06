@@ -7,23 +7,23 @@ import { useRouter } from 'next/navigation';
 import { userJoinChallengeCheck } from '@/app/api/join-challenge';
 import { JOIN_CHALLENGE } from '@/app/shared/queries.keys';
 import { useModalStore } from '@/store/modal.store';
+import useSessionStore from '@/store/sesson.store';
 
 import JoinChallengeModal from './JoinChallengeModal';
 import { Button, useDialog } from '../common';
 
-import type { User } from '@/types/db.type';
 import type { Tables } from '@/types/supabase.type';
 
 interface Props {
-  session: User | null;
   mainChallenge: Tables<'mainChallenge'>;
 }
 
-export default function JoinChallenge({ session, mainChallenge }: Props) {
+export default function JoinChallenge({ mainChallenge }: Props) {
   const route = useRouter();
+  const { session } = useSessionStore();
   const { mainOpenModal, isOpenMainModal } = useModalStore(state => state);
   const { Alert } = useDialog();
-  const { data: joinChallenge } = useQuery({ queryKey: [JOIN_CHALLENGE], queryFn: () => userJoinChallengeCheck(session?.user_id!, mainChallenge?.challenge_Id!), retry: 10, retryDelay: 1000 });
+  const { data: joinChallenge } = useQuery({ queryKey: [JOIN_CHALLENGE], queryFn: () => userJoinChallengeCheck(session?.user_id!, mainChallenge?.challenge_Id!), enabled: !!session });
 
   const joinChallengeCurrentPoint = () => {
     if (!session || session?.point === null || session?.point < 25) {

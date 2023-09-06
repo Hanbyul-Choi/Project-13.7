@@ -24,7 +24,7 @@ export default function Page({ params: { slug } }: Props) {
   const filteredData = data.find(idea => idea.post_id === slug);
 
   return (
-    <SingleLayout title="챌린지 응원하기🙌" size={true}>
+    <SingleLayout title="챌린지 응원하기🙌" size>
       {filteredData ? <IdeaDetail item={filteredData} /> : null}
       <Review slug={slug} />
     </SingleLayout>
