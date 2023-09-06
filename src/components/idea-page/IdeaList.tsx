@@ -6,6 +6,7 @@ import { AiOutlineArrowRight } from 'react-icons/ai';
 import { BarLoader } from 'react-spinners';
 
 import { getIdeaInfinite } from '@/app/api/challenge-idea';
+import { CHALLENGE_SUGGESTION } from '@/app/shared/queries.keys';
 import useSortWayStore from '@/store/sortway.store';
 
 import { Button } from '../common';
@@ -16,7 +17,7 @@ export function IdeaList() {
   const { sortWay } = useSortWayStore();
 
   const { data, fetchNextPage, hasNextPage, isError, isLoading } = useInfiniteQuery({
-    queryKey: ['challengeSuggestion', sortWay],
+    queryKey: [CHALLENGE_SUGGESTION, sortWay],
     queryFn: getIdeaInfinite,
     getNextPageParam: lastPage => {
       if (lastPage.page < lastPage.total_pages) {

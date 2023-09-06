@@ -66,11 +66,10 @@ export default function useLike(item: Suggestion, type: 'list' | 'detail') {
 
         return { prevIdea };
       },
-      onError: ({ context }) => {
+      onError: (_, __, context) => {
         if (context === undefined) return;
         queryClient.setQueryData(['challengeSuggestion', sortWay], context.prevIdea);
         queryClient.setQueryData(['challengeSuggestion'], context.prevIdea);
-        console.log('업데이트 실패');
       },
       onSettled: async () => {
         await queryClient.invalidateQueries({ queryKey: ['challengeSuggestion', sortWay] });
