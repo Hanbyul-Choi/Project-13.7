@@ -35,7 +35,6 @@ const UploadReviewModal = () => {
       return false;
     }
     const { imageUrl, hashtags } = (await axios.get(`/api/crawler?url=${instaUrl}`)).data.res;
-    console.log(imageUrl)
     if (!hashtags) {
       setErrorMsg('#13.7챌린지 해시태그를 추가해주세요');
       return false;
