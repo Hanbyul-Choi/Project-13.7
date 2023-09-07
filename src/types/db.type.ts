@@ -30,6 +30,7 @@ export interface User {
   nickname: string | null;
   email: string;
   rank: number;
+  name: string | null;
 }
 
 export interface AnimalMap {
