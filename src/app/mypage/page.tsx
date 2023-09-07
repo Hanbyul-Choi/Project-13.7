@@ -10,8 +10,8 @@ export default function Page({ params: { slug } }: Props) {
   return (
     <Layout>
       {slug}
-      <div className="flex justify-evenly">
-        <div>
+      <div className="flex justify-evenly sm:flex-col">
+        <div className="w-1/2 sm:w-auto sm:flex-shrink-0">
           <h3 className="mb-4">마이페이지</h3>
           <div className="p-10 bg-white drop-shadow-md">
             <UserProfile />

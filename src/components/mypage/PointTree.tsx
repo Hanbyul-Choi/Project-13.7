@@ -16,7 +16,7 @@ export default function PointTree() {
     <>
       <div className="flex flex-col text-center">
         <button onClick={onClickTreeGuide} className="bg-green text-white px-3 py-1 my-3 gap-2 border rounded-full text-sm mb-2 flex justify-center items-center">
-          <p className="font-semibold">나무를 얻으려면?</p> <AiOutlineArrowRight size={15} />
+          <p className="font-semibold sm:text-base">나무를 얻으려면?</p> <AiOutlineArrowRight size={15} />
         </button>
         {isOpenMainModal && <TreeGuideModal />}
       </div>

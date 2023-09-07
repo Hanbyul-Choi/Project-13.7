@@ -15,6 +15,8 @@ export const Input = ({ _size, onChange, type, inputStyle, ...props }: InputProp
   const inputDefault = 'rounded-lg font-normal text-base border border-opacityblack outline-none ';
   const sizeFunc = () => {
     switch (_size) {
+      case 'xs':
+        return (inputSize = 'w-[280px] h-[2rem] py-3 px-2');
       case 'sm':
         return (inputSize = 'w-[388px] h-[3rem] py-3 px-4');
       case 'md':

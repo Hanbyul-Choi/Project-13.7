@@ -24,6 +24,7 @@ export default function EditProfile({ setEditMode, userProfile, setUserProfile }
     point: userProfile?.point || 0,
     email: userProfile?.email || '',
     rank: userProfile?.rank || 0,
+    name: userProfile?.name || '',
   });
 
   const session = useSessionStore((state: { session: any }) => state.session);
@@ -59,9 +60,15 @@ export default function EditProfile({ setEditMode, userProfile, setUserProfile }
             setEditedProfile((prev: any) => ({ ...prev, profile_img: imageUrl }));
           }}
         />
-        <div className="space-y-1 flex flex-col my-4">
-          <Input type="text" value={editedProfile?.nickname || ''} _size="sm" onChange={e => setEditedProfile((prev: any) => ({ ...prev, nickname: e.target.value }))} placeholder="이름" />
-          <Input type="text" value={editedProfile?.address || ''} _size="sm" onChange={e => setEditedProfile((prev: any) => ({ ...prev, address: e.target.value }))} placeholder="주소" />
+        <div className="space-y-1 flex flex-col my-4 items-center">
+          <div className="flex items-center gap-2 font-semibold sm:flex-col sm:mb-1">
+            <p>이름</p>
+            <Input type="text" value={editedProfile?.nickname || ''} _size="xs" onChange={e => setEditedProfile((prev: any) => ({ ...prev, nickname: e.target.value }))} placeholder="이름" />
+          </div>
+          <div className="flex items-center gap-2 font-semibold sm:flex-col sm:mb-1">
+            <p>주소</p>
+            <Input type="text" value={editedProfile?.address || ''} _size="xs" onChange={e => setEditedProfile((prev: any) => ({ ...prev, address: e.target.value }))} placeholder="주소" />
+          </div>
         </div>
         <div className="flex gap-2 justify-center mx-auto my-4">
           <button className="border-sub5 text-sub6 px-4 py-1 gap-2 border rounded-md text-sm flex justify-center items-center" onClick={handleCancelClick}>
