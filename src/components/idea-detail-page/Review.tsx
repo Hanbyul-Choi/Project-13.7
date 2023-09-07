@@ -39,7 +39,7 @@ function Review({ slug }: DetailProps) {
   });
 
   // 로그인한 user 데이터 get
-  const { isLoading: userLoading, isError: userError, data: loginUser } = useQuery(['auth'], getLoginUser);
+  const { isError: userError, data: loginUser } = useQuery(['auth'], getLoginUser);
   useEffect(() => {
     if (loginUser?.session) {
       setUserId(loginUser.session.user.id);
@@ -101,9 +101,6 @@ function Review({ slug }: DetailProps) {
     setEditComment(comment);
   };
 
-  if (userLoading) {
-    return <p>로딩중입니다.</p>;
-  }
   if (commentsError || userError) {
     return <p>에러입니다.</p>;
   }
