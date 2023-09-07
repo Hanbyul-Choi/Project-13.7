@@ -33,3 +33,13 @@ export const updateUserProfile = async ({ userData, getParamUserSession }: { use
     throw error;
   }
 };
+
+export const getCurUserChallenges = async (user_id: string | null) => {
+  const { data } = await supabase.from('joinChallenge').select(`*, mainChallenge (*)`).eq('user_id', user_id);
+  return data;
+};
+
+export const getCurUserReviews = async (user_id: string | null) => {
+  const { data } = await supabase.from('reviews').select(`*, mainChallenge (title)`).eq('user_id', user_id);
+  return data;
+};

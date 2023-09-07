@@ -1,17 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { useQuery } from '@tanstack/react-query';
-import Link from 'next/link';
 
 import { getCurUserChallenges, getCurUserReviews } from '@/app/api/mypage';
 import { USER_CHALLENGES, USER_REVIEWS } from '@/app/shared/queries.keys';
 import useSessionStore from '@/store/sesson.store';
 
-export default function JoinedChallenge() {
+import JoinedChallengeList from './JoinedChallengeList';
+import ReveiwList from './ReviewList';
+
+export default function UserChallengeList() {
   const session = useSessionStore((state: { session: any }) => state.session);
 
-  const [isJoinedChallengeOpen, setIsJoinedChallengeOpen] = useState(true);
-  const [isMyChallengeOpen, setIsMyChallengeOpen] = useState(false);
+  const { data: userChallenges } = useQuery({ queryKey: [USER_CHALLENGES], queryFn: () => getCurUserChallenges(session?.user_id) });
+  const { data: userReviews } = useQuery({ queryKey: [USER_REVIEWS], queryFn: () => getCurUserReviews(session?.user_id) });
 
   const handleJoinChallengeClick = () => {
     setIsJoinedChallengeOpen(true);
@@ -23,19 +25,16 @@ export default function JoinedChallenge() {
     setIsMyChallengeOpen(true);
   };
 
-  const { data: userChallenges } = useQuery({ queryKey: [USER_CHALLENGES], queryFn: () => getCurUserChallenges(session?.user_id) });
-  const { data: userReviews } = useQuery({ queryKey: [USER_REVIEWS], queryFn: () => getCurUserReviews(session?.user_id) });
-
   return (
     <>
       <div className="p-10 bg-white w-2/3">
         <div className="flex">
-          <button className={`text-lg font-semibold px-6 py-3 ${isJoinedChallengeOpen ? '' : 'text-sub6'}`} onClick={handleJoinChallengeClick}>
+          <div className={`text-lg font-semibold px-3 py-2 mb-6 mx-2 cursor-pointer ${isJoinedChallengeOpen ? 'border-b-4 border-blue' : 'text-sub6'}`} onClick={handleJoinChallengeClick}>
             참여 챌린지
-          </button>
-          <button className={`text-lg font-semibold px-6 py-3 ${isMyChallengeOpen ? '' : 'text-sub6'}`} onClick={handleMyChallengeClick}>
+          </div>
+          <div className={`text-lg font-semibold px-3 py-2 mb-6 mx-2 cursor-pointer ${isMyChallengeOpen ? 'border-b-4 border-blue' : 'text-sub6'}`} onClick={handleMyChallengeClick}>
             나의 챌린지 인증
-          </button>
+          </div>
         </div>
         {isJoinedChallengeOpen && (
           <div>
@@ -47,13 +46,7 @@ export default function JoinedChallenge() {
             {userChallenges?.length || 0 > 0 ? (
               <>
                 {userChallenges?.map(item => (
-                  <ul key={item.join_id} className="flex flex-row justify-between items-center text-lg rounded-lg bg-sub1 px-8 py-4 mb-4">
-                    <li className="text-lg overflow-hidden overflow-ellipsis whitespace-nowrap max-w-[200px]">{item.mainChallenge?.title}</li>
-                    <li className="text-base opacity-50">
-                      {item.mainChallenge?.startDate} - {item.mainChallenge?.endDate}
-                    </li>
-                    <div className={`w-20 py-1 text-center rounded ${item.mainChallenge?.isCompleted ? 'bg-lightblue text-blue' : 'bg-lightgreen text-green'}`}>{item.mainChallenge?.isCompleted ? '완료' : '진행중'}</div>
-                  </ul>
+                  <JoinedChallengeList key={item.join_id} item={item} /> // Use ChallengeItem component
                 ))}
               </>
             ) : (
@@ -76,13 +69,7 @@ export default function JoinedChallenge() {
             {userReviews?.length || 0 > 0 ? (
               <>
                 {userReviews?.map(item => (
-                  <ul key={item.post_id} className="flex flex-row justify-between items-center text-lg rounded-lg bg-sub1 px-6 py-3 mb-3">
-                    <li className="text-lg">{item.mainChallenge?.title}</li>
-                    <li className="text-base opacity-50">{item.created_at ? item.created_at.slice(0, 10) : ''}</li>
-                    <button className="bg-opacityblack w-20 py-1 text-center rounded text-base text-sub8">
-                      <Link href={item?.insta_url}>바로가기</Link>
-                    </button>
-                  </ul>
+                  <ReveiwList key={item.post_id} item={item} /> // Use ReviewItem component
                 ))}
               </>
             ) : (

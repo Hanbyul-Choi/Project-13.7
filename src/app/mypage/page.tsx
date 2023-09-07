@@ -1,6 +1,5 @@
 'use client';
 import { Layout } from '@/components/common';
-// import BadgesList from '@/components/mypage/BadgesList';
 import JoinedChallenge from '@/components/mypage/JoinedChallenge';
 import PointTree from '@/components/mypage/PointTree';
 import UserProfile from '@/components/mypage/UserProfile';

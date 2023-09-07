@@ -59,9 +59,9 @@ export default function EditProfile({ setEditMode, userProfile, setUserProfile }
             setEditedProfile((prev: any) => ({ ...prev, profile_img: imageUrl }));
           }}
         />
-        <div className="space-y-1 flex flex-col my-4 mx-auto">
-          <Input type="text" value={editedProfile?.nickname || ''} _size="sm" onChange={e => setEditedProfile((prev: any) => ({ ...prev, nickname: e.target.value }))} placeholder="이름" _size={'sm'} />
-          <Input type="text" value={editedProfile?.address || ''} _size="sm" onChange={e => setEditedProfile((prev: any) => ({ ...prev, address: e.target.value }))} placeholder="주소" _size={'sm'} />
+        <div className="space-y-1 flex flex-col my-4">
+          <Input type="text" value={editedProfile?.nickname || ''} _size="sm" onChange={e => setEditedProfile((prev: any) => ({ ...prev, nickname: e.target.value }))} placeholder="이름" />
+          <Input type="text" value={editedProfile?.address || ''} _size="sm" onChange={e => setEditedProfile((prev: any) => ({ ...prev, address: e.target.value }))} placeholder="주소" />
         </div>
         <div className="flex gap-2 justify-center mx-auto my-4">
           <button className="border-sub5 text-sub6 px-4 py-1 gap-2 border rounded-md text-sm flex justify-center items-center" onClick={handleCancelClick}>

@@ -21,17 +21,9 @@ export function ImageUpload({ onSuccess, profileImg }: ImageUploadProps) {
 
   const postImgMutation = useMutation({
     mutationFn: postUserProfileImg,
-    onSuccess: data => {
-      console.log('이미지 업로드 성공:', data);
-    },
-    onError: error => {
-      console.error('이미지 업로드 실패:', error);
-      alert('이미지 업로드에 실패했습니다.');
-    },
   });
 
   const uploadImageAndGetUrl = async (imgFile: File, imgName: string) => {
-    console.log('Entering uploadImageAndGetUrl');
     try {
       postImgMutation.mutateAsync({ imgFile, imgName });
     } catch (error) {
@@ -42,15 +34,12 @@ export function ImageUpload({ onSuccess, profileImg }: ImageUploadProps) {
       const imgUrlResponse = await getImgUrl(imgName);
       return imgUrlResponse.data.publicUrl;
     } catch (error) {
-      console.error('getImgUrl 오류:', error);
       throw error;
     }
   };
 
   const handleImageUpload = async () => {
-    console.log('Entering handleImageUpload');
     try {
-      // if문 여기가 문제
       if (imgFile && postImgMutation.isSuccess) {
         const imgName = v4();
         const imgUrl = await uploadImageAndGetUrl(imgFile, imgName);
@@ -71,9 +60,6 @@ export function ImageUpload({ onSuccess, profileImg }: ImageUploadProps) {
       reader.onloadend = async () => {
         if (typeof reader.result === 'string') {
           setPreviewImg(reader.result);
-
-          // console.log('Selected file:', selectedFile);
-          // console.log('Preview image data:', reader.result);
 
           await handleImageUpload();
         } else {
@@ -112,7 +98,7 @@ export function ImageUpload({ onSuccess, profileImg }: ImageUploadProps) {
                   return handleImageChange(event.target.files?.[0]);
                 }}
               />
-              이미지 선택하기
+              {/* 이미지 선택하기 */}
             </label>
           </div>
         </>
