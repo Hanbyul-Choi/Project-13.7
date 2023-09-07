@@ -34,17 +34,16 @@ const UploadReviewModal = () => {
       setErrorMsg('유효한 URL을 입력해주세요');
       return false;
     }
-    const { imageUrl } = (await axios.get(`/api/crawler?url=${instaUrl}`)).data.res;
+    const { imageUrl, hashtags } = (await axios.get(`/api/crawler?url=${instaUrl}`)).data.res;
     console.log(imageUrl)
-    // if (!hashtags) {
-    //   setErrorMsg('#13.7챌린지 해시태그를 추가해주세요');
-    //   return false;
-    // }
-    // if (!hashtags.includes('#13.7챌린지')) {
-    //   setErrorMsg('#13.7챌린지 해시태그를 추가해주세요');
-    //   return false;
-    // }
-    return imageUrl
+    if (!hashtags) {
+      setErrorMsg('#13.7챌린지 해시태그를 추가해주세요');
+      return false;
+    }
+    if (!hashtags.includes('#13.7챌린지')) {
+      setErrorMsg('#13.7챌린지 해시태그를 추가해주세요');
+      return false;
+    }
     return { imageUrl, hashtags };
   };
 
