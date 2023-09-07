@@ -12,7 +12,6 @@ import { Button } from '@/components/common';
 import Slide from './Slide';
 import nextIcon from '../../../../public/rightArrow.svg';
 
-
 export default function ContentSlide() {
   const { isLoading, isError, data: contentData } = useQuery(['NatureStory'], getNatureStory);
 
@@ -24,7 +23,7 @@ export default function ContentSlide() {
   };
 
   if (isError) {
-    return <h1>불러오지 못했습니다.</h1>
+    return <h1>불러오지 못했습니다.</h1>;
   }
   if (!isLoading && contentData) {
     return (
@@ -64,13 +63,11 @@ export default function ContentSlide() {
         </div>
       </div>
     );
-
-  }
-  else {
+  } else {
     return (
       <div className="w-full h-[50vh] flex justify-center items-center ">
         <BarLoader color="#101828" height={5} width={200} />
       </div>
-    )
+    );
   }
 }

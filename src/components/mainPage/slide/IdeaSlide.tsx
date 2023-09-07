@@ -3,7 +3,7 @@ import React from 'react';
 
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
-import { PropagateLoader } from 'react-spinners';
+import { BarLoader } from 'react-spinners';
 
 import { getSuggestions } from '@/app/api/challenge-idea';
 import { CHALLENGE_SUGGESTION } from '@/app/shared/queries.keys';
@@ -11,16 +11,20 @@ import { CHALLENGE_SUGGESTION } from '@/app/shared/queries.keys';
 import Slide from './Slide';
 
 export default function IdeaSlide() {
-  let { isError, data } = useQuery([CHALLENGE_SUGGESTION], getSuggestions);
+  let { isLoading, isError, data } = useQuery([CHALLENGE_SUGGESTION], getSuggestions);
 
   if (isError) {
     return <p>에러</p>;
   }
-  if (!data) {
-    return <PropagateLoader color="#36d7b7" size={10} />;
+  if (isLoading || !data) {
+    return (
+      <div className="w-full h-[50vh] flex justify-center items-center ">
+        <BarLoader color="#101828" height={5} width={200} />
+      </div>
+    );
   }
 
-  if (data.length > 10) {
+  if (data && data.length > 10) {
     data = data.slice(0, 10);
   }
 
