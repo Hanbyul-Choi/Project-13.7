@@ -21,7 +21,6 @@ const UploadReviewModal = () => {
   const [instaUrl, setInstaUrl] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const { isOpenMainModal, mainCloseModal } = useModalStore();
-
   const { data: mainChallenge } = useQuery(['mainChallenge'], mainChallengeCheck);
   const queryClient = useQueryClient();
   const certifyPostMutation = useMutation(postCertify, {
@@ -35,7 +34,7 @@ const UploadReviewModal = () => {
       setErrorMsg('유효한 URL을 입력해주세요');
       return false;
     }
-    const { imageUrl, hashtags } = (await axios.get(`http://localhost:3000/api/crawler?url=${instaUrl}`)).data.res;
+    const { imageUrl, hashtags } = (await axios.get(`${process.env.NEXT_PUBLIC_WEB_URL}/api/crawler?url=${instaUrl}`)).data.res;
     if (!hashtags) {
       setErrorMsg('#13.7챌린지 해시태그를 추가해주세요');
       return false;

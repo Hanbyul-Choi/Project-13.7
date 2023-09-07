@@ -6,11 +6,12 @@ import Link from 'next/link';
 import { PropagateLoader } from 'react-spinners';
 
 import { getSuggestions } from '@/app/api/challenge-idea';
+import { CHALLENGE_SUGGESTION } from '@/app/shared/queries.keys';
 
 import Slide from './Slide';
 
 export default function IdeaSlide() {
-  let { isError, data } = useQuery(['challengeSuggestion'], getSuggestions);
+  let { isError, data } = useQuery([CHALLENGE_SUGGESTION], getSuggestions);
 
   if (isError) {
     return <p>에러</p>;

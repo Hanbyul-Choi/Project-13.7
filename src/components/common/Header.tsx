@@ -16,7 +16,7 @@ import { Auth, SignOut } from '../auth';
 import { Layout } from '.';
 
 export function Header() {
-  const { session, setSession } = useSessionStore();
+  const { session, isLoaded, setSession } = useSessionStore();
   const params = usePathname();
 
   useEffect(() => {
@@ -25,11 +25,13 @@ export function Header() {
       const refresh_token = localStorage.getItem('refresh_token');
       if (access_token && refresh_token) {
         const { data } = await supabase.auth.setSession({ access_token, refresh_token });
-        if (!data) return;
+        if (!data) return setSession(null);
         const session = data.session;
         const user_id = session?.user.id!;
         const userData = await getUser(user_id);
         setSession(userData);
+      } else {
+        setSession(null);
       }
     };
     refresh();
@@ -54,7 +56,6 @@ export function Header() {
       }
     });
   }, []);
-
   return (
     <div className="w-full sticky top-0 bg-white text-black px-10 py-8 text-lg z-10">
       <Layout>
@@ -72,18 +73,20 @@ export function Header() {
               ))}
             </nav>
           </div>
-          <div className="flex gap-4 text-base">
-            {session ? (
-              <>
-                <Link href="/mypage" className={`${params === '/mypage' ? 'text-black' : 'text-sub6'} flex gap-2 text-lg font-medium`}>
-                  마이페이지
-                </Link>
-                <SignOut />
-              </>
-            ) : (
-              <Auth />
-            )}
-          </div>
+          {isLoaded && (
+            <div className="flex gap-4 text-base">
+              {session ? (
+                <>
+                  <Link href="/mypage" className={`${params === '/mypage' ? 'text-black' : 'text-sub6'} flex gap-2 text-lg font-medium`}>
+                    마이페이지
+                  </Link>
+                  <SignOut />
+                </>
+              ) : (
+                <Auth />
+              )}
+            </div>
+          )}
         </div>
       </Layout>
     </div>
