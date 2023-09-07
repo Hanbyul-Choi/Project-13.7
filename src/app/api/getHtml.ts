@@ -13,6 +13,6 @@ export const getHtml = async (url:string) => {;
 
   const imageUrl = await page.evaluate((img) => img?.src, imgEl)
   await browser.close();
-  return {imageUrl, hashtags:"#"}
+  return {imageUrl, hashtags:"#13.7챌린지"}
 }
 
