@@ -88,3 +88,24 @@ export interface CertifyPostType {
   tags: string;
   challenge_id: string;
 }
+
+export interface Badge {
+  challenge_id: string;
+  completedMission: boolean | null;
+  join_id: string;
+  reviews: number | null;
+  user_id: string;
+  mainChallenge: {
+    badgeUrl: string;
+    challenge_Id: string;
+    content: string;
+    title: string;
+    point: number;
+    limit: number;
+    product: string;
+    startDate: string | null;
+    endDate: string | null;
+    howto: string;
+    animal?: string;
+  } | null;
+}
