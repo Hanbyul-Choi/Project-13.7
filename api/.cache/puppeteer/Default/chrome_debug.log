@@ -1,6 +1,0 @@
-[0907/163423.099:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'ambient-light-sensor'.", source:  (0)
-[0907/163424.090:INFO:CONSOLE(59)] "ErrorUtils caught an error:
-
-Please wait a few minutes before you try again.
-
-Subsequent non-fatal errors won't be logged; see https://fburl.com/debugjs.", source: https://static.cdninstagram.com/rsrc.php/v3/y8/r/bslyuO0dPlj.js?_nc_x=Ij3Wp8lg5Kz (59)
