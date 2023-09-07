@@ -28,31 +28,31 @@ export default function JoinedChallenge() {
 
   return (
     <>
-      <div className="p-10 bg-white w-2/3">
+      <div className="p-10 w-2/3">
         <div className="flex">
-          <button className={`text-lg font-semibold px-6 py-3 ${isJoinedChallengeOpen ? '' : 'text-sub6'}`} onClick={handleJoinChallengeClick}>
+          <div className={`text-lg font-semibold px-3 py-2 mb-6 mx-2 cursor-pointer ${isJoinedChallengeOpen ? 'border-b-4 border-blue' : 'text-sub6'}`} onClick={handleJoinChallengeClick}>
             참여 챌린지
-          </button>
-          <button className={`text-lg font-semibold px-6 py-3 ${isMyChallengeOpen ? '' : 'text-sub6'}`} onClick={handleMyChallengeClick}>
+          </div>
+          <div className={`text-lg font-semibold px-3 py-2 mb-6 mx-2 cursor-pointer ${isMyChallengeOpen ? 'border-b-4 border-blue' : 'text-sub6'}`} onClick={handleMyChallengeClick}>
             나의 챌린지 인증
-          </button>
+          </div>
         </div>
         {isJoinedChallengeOpen && (
           <div>
-            <ul className="flex text-base opacity-50 px-6 py-3 mb-2">
-              <li className="flex-none w-80">챌린지</li>
-              <li className="flex-none w-40">기간</li>
-              <li className="flex-none w-40">진행상황</li>
+            <ul className="flex justify-between items-center text-base opacity-50 px-6 py-3 mb-2">
+              <li className="relative w-2/4">챌린지</li>
+              <li className="relative w-1/4 text-center">참여기간</li>
+              <li className="relative w-1/5 text-center">진행상황</li>
             </ul>
             {userChallenges?.length || 0 > 0 ? (
               <>
                 {userChallenges?.map(item => (
                   <ul key={item.join_id} className="flex flex-row justify-between items-center text-lg rounded-lg bg-sub1 px-8 py-4 mb-4">
-                    <li className="text-lg overflow-hidden overflow-ellipsis whitespace-nowrap max-w-[200px]">{item.mainChallenge?.title}</li>
-                    <li className="text-base opacity-50">
+                    <li className="relative w-2/4 text-lg overflow-hidden overflow-ellipsis whitespace-nowrap">{item.mainChallenge?.title}</li>
+                    <li className="relative w-1/3 text-base opacity-50 text-center">
                       {item.mainChallenge?.startDate} - {item.mainChallenge?.endDate}
                     </li>
-                    <div className={`w-20 py-1 text-center rounded ${item.mainChallenge?.isCompleted ? 'bg-lightblue text-blue' : 'bg-lightgreen text-green'}`}>{item.mainChallenge?.isCompleted ? '완료' : '진행중'}</div>
+                    <div className={`relative w-1/6 py-1 text-center rounded ${item.mainChallenge?.isCompleted ? 'bg-lightblue text-blue' : 'bg-lightgreen text-green'}`}>{item.mainChallenge?.isCompleted ? '완료' : '진행중'}</div>
                   </ul>
                 ))}
               </>
@@ -69,19 +69,19 @@ export default function JoinedChallenge() {
         {isMyChallengeOpen && (
           <div>
             <ul className="flex justify-between text-base opacity-50 px-6 py-3 mb-2">
-              <li>챌린지</li>
-              <li>인증 날짜</li>
-              <li>바로가기</li>
+              <li className="relative w-2/4">챌린지</li>
+              <li className="relative w-1/4 text-center">인증날짜</li>
+              <li className="relative w-1/4 text-center">바로가기</li>
             </ul>
             {userReviews?.length || 0 > 0 ? (
               <>
                 {userReviews?.map(item => (
-                  <ul key={item.post_id} className="flex flex-row justify-between items-center text-lg rounded-lg bg-sub1 px-6 py-3 mb-3">
-                    <li className="text-lg">{item.mainChallenge?.title}</li>
-                    <li className="text-base opacity-50">{item.created_at ? item.created_at.slice(0, 10) : ''}</li>
-                    <button className="bg-opacityblack w-20 py-1 text-center rounded text-base text-sub8">
+                  <ul key={item.post_id} className="flex flex-row justify-between items-center text-lg rounded-lg bg-sub1 px-8 py-4 mb-4">
+                    <li className="relative w-2/4 text-lg overflow-hidden overflow-ellipsis whitespace-nowrap">{item.mainChallenge?.title}</li>
+                    <li className="relative w-1/4 text-base opacity-50 text-center mr-6">{item.created_at ? item.created_at.slice(0, 10) : ''}</li>
+                    <div className="relative w-1/5 mr-2 bg-opacityblack py-1 text-center rounded text-base text-sub8">
                       <Link href={item?.insta_url}>바로가기</Link>
-                    </button>
+                    </div>
                   </ul>
                 ))}
               </>
