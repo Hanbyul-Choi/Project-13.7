@@ -1,9 +1,7 @@
 import puppeteer from 'puppeteer'
-
-import puppeteerConfig from '../../../puppeteer.rc.cjs';
 export const getHtml = async (url:string) => {;
   // Launch the browser an open a new blank page
-  const browser = await puppeteer.launch(puppeteerConfig);
+  const browser = await puppeteer.launch({headless:false});
   const page = await browser.newPage();
   
 
