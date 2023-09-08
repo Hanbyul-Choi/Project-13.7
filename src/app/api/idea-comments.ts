@@ -1,29 +1,27 @@
 import { supabase } from '../../../supabase/supabaseConfig';
 
-// 댓글 post
 export const postChallengeIdeaComment = async (commentData: any) => {
-  const response = await supabase.from('ideaComments').insert(commentData);
-  console.error(response.error);
-  return response.data;
+  const { data, error } = await supabase.from('ideaComments').insert(commentData);
+  if (error) {
+    throw error;
+  }
+  return data;
 };
 
-// 댓글 update
 export const updateChallengeIdeaComment = async ({ id, editComment }: { id: string; editComment: string }) => {
   const { error } = await supabase.from('ideaComments').update({ comment: editComment }).eq('id', id);
   if (error) {
-    console.error('Error deleting comment:', error);
+    throw error;
   }
 };
 
-// 댓글 delete
 export const deleteChallengeIdeaComment = async (id: string) => {
   const { error } = await supabase.from('ideaComments').delete().eq('id', id);
   if (error) {
-    console.error('Error deleting comment:', error);
+    throw error;
   }
 };
 
-// 댓글 Infinite get
 export const getIdeaCommentInfinite = async ({ queryKey, pageParam = 1 }: any) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, slug] = queryKey;

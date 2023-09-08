@@ -7,7 +7,6 @@ export default function useReviewUpdateDelete(editComment: string, setEditCommen
   const queryClient = useQueryClient();
   const { Confirm } = useDialog();
 
-  // 댓글 update
   const editMutation = useMutation(updateChallengeIdeaComment, {
     onSuccess: () => {
       queryClient.invalidateQueries(['ideaComments']);
@@ -20,7 +19,6 @@ export default function useReviewUpdateDelete(editComment: string, setEditCommen
     setEditCommentId('');
   };
 
-  // 댓글 delete
   const deleteMutation = useMutation(deleteChallengeIdeaComment, {
     onSuccess: () => {
       queryClient.invalidateQueries(['ideaComments']);

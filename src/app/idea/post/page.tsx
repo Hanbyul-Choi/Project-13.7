@@ -1,4 +1,4 @@
-import IdeaContentsPost from '@/components/ideaPostPage/IdeaContentsPost';
+import IdeaContentsPost from '@/components/idea-post-page/IdeaContentsPost';
 import SingleLayout from '@/components/layout/SingleLayout';
 
 export default function IdeaPostPage() {

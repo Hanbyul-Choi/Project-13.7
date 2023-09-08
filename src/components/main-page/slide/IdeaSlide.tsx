@@ -33,7 +33,7 @@ export default function IdeaSlide() {
       <p className="text-xl opacity-50 underline underline-offset-4 font-montserrat">Next Challenge</p>
       <div className="flex justify-between">
         <Link href={'/idea'}>
-          <h2 className="mt-4">다음 챌린지 투표하기</h2>
+          <h2 className="mt-4">다음 챌린지 제안하기</h2>
         </Link>
       </div>
       <div className={'mt-10'}>
