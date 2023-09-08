@@ -3,7 +3,7 @@ import React from 'react';
 
 import Image from 'next/image';
 
-import { animals } from '@/components/main-page/Ranking';
+import { animals } from '@/components/mainPage/Ranking';
 import useLike from '@/hooks/useLike.hook';
 import useSessionStore from '@/store/sesson.store';
 

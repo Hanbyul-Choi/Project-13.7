@@ -2,7 +2,6 @@
 import React from 'react';
 
 import { useQuery } from '@tanstack/react-query';
-import { BarLoader } from 'react-spinners';
 
 import { mainChallengeCheck } from '@/app/api/main-challenge';
 import { CertifyList, CertifyPost } from '@/components/challenge-certify';
@@ -14,11 +13,7 @@ export default function CertifyPage() {
   const { session } = useSessionStore();
 
   if (isLoading) {
-    return (
-      <div className="absolute top-[50%] left-[50%] -translate-x-center -translate-y-center">
-        <BarLoader color="#101828" height={5} width={200} />
-      </div>
-    );
+    return <h1>is Loading...</h1>;
   }
   if (isError) {
     return <h1>Error Fetching Challenge Data</h1>;

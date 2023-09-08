@@ -3,7 +3,6 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { BarLoader } from 'react-spinners';
 
 import { Button, Input, Label } from '@/components/common';
 
@@ -41,12 +40,9 @@ function IdeaContentsPost() {
     }
   }, []);
 
+  // 등록하기 버튼 click시 실행. supabase storage Image Insert.
   if (isLoading) {
-    return (
-      <div className="w-full h-[50vh] flex justify-center items-center ">
-        <BarLoader color="#101828" height={5} width={200} />
-      </div>
-    );
+    return <div>로딩중입니다.</div>;
   }
   if (isError) {
     return <div>에러입니다.</div>;

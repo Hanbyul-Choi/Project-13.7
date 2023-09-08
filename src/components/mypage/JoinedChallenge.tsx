@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
-import { getCurUserChallenges, getCurUserReviews } from '@/app/api/mypage';
-import { USER_CHALLENGES, USER_REVIEWS } from '@/app/shared/queries.keys';
 import useSessionStore from '@/store/sesson.store';
+
+import { supabase } from '../../../supabase/supabaseConfig';
 
 export default function JoinedChallenge() {
   const session = useSessionStore((state: { session: any }) => state.session);
+  const router = useRouter();
 
   const [isJoinedChallengeOpen, setIsJoinedChallengeOpen] = useState(true);
   const [isMyChallengeOpen, setIsMyChallengeOpen] = useState(false);
@@ -23,38 +24,48 @@ export default function JoinedChallenge() {
     setIsMyChallengeOpen(true);
   };
 
-  const { data: userChallenges } = useQuery({ queryKey: [USER_CHALLENGES], queryFn: () => getCurUserChallenges(session?.user_id) });
-  const { data: userReviews } = useQuery({ queryKey: [USER_REVIEWS], queryFn: () => getCurUserReviews(session?.user_id) });
+  const { data: userChallenges } = useQuery(['userChallenges', session?.user_id], async () => {
+    const { data: challenges } = await supabase.from('joinChallenge').select(`*, mainChallenge (*)`).eq('user_id', session?.user_id);
+    return challenges;
+  });
+
+  const { data: userReviews } = useQuery(['userReviews', session?.user_id], async () => {
+    const { data: reviews } = await supabase.from('reviews').select(`*, mainChallenge (title)`).eq('user_id', session?.user_id);
+    return reviews;
+  });
+
+  const goToReviews = () => {
+    router.push('/challenge/certify');
+  };
 
   return (
     <>
-      <div className="md:p-6 md:mt-3 w-full lg:w-2/3">
-        <div className="flex justify-evenly md:justify-start mt-3">
-          <div className={`text-lg font-semibold px-3 py-2 mb-6 mx-2 cursor-pointer ${isJoinedChallengeOpen ? 'border-b-4 border-blue' : 'text-sub6'}`} onClick={handleJoinChallengeClick}>
+      <div className="p-10 bg-white w-2/3">
+        <div className="flex">
+          <button className={`text-lg font-semibold px-6 py-3 ${isJoinedChallengeOpen ? '' : 'text-sub6'}`} onClick={handleJoinChallengeClick}>
             참여 챌린지
-          </div>
-          <div className={`text-lg font-semibold px-3 py-2 mb-6 mx-2 cursor-pointer ${isMyChallengeOpen ? 'border-b-4 border-blue' : 'text-sub6'}`} onClick={handleMyChallengeClick}>
+          </button>
+          <button className={`text-lg font-semibold px-6 py-3 ${isMyChallengeOpen ? '' : 'text-sub6'}`} onClick={handleMyChallengeClick}>
             나의 챌린지 인증
-          </div>
+          </button>
         </div>
         {isJoinedChallengeOpen && (
           <div>
-            <ul className="flex justify-between items-center text-base opacity-50 px-6 md:px-4 py-3 mb-2 gap-2">
-              <li className="relative md:w-2/4 w-1/3 md:text-left text-center">챌린지</li>
-              <li className="relative md:w-1/4 w-1/3 text-center">참여기간</li>
-              <li className="relative md:w-1/4 w-1/3 text-center">진행상황</li>
+            <ul className="flex justify-between text-base opacity-50 px-6 py-3 mb-2">
+              <li>챌린지 제목</li>
+              <li>참여 기간</li>
+              <li>진행상황</li>
             </ul>
             {userChallenges?.length || 0 > 0 ? (
               <>
                 {userChallenges?.map(item => (
-                  <ul key={item.join_id} className="flex flex-row justify-between items-center text-lg rounded-lg bg-sub1 px-7 md:px-4 py-4 mb-4 gap-2">
-                    <li className="relative md:w-2/4 w-1/3 overflow-hidden overflow-ellipsis whitespace-nowrap text-sm md:text-lg">{item.mainChallenge?.title}</li>
-                    <li className="relative md:w-1/4 w-1/3 opacity-50 text-center text-sm md:text-base">
-                      {item.mainChallenge?.startDate} — {item.mainChallenge?.endDate?.toString().slice(5, 10)}
+                  <ul key={item.join_id} className="flex flex-row justify-between items-center text-lg rounded-lg bg-sub1 px-8 py-4 mb-4">
+                    <li className="text-lg overflow-hidden overflow-ellipsis whitespace-nowrap max-w-[200px]">{item.mainChallenge?.title}</li>
+                    <li className="text-base opacity-50">
+                      {item.mainChallenge?.startDate} - {item.mainChallenge?.endDate}
                     </li>
-                    <div className={`relative md:w-1/4 w-1/3 ml-2 text-center rounded text-sm md:text-base md:py-2 ${item.mainChallenge?.isCompleted ? 'bg-lightblue text-blue' : 'bg-lightgreen text-green'}`}>
-                      {item.mainChallenge?.isCompleted ? '완료' : '진행중'}
-                    </div>
+                    {/* <div className=" w-20 py-1 text-center bg-lightgreen text-green rounded">{item.mainChallenge.isCompleted ? `완료` : `진행중`}</div> */}
+                    <div className={`w-20 py-1 text-center rounded ${item.mainChallenge?.isCompleted ? 'bg-lightblue text-blue' : 'bg-lightgreen text-green'}`}>{item.mainChallenge?.isCompleted ? '완료' : '진행중'}</div>
                   </ul>
                 ))}
               </>
@@ -70,20 +81,21 @@ export default function JoinedChallenge() {
 
         {isMyChallengeOpen && (
           <div>
-            <ul className="flex justify-between items-center text-base opacity-50 px-6 sm:px-4 py-3 mb-2">
-              <li className="relative md:w-2/4 w-1/3 md:text-left text-center">챌린지</li>
-              <li className="relative md:w-1/4 w-1/3 text-center">인증날짜</li>
-              <li className="relative md:w-1/4 w-1/3 text-center">바로가기</li>
+            <ul className="flex justify-between text-base opacity-50 px-6 py-3 mb-2">
+              <li>참여 날짜</li>
+              <li>챌린지 링크</li>
+              <li>진행상황</li>
             </ul>
             {userReviews?.length || 0 > 0 ? (
               <>
                 {userReviews?.map(item => (
-                  <ul key={item.post_id} className="flex flex-row justify-between items-center text-lg rounded-lg bg-sub1 px-7 md:px-4 py-4 mb-4">
-                    <li className="relative md:w-2/4 w-1/3 overflow-hidden overflow-ellipsis whitespace-nowrap text-sm md:text-lg">{item.mainChallenge?.title}</li>
-                    <li className="relative md:w-1/4 w-1/3  opacity-50 text-center text-sm md:text-base">{item.created_at ? item.created_at.slice(0, 10) : ''}</li>
-                    <div className="relative md:w-1/4 w-1/3 ml-2 text-center rounded bg-opacityblack text-sm md:text-base text-sub8 md:py-3">
-                      <Link href={item?.insta_url}>바로가기</Link>
-                    </div>
+                  <ul key={item.post_id} className="flex flex-row justify-between items-center text-lg rounded-lg bg-sub1 px-6 py-3 mb-3">
+                    {/* <li className="text-lg">{item.mainChallenge?.title}</li> */}
+                    <li className="text-base opacity-50">{item.created_at ? item.created_at.slice(0, 10) : ''}</li>
+                    <li className="text-base opacity-50">{item.insta_url ? item.insta_url.slice(28, 39) : ''}</li>
+                    <button onClick={goToReviews} className="bg-opacityblack w-20 py-1 text-center rounded">
+                      바로가기
+                    </button>
                   </ul>
                 ))}
               </>
