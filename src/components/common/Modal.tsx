@@ -12,7 +12,6 @@ type ModalProps = {
 const Modal: React.FC<ModalProps> = ({ children }) => {
   const [isCSR, setIsCSR] = useState<boolean>(false);
   const { isOpen, closeModal, isOpenMainModal, mainCloseModal } = useModalStore(state => state);
-  // 둘중에 하나만 true 일때 그거만 보여주게끔 로직 생성
 
   useEffect(() => {
     setIsCSR(true);
@@ -30,7 +29,7 @@ const Modal: React.FC<ModalProps> = ({ children }) => {
         !isOpenMainModal &&
         createPortal(
           <div onClick={() => closeModal()} className="fixed top-0 left-0 w-full h-full bg-[#00000060] z-20">
-            <div onClick={e => e.stopPropagation()} className="bg-white fixed top-1/2 left-1/2 px-[5.5rem] py-12 flex flex-col justify-center items-start rounded-2xl translate-x-[-50%] translate-y-[-50%] z-30">
+            <div onClick={e => e.stopPropagation()} className="bg-white fixed top-1/2 left-1/2 lg:px-[5.5rem] py-12 px-4 flex flex-col justify-center items-start rounded-2xl translate-x-[-50%] translate-y-[-50%] z-30">
               {children}
             </div>
           </div>,
@@ -41,7 +40,10 @@ const Modal: React.FC<ModalProps> = ({ children }) => {
       {isOpenMainModal &&
         createPortal(
           <div onClick={() => mainCloseModal()} className="fixed top-0 left-0 w-full h-full bg-[#00000060] z-20">
-            <div onClick={e => e.stopPropagation()} className="bg-white fixed top-1/2 left-1/2 px-[5.5rem] py-12 flex flex-col justify-center items-start rounded-2xl translate-x-[-50%] translate-y-[-50%] z-30">
+            <div
+              onClick={e => e.stopPropagation()}
+              className="bg-white top-1/2 sm:left-1/2 sm:fixed sm:py-8 sm:px-[5rem] relative px-3 py-1 mx-5 flex sm:flex-col justify-center items-start rounded-2xl sm:translate-x-[-50%] sm:translate-y-[-50%] translate-y-[-50%] z-30"
+            >
               {children}
             </div>
           </div>,
