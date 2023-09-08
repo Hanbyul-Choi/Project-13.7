@@ -39,6 +39,11 @@ export const getCurUserChallenges = async (user_id: string | null) => {
   return data;
 };
 
+export const getCompletedChallenges = async (user_id: string | null) => {
+  const { data } = await supabase.from('joinChallenge').select(`*, mainChallenge (*)`).eq('user_id', user_id).eq('completedMission', true);
+  return data;
+};
+
 export const getCurUserReviews = async (user_id: string | null) => {
   const { data } = await supabase.from('reviews').select(`*, mainChallenge (title)`).eq('user_id', user_id);
   return data;

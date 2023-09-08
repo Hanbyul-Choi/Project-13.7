@@ -61,12 +61,12 @@ export default function EditProfile({ setEditMode, userProfile, setUserProfile }
           }}
         />
         <div className="space-y-1 flex flex-col my-4 items-center">
-          <div className="flex items-center gap-2 font-semibold sm:flex-col sm:mb-1">
-            <p>이름</p>
+          <div className="flex items-center gap-3 font-semibold mb-2">
+            <p className="w-10">이름</p>
             <Input type="text" value={editedProfile?.nickname || ''} _size="xs" onChange={e => setEditedProfile((prev: any) => ({ ...prev, nickname: e.target.value }))} placeholder="이름" />
           </div>
-          <div className="flex items-center gap-2 font-semibold sm:flex-col sm:mb-1">
-            <p>주소</p>
+          <div className="flex items-center gap-3 font-semibold mb-2">
+            <p className="w-10">주소</p>
             <Input type="text" value={editedProfile?.address || ''} _size="xs" onChange={e => setEditedProfile((prev: any) => ({ ...prev, address: e.target.value }))} placeholder="주소" />
           </div>
         </div>

@@ -28,8 +28,8 @@ export default function JoinedChallenge() {
 
   return (
     <>
-      <div className="p-10 sm:p-0 sm:mt-3 w-full sm:w-full md:w-3/4 lg:w-2/3 xl:w-3/4">
-        <div className="flex sm:justify-evenly sm:mt-3">
+      <div className="md:p-6 md:mt-3 w-full lg:w-2/3">
+        <div className="flex justify-evenly md:justify-start mt-3">
           <div className={`text-lg font-semibold px-3 py-2 mb-6 mx-2 cursor-pointer ${isJoinedChallengeOpen ? 'border-b-4 border-blue' : 'text-sub6'}`} onClick={handleJoinChallengeClick}>
             참여 챌린지
           </div>
@@ -39,20 +39,22 @@ export default function JoinedChallenge() {
         </div>
         {isJoinedChallengeOpen && (
           <div>
-            <ul className="flex justify-between items-center text-base sm:text-sm opacity-50 px-6 sm:px-4 py-3 mb-2">
-              <li className="relative w-3/5 sm:w-1/3 sm:text-left">챌린지</li>
-              <li className="relative w-2/5 sm:w-1/3 text-center">참여기간</li>
-              <li className="relative w-1/5 sm:w-1/4 text-center sm:text-right">진행상황</li>
+            <ul className="flex justify-between items-center text-base opacity-50 px-6 md:px-4 py-3 mb-2 gap-2">
+              <li className="relative md:w-2/4 w-1/3 md:text-left text-center">챌린지</li>
+              <li className="relative md:w-1/4 w-1/3 text-center">참여기간</li>
+              <li className="relative md:w-1/4 w-1/3 text-center">진행상황</li>
             </ul>
             {userChallenges?.length || 0 > 0 ? (
               <>
                 {userChallenges?.map(item => (
-                  <ul key={item.join_id} className="flex flex-row justify-between items-center text-lg rounded-lg bg-sub1 px-7 sm:px-4 py-4 mb-4">
-                    <li className="relative w-3/5 sm:w-1/3 text-lg overflow-hidden overflow-ellipsis whitespace-nowrap sm:text-sm">{item.mainChallenge?.title}</li>
-                    <li className="relative w-2/5 sm:w-1/3 text-base opacity-50 text-center sm:text-sm">
-                      {item.mainChallenge?.startDate} - {item.mainChallenge?.endDate}
+                  <ul key={item.join_id} className="flex flex-row justify-between items-center text-lg rounded-lg bg-sub1 px-7 md:px-4 py-4 mb-4 gap-2">
+                    <li className="relative md:w-2/4 w-1/3 overflow-hidden overflow-ellipsis whitespace-nowrap text-sm md:text-lg">{item.mainChallenge?.title}</li>
+                    <li className="relative md:w-1/4 w-1/3 opacity-50 text-center text-sm md:text-base">
+                      {item.mainChallenge?.startDate} — {item.mainChallenge?.endDate?.toString().slice(5, 10)}
                     </li>
-                    <div className={`relative w-1/5 sm:w-1/5 ml-2 text-center rounded sm:text-sm ${item.mainChallenge?.isCompleted ? 'bg-lightblue text-blue' : 'bg-lightgreen text-green'}`}>{item.mainChallenge?.isCompleted ? '완료' : '진행중'}</div>
+                    <div className={`relative md:w-1/4 w-1/3 ml-2 text-center rounded text-sm md:text-base md:py-2 ${item.mainChallenge?.isCompleted ? 'bg-lightblue text-blue' : 'bg-lightgreen text-green'}`}>
+                      {item.mainChallenge?.isCompleted ? '완료' : '진행중'}
+                    </div>
                   </ul>
                 ))}
               </>
@@ -68,18 +70,18 @@ export default function JoinedChallenge() {
 
         {isMyChallengeOpen && (
           <div>
-            <ul className="flex justify-between items-center text-base sm:text-sm opacity-50 px-6 sm:px-4 py-3 mb-2">
-              <li className="relative w-3/5 sm:w-1/3 sm:text-left">챌린지</li>
-              <li className="relative w-2/5 sm:w-1/3 text-center">인증날짜</li>
-              <li className="relative w-1/5 sm:w-1/4 text-center sm:text-right">바로가기</li>
+            <ul className="flex justify-between items-center text-base opacity-50 px-6 sm:px-4 py-3 mb-2">
+              <li className="relative md:w-2/4 w-1/3 md:text-left text-center">챌린지</li>
+              <li className="relative md:w-1/4 w-1/3 text-center">인증날짜</li>
+              <li className="relative md:w-1/4 w-1/3 text-center">바로가기</li>
             </ul>
             {userReviews?.length || 0 > 0 ? (
               <>
                 {userReviews?.map(item => (
-                  <ul key={item.post_id} className="flex flex-row justify-between items-center text-lg rounded-lg bg-sub1 px-7 sm:px-4 py-4 mb-4">
-                    <li className="relative w-3/5 sm:w-1/3 text-lg overflow-hidden overflow-ellipsis whitespace-nowrap sm:text-sm">{item.mainChallenge?.title}</li>
-                    <li className="relative w-2/5 sm:w-1/3 text-base opacity-50 text-center sm:text-sm">{item.created_at ? item.created_at.slice(0, 10) : ''}</li>
-                    <div className="relative w-1/5 sm:w-1/5 ml-2 text-center rounded bg-opacityblack text-base sm:text-sm text-sub8">
+                  <ul key={item.post_id} className="flex flex-row justify-between items-center text-lg rounded-lg bg-sub1 px-7 md:px-4 py-4 mb-4">
+                    <li className="relative md:w-2/4 w-1/3 overflow-hidden overflow-ellipsis whitespace-nowrap text-sm md:text-lg">{item.mainChallenge?.title}</li>
+                    <li className="relative md:w-1/4 w-1/3  opacity-50 text-center text-sm md:text-base">{item.created_at ? item.created_at.slice(0, 10) : ''}</li>
+                    <div className="relative md:w-1/4 w-1/3 ml-2 text-center rounded bg-opacityblack text-sm md:text-base text-sub8 md:py-3">
                       <Link href={item?.insta_url}>바로가기</Link>
                     </div>
                   </ul>
