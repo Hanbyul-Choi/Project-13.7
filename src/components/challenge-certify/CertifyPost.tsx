@@ -5,8 +5,10 @@ import UploadReviewModal from './UploadReviewModal';
 import { Button } from '../common';
 
 export function CertifyPost({ challengeId, user_id }: { challengeId: string; user_id: string | undefined }) {
-  const { onClickUploadReview, onClickUploadReviewFalseConfirm, joinChallenge, isOpenMainModal } = useCertify(user_id, challengeId);
-
+  const { onClickUploadReview, onClickUploadReviewFalseConfirm, joinChallenge, isOpenMainModal, isFetched } = useCertify(user_id, challengeId);
+  if (!isFetched) {
+    return;
+  }
   return (
     <>
       {joinChallenge ? (

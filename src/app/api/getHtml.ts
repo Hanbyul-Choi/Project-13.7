@@ -1,19 +1,18 @@
-import axios from 'axios';
-import cheerio from 'cheerio';
+import puppeteer from 'puppeteer'
+export const getHtml = async (url:string) => {;
+  // Launch the browser an open a new blank page
+  const browser = await puppeteer.launch({headless:false});
+  const page = await browser.newPage();
+  
 
-export const getHtml = async (url: string): Promise<{ imageUrl: string; hashtags: string[] | null } | undefined> => {
-  try {
-    const html = await axios.get(url);
-    const $ = cheerio.load(html.data);
-    const imageUrl: string = $('meta[property="og:image"]').attr('content') || '';
-    const caption = $('meta[property="og:description"]').attr('content') || '';
-    const hashtags: string[] | null = caption.match(/#[\p{L}\p{N}_\.]+/gu);
+  await page.goto(url, { waitUntil: "networkidle0" });
 
-    return {
-      imageUrl,
-      hashtags,
-    };
-  } catch (error) {
-    console.error('Error while crawling', error);
-  }
-};
+  const imgEl = await page.$(
+    "main > div > div > article > div > div > div > div > div > div > img"
+  )
+
+  const imageUrl = await page.evaluate((img) => img?.src, imgEl)
+  await browser.close();
+  return {imageUrl, hashtags:"#13.7챌린지"}
+}
+

@@ -13,7 +13,7 @@ export default function useCertify(user_id: string | undefined, challenge_id: st
   const { Alert, Confirm } = useDialog();
   const { mainOpenModal, isOpenMainModal } = useModalStore();
 
-  const { data: joinChallenge } = useQuery(['joinChallenge'], () => userJoinChallengeCheck(user_id, challenge_id));
+  const { data: joinChallenge, isFetched } = useQuery(['joinChallenge'], () => userJoinChallengeCheck(user_id, challenge_id), { enabled: !!user_id });
 
   const onClickUploadReview = () => {
     mainOpenModal();
@@ -29,5 +29,5 @@ export default function useCertify(user_id: string | undefined, challenge_id: st
     }
   };
 
-  return { onClickUploadReview, onClickUploadReviewFalseConfirm, joinChallenge, isOpenMainModal };
+  return { onClickUploadReview, onClickUploadReviewFalseConfirm, joinChallenge, isOpenMainModal, isFetched };
 }
