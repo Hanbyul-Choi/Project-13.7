@@ -295,6 +295,7 @@ export interface Database {
           address: string | null;
           created_at: string;
           email: string;
+          name: string | null;
           nickname: string | null;
           phone: string | null;
           point: number;

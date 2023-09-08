@@ -1,21 +1,26 @@
 import type React from 'react';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import { useDialog } from '../common';
 
-export default function useImagePost(setImgFile: React.Dispatch<React.SetStateAction<File | undefined>>, setPreviewImg: React.Dispatch<React.SetStateAction<string | ArrayBuffer | undefined>>) {
+export default function useImagePost(setImgFile: React.Dispatch<React.SetStateAction<File | undefined>>, setPreviewImg: React.Dispatch<React.SetStateAction<string | ArrayBuffer | undefined>>, imgUrl: string) {
   const { Alert } = useDialog();
 
+  useEffect(() => {
+    if (imgUrl) {
+      setPreviewImg(imgUrl);
+    }
+  }, []);
+
   const handleChangeImg = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0]; // Access the selected file
+    const selectedFile = e.target.files?.[0];
     if (selectedFile) {
       imgUpload(selectedFile);
     }
   };
 
-  // Drag & Drop 사진 첨부 => DB state 할당, 미리보기 state 할당 함수 실행
   const onDrop = useCallback((acceptedFiles: File[]) => {
-    const [selectedFile] = acceptedFiles; // Access the selected file
+    const [selectedFile] = acceptedFiles;
     const imgExtension = selectedFile.name.split('.')[1];
     const extension = ['jpeg', 'jpg', 'png', 'GIF'].includes(imgExtension);
     if (extension) {
@@ -25,7 +30,6 @@ export default function useImagePost(setImgFile: React.Dispatch<React.SetStateAc
     }
   }, []);
 
-  // 첨부된 파일 읽고 DB state 할당, 미리보기 state 할당
   const imgUpload = (selectedFile: File) => {
     if (selectedFile) {
       setImgFile(selectedFile);
@@ -39,7 +43,6 @@ export default function useImagePost(setImgFile: React.Dispatch<React.SetStateAc
     }
   };
 
-  // Image 취소 버튼 click시 실행
   const handleCancelImg = () => {
     setImgFile(undefined);
     setPreviewImg(undefined);
