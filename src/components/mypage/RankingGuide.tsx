@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 
 import useSessionStore from '@/store/sesson.store';
 
-import { animals } from '../mainPage/Ranking';
+import { animals } from '../main-page/Ranking';
 
 export default function RankingGuide() {
   const session = useSessionStore((state: { session: any }) => state.session);

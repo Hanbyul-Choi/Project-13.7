@@ -48,10 +48,12 @@ export function IdeaList() {
                 <IdeaContent key={item.post_id} item={item} />
               ))}
             </div>
-            <Button btnType="borderBlack" size="large" rounded onClick={clickNextPage}>
-              더보기
-              <AiOutlineArrowRight size={20} />
-            </Button>
+            {hasNextPage && (
+              <Button btnType="borderBlack" size="large" rounded onClick={clickNextPage}>
+                더보기
+                <AiOutlineArrowRight size={20} />
+              </Button>
+            )}
           </div>
         </>
       ) : (
