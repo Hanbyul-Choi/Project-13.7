@@ -104,7 +104,7 @@ export function Header() {
 
       <div className="w-full sticky top-0 px-4 pb-4 bg-white text-sub6 text-lg z-10 font-medium md:hidden shadow-sm justify-center">
         <div className="flex items-center justify-between">
-          <Link href="/" className="flex font-semibold gap-2">
+          <Link href="/" className="flex font-semibold gap-2" onClick={closeMobileMenu}>
             <Image src={logo} alt="logo" />
             <Image src={logoTitle} alt="logo title" />
           </Link>
