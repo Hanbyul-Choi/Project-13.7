@@ -21,15 +21,24 @@ export function IdeaHeader() {
   return (
     <div className="w-full flex justify-between items-center mt-10 pb-4 border-b-2 border-opacityblack">
       <div className="flex gap-6 items-center">
-        <h5 className={`cursor-pointer ${sortWay === '추천순' ? '' : 'text-sub6'}`} onClick={setPopular}>
+        <h5 className={`text-lg cursor-pointer ${sortWay === '추천순' ? '' : 'text-sub6'}`} onClick={setPopular}>
           추천순
         </h5>
-        <h5 className={`cursor-pointer ${sortWay === '최신순' ? '' : 'text-sub6'}`} onClick={setLatest}>
+        <h5 className={`text-lg cursor-pointer ${sortWay === '최신순' ? '' : 'text-sub6'}`} onClick={setLatest}>
           최신순
         </h5>
       </div>
-      <div className="flex"></div>
-      <Button btnType="black" size="large" onClick={clickSuggestionButton}>
+      {/* <div className="flex">
+        {countDown ? (
+          <>
+            <p className="text-lg font-medium flex">투표마감까지 남은 시간 : &nbsp; </p>
+            <h5 className="w-48">{countDown}</h5>
+          </>
+        ) : (
+          <h5>투표가 종료되었습니다.</h5>
+        )}
+      </div> */}
+      <Button btnType="black" size="large-mo" onClick={clickSuggestionButton}>
         챌린지 제안하기
       </Button>
     </div>
