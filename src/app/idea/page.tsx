@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 import { Layout } from '@/components/common';
 import { IdeaList } from '@/components/idea-page';
 

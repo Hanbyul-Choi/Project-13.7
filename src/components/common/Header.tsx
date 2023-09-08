@@ -25,6 +25,10 @@ export function Header() {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
+
   useEffect(() => {
     const refresh = async () => {
       const access_token = localStorage.getItem('access_token');
@@ -98,14 +102,14 @@ export function Header() {
         </Layout>
       </div>
 
-      <div className="w-full sticky top-0 px-8 pb-4 bg-white text-sub6 text-lg z-10 font-medium md:hidden shadow-sm justify-center">
+      <div className="w-full sticky top-0 px-4 pb-4 bg-white text-sub6 text-lg z-10 font-medium md:hidden shadow-sm justify-center">
         <div className="flex items-center justify-between">
           <Link href="/" className="flex font-semibold gap-2">
             <Image src={logo} alt="logo" />
             <Image src={logoTitle} alt="logo title" />
           </Link>
           <button className="font-bold text-xl relative text-right justify-end" onClick={toggleMobileMenu}>
-            {isMobileMenuOpen ? <AiOutlineClose size={34} /> : <AiOutlineAlignRight size={34} />}
+            {isMobileMenuOpen ? <AiOutlineClose size={30} /> : <AiOutlineAlignRight size={30} />}
           </button>
         </div>
 
@@ -113,13 +117,13 @@ export function Header() {
           <div className="md:hidden">
             <nav className="overflow-y-auto flex flex-col py-10 gap-8 ml-4 justify-center">
               {navCategory.map(item => (
-                <Link href={item.pathname} className="text-sub6 text-left" key={item.title}>
+                <Link href={item.pathname} className="text-sub6 text-left" key={item.title} onClick={closeMobileMenu}>
                   <h5 className={`${params === item.pathname ? 'text-black' : ''} font-semibold `}>{item.title}</h5>
                 </Link>
               ))}
             </nav>
             {isLoaded && (
-              <div className="flex flex-col py-4 gap-4 ml-4 justify-center mb-4">
+              <div className="flex flex-col py-4 gap-4 ml-4 justify-center mb-4" onClick={closeMobileMenu}>
                 {session ? (
                   <>
                     <Link href="/mypage" className={`${params === '/mypage' ? 'text-black' : 'text-sub6'} flex gap-2 text-lg font-medium`}>
