@@ -1,8 +1,8 @@
 import { Layout } from '@/components/common';
-import MainBanner from '@/components/mainPage/MainBanner';
-import Ranking from '@/components/mainPage/Ranking';
-import ColumnSlide from '@/components/mainPage/slide/ColumnSlide';
-import IdeaSlide from '@/components/mainPage/slide/IdeaSlide';
+import MainBanner from '@/components/main-page/MainBanner';
+import Ranking from '@/components/main-page/Ranking';
+import ColumnSlide from '@/components/main-page/slide/ColumnSlide';
+import IdeaSlide from '@/components/main-page/slide/IdeaSlide';
 
 export default function Main() {
   return (

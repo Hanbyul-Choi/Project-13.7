@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 
 import useSessionStore from '@/store/sesson.store';
 
-import { animals } from '../mainPage/Ranking';
+import { animals } from '../main-page/Ranking';
 
 export default function RankingGuide() {
   const session = useSessionStore((state: { session: any }) => state.session);
@@ -21,21 +21,26 @@ export default function RankingGuide() {
           <p className="text-black text-sm">{userTitle} ⓘ</p>
         </div>
       </div>
-      <div className="fixed z-100">
+      <div className="fixed z-100 bg-white">
         {showRankGuide && (
-          <div className="absolute bg-white border rounded shadow w-[32rem] p-2 m-2">
-            <p className="font-semibold my-4">등급별 혜택</p>
-            <div className="flex flex-col justify-between gap-2 py-1 mx-4">
-              <p className="text-lg font-bold">챌린지 1회 달성 시</p>
-              <p className="text-base font-regular mb-2">{animals[1]} 수호신 승급 | 나무 10그루 지급</p>
+          <div className="absolute bg-white border rounded shadow w-[40rem] p-8 pt-4 pb-8">
+            <p className="font-semibold my-4 text-lg">등급별 혜택</p>
+            <div className="border-t border-black opacity-25 mb-6"></div>
+            <div className="flex item-center justify-between gap-2 bg-sub1 rounded-lg px-8 py-4 mb-3">
+              <p className="text-base font-bold">회원 가입 시</p>
+              <p className="text-sub6 text-base">거북이 수호신 승급 | 나무 25그루 지급</p>
             </div>
-            <div className="flex flex-col justify-between gap-2 py-1 mx-4">
-              <p className="text-lg font-bold">챌린지 5회 달성 시</p>
-              <p className="text-base font-regular mb-2">{animals[2]} 수호신 승급 | 나무 30그루 지급</p>
+            <div className="flex item-center justify-between gap-2 bg-sub1 rounded-lg px-8 py-4 mb-3">
+              <p className="text-base font-bold">챌린지 1회 달성 시</p>
+              <p className="text-sub6 text-base">{animals[1]} 수호신 승급 | 나무 10그루 지급</p>
             </div>
-            <div className="flex flex-col justify-between gap-2 py-1 mx-4">
-              <p className="text-lg font-bold">챌린지 10회 달성 시</p>
-              <p className="text-base font-regular mb-4">{animals[3]} 마스터 승급 | 나무 50그루 지급</p>
+            <div className="flex item-center justify-between gap-2 bg-sub1 rounded-lg px-8 py-4 mb-3">
+              <p className="text-base font-bold">챌린지 5회 달성 시</p>
+              <p className="text-sub6 text-base">{animals[2]} 수호신 승급 | 나무 25그루 지급</p>
+            </div>
+            <div className="flex item-center justify-between gap-2 bg-sub1 rounded-lg px-8 py-4 mb-3">
+              <p className="text-base font-bold">챌린지 10회 달성 시</p>
+              <p className="text-sub6 text-base">{animals[3]} 마스터 승급 | 나무 40그루 지급</p>
             </div>
           </div>
         )}

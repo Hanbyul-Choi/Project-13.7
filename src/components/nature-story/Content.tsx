@@ -8,7 +8,7 @@ export function Content() {
     <section className="flex flex-col items-center">
       <article className="grid grid-cols-3 gap-6">
         {data.map((item, index) => (
-          <Link href={`/naturestory/${item.id}`} key={item.id} className="flex flex-col gap-4">
+          <Link href={`/nature-story/${item.id}`} key={item.id} className="flex flex-col gap-4">
             <div className="w-[316px] h-[178px] bg-sub3 text-center"> 이미지 영역</div>
             <div className="flex gap-2  opacity-50 items-center mt-4">
               <p className="text-lg">{item.category}</p>
