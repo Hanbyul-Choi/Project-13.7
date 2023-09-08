@@ -15,7 +15,7 @@ export default function MainChallengeData() {
   if (!mainChallenge) return;
   return (
     <>
-      <SingleLayout title={mainChallenge.title} animal="북극곰을">
+      <SingleLayout size={true} title={mainChallenge.title} animal="북극곰을">
         <div>
           <h5 className="mb-4 flex items-center before:content-[' '] before:w-[2px] before:bg-blue before:h-[18px] before:inline-block before:mr-[8px]">챌린지 내용</h5>
           <p className="text-lg leading-[140%]">{mainChallenge.content}</p>

@@ -47,18 +47,18 @@ function IdeaDetail({ item }: { item: Suggestion }) {
         </div>
       </div>
       <hr className="w-full my-10 border border-[#bdbdbd]" />
-      <div className="w-[33.37rem] h-[21.87rem] relative overflow-hidden mx-auto my-10 rounded-lg">
+      <div className="w-full h-[21.87rem] relative overflow-hidden mx-auto my-10 rounded-lg sm:w-[33.37rem]">
         <Image src={`${img_url}`} fill alt="Challenge example image" className="object-cover" />
       </div>
       <div>
-        <div className="flex flex-row justify-center items-center">
-          <p className="text-lg leading-[140%] font-medium w-[83px]">챌린지 내용</p>
-          <p className="px-6 py-2 border-b border-[#bdbdbd] w-[84%] ml-5">{content}</p>
+        <div className="flex justify-center items-center flex-col sm:flex-row">
+          <p className="text-lg leading-[140%] font-medium mb-[20px] md:w-[83px] sm:w-[85px] sm:mb-0">챌린지 내용</p>
+          <p className="px-6 py-2 w-full text-center sm:ml-5 sm:text-left sm:w-[84%] sm:border-b sm:border-[#bdbdbd]">{content}</p>
         </div>
         {product && (
-          <div className="flex flex-row justify-center items-center mt-6">
-            <p className="text-lg leading-[140%] font-medium mr-5 w-[83px]">챌린지 물품</p>
-            <p className="px-6 py-2 border-b border-[#bdbdbd] w-[84%]">{product}</p>
+          <div className="flex justify-center items-center mt-6 flex-row">
+            <p className="text-lg leading-[140%] font-medium mr-0 md:w-[83px] sm:w-[85px] sm:mr-5">챌린지 물품</p>
+            <p className="px-6 py-2 w-auto text-center sm:text-left sm:w-[84%] sm:border-b sm:border-[#bdbdbd]">{product}</p>
           </div>
         )}
       </div>
