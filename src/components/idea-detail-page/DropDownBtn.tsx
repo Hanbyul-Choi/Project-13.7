@@ -42,7 +42,7 @@ function DropDownBtn({ editClickHandler, deleteClickHandler, position }: DropDow
             수정
           </button>
           <hr className="my-2" />
-          <button onClick={() => deleteClickHandler} className="w-16 h-[25px] text-lg leading-[140%] text-[#8E95A3] hover:bg-sub2 hover:text-nagative">
+          <button onClick={deleteClickHandler} className="w-16 h-[25px] text-lg leading-[140%] text-[#8E95A3] hover:bg-sub2 hover:text-nagative">
             삭제
           </button>
         </div>

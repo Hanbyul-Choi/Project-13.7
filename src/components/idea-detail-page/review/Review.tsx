@@ -14,11 +14,9 @@ import type { IdeaComments } from '@/types/db.type';
 function Review({ slug }: DetailProps) {
   const [comment, setComment] = useState<string>('');
 
-  // 로그인한 user 데이터 get
   const { session } = useSessionStore();
   const curUser = session;
 
-  // 해당 포스트 댓글 데이터 get, 댓글 insert
   const { commentsError, challengeCommentsData, hasNextPage, ref, handlePostComment } = useReview(slug, curUser?.user_id, comment, setComment);
 
   if (commentsError) {
@@ -48,10 +46,12 @@ function Review({ slug }: DetailProps) {
           e.preventDefault();
         }}
       >
-        <Input placeholder="응원의 댓글을 남겨주세요." type="text" _size="md" value={comment} onChange={e => setComment(e.target.value)} />
-        <Button type="submit" btnType="primary" buttonStyle="ml-[16px]" size="large" onClick={handlePostComment}>
-          댓글입력
-        </Button>
+        <div className="flex justify-center w-full sm:flex-row sm:items-center">
+          <Input placeholder="응원의 댓글을 남겨주세요." type="text" _size="md" value={comment} onChange={e => setComment(e.target.value)} />
+          <Button type="submit" btnType="primary" buttonStyle="ml-[8px] sm:ml-[16px]" size="large" onClick={handlePostComment}>
+            댓글입력
+          </Button>
+        </div>
       </form>
     </div>
   );

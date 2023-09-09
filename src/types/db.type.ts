@@ -30,10 +30,15 @@ export interface User {
   nickname: string | null;
   email: string;
   rank: number;
+  name?: string | null;
 }
 
 export interface AnimalMap {
   [key: string]: string;
+}
+export interface HowToGetTrees {
+  title: string;
+  trees: number;
 }
 
 export interface IdeaComments {
@@ -48,7 +53,7 @@ export interface IdeaComments {
 export interface IdeaPost {
   title: string;
   content: string;
-  product: string;
+  product?: string;
   user_id: string;
   selected: boolean;
   img_url: string;
@@ -82,4 +87,25 @@ export interface CertifyPostType {
   img_url: string;
   tags: string;
   challenge_id: string;
+}
+
+export interface Badge {
+  challenge_id: string;
+  completedMission: boolean | null;
+  join_id: string;
+  reviews: number | null;
+  user_id: string;
+  mainChallenge: {
+    badgeUrl: string;
+    challenge_Id: string;
+    content: string;
+    title: string;
+    point: number;
+    limit: number;
+    product: string;
+    startDate: string | null;
+    endDate: string | null;
+    howto: string;
+    animal?: string;
+  } | null;
 }

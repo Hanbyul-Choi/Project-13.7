@@ -42,7 +42,7 @@ export default function MainChallengeData() {
   if (!mainChallenge) return;
   return (
     <>
-      <SingleLayout title={mainChallenge.title} animal="북극곰을" size>
+      <SingleLayout title={mainChallenge.title} animal="북극곰을" size={true}>
         <div className="relative">
           {countDown && (
             <p className="absolute right-0 -top-5 font-medium flex items-center">
