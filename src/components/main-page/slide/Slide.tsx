@@ -29,15 +29,15 @@ export default function Slide({ showContentNum = 3, contents, type, onClickHandl
   const slideObj: Match = {
     idea: {
       size: [343, 85.5],
-      containerWidth: 'w-[1199px]',
-      gap: 'gap-[85.5px]',
-      contentWidth: 'w-[343px]',
+      containerWidth: 'w-[300px] sm:max-lg:w-[100vw] lg:w-[1199px]',
+      gap: 'gap-[128.5px] sm:gap-[85.5px]',
+      contentWidth: 'w-[300px] sm:w-[343px]',
     },
     column: {
       size: [228, 24],
-      containerWidth: 'w-[983px]',
+      containerWidth: 'w-[228px] sm:max-lg:w-[100vw] lg:w-[983px]',
       gap: 'gap-[24px]',
-      contentWidth: 'w-[228px]',
+      contentWidth: 'w-[200px] w-[228px]',
     },
   };
 
@@ -93,12 +93,12 @@ export default function Slide({ showContentNum = 3, contents, type, onClickHandl
   };
 
   return (
-    <div className="flex items-center relative">
+    <div className="flex items-center relative w-[300px] sm:max-lg:w-[100vw] lg:w-[1199px]">
       <div className={` overflow-x-hidden  `}>
         <div className={`flex ${slideObj[type].containerWidth} ${slideObj[type].gap} `} ref={slideRef}>
           {renderContent()}
         </div>
-        <div className={type === 'idea' ? 'flex gap-6 top-[-105px] right-0 absolute' : 'flex absolute left-[-105px] top-[50px]  gap-[1030px]'}>
+        <div className={type === 'idea' ? 'flex gap-4 top-[-80px] sm:top-[-105px] right-0 absolute' : 'flex absolute left-[-105px] top-[50px]  gap-[1030px]'}>
           <SlideBtn direction="prev" onClick={prevSlide} />
           <SlideBtn direction="next" onClick={nextSlide} />
         </div>

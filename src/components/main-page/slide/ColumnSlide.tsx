@@ -9,7 +9,6 @@ import { BarLoader } from 'react-spinners';
 import { getNatureStory } from '@/app/api/nature-story';
 import { NATURESTORY } from '@/app/shared/queries.keys';
 import { Button } from '@/components/common';
-import { useTakeDeviceSize } from '@/hooks/useTakeDeviceSize';
 
 import Slide from './Slide';
 import nextIcon from '../../../../public/rightArrow.svg';
@@ -18,15 +17,7 @@ export default function ContentSlide() {
   const { isLoading, isError, data: contentData } = useQuery([NATURESTORY], getNatureStory);
 
   const [selectedItem, setSelectedItem] = useState(0);
-  const { width } = useTakeDeviceSize()
-  let showContentNum
-  if (width < 768) {
-    showContentNum = 2; // 작은 화면 크기에 대한 값
-  } else if (width < 1024) {
-    showContentNum = 3; // 중간 화면 크기에 대한 값
-  } else {
-    showContentNum = 4; // 큰 화면 크기에 대한 값
-  }
+
   const onClickItem = (i: number) => {
     if (!contentData) return;
     setSelectedItem(i);
@@ -39,8 +30,8 @@ export default function ContentSlide() {
     return (
       <div className=" border-b-2 mt-20 pb-20 my-20">
         <p className="text-xl opacity-50 underline underline-offset-4 font-montserrat">Contents</p>
-        <h2 className="mt-4">멸종위기 동물들의 생활</h2>
-        <div className="flex flex-col gap-10 mt-20 md:flex-row">
+        <h2 className="mt-4 text-[23px] sm:text-[36px]">멸종위기 동물들의 생활</h2>
+        <div className="flex flex-col gap-10 mt-16 md:flex-row">
           {contentData[selectedItem]?.category === 'youtube' ? (
             <div className="w-full h-[420px] sm:w-[690px]">
               <iframe width={690} height={420} rel="0" allowFullScreen src={`https://www.youtube.com/embed/${contentData[selectedItem]?.video_url}?amp;loop=1&modestbranding=1&rel=0&fs=1`} className="w-full h-[420px] sm:w-[690px]" />
@@ -58,7 +49,7 @@ export default function ContentSlide() {
               &nbsp;
               <span>|</span>
               &nbsp;
-              {/* <p>{date ? date[1] : ''}</p> */}
+              <p>{contentData[selectedItem]?.created_at.slice(0, 10).replaceAll('-', '.')}</p>
             </div>
             <Link href={`/nature-story/${contentData[selectedItem]?.post_id}`}>
               <Button btnType="borderBlack" size="large" rounded={true}>
@@ -69,7 +60,7 @@ export default function ContentSlide() {
           </div>
         </div>
         <div className={'flex justify-center items-center mt-10 gap-x-6'}>
-          <Slide showContentNum={showContentNum} type="column" contents={contentData} onClickHandler={onClickItem}></Slide>
+          <Slide showContentNum={4} type="column" contents={contentData} onClickHandler={onClickItem}></Slide>
         </div>
       </div>
     );
