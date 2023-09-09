@@ -2,12 +2,6 @@ import { supabase } from '../../../supabase/supabaseConfig';
 
 import type { IdeaPost } from '@/types/db.type';
 
-interface TPostImg {
-  imgName: string;
-  imgFile: File;
-}
-
-// ChallengeSuggestion data와 해당유저 데이터 get
 export const getSuggestions = async () => {
   const { data, error } = await supabase.from('challengeSuggestion').select(`*, users(*)`).order('liked_count', { ascending: false });
   if (error) {
@@ -16,7 +10,6 @@ export const getSuggestions = async () => {
   return data;
 };
 
-// Challenge Idea insert
 export const postChallengeIdea = async (ideaData: IdeaPost) => {
   const { error } = await supabase.from('challengeSuggestion').insert(ideaData);
   if (error) {
@@ -24,15 +17,13 @@ export const postChallengeIdea = async (ideaData: IdeaPost) => {
   }
 };
 
-// Challenge Idea update
-export const updateChallengeIdea = async ({ ideaData, getParamPostId }: { ideaData: IdeaPost; getParamPostId: string }) => {
-  const { error } = await supabase.from('challengeSuggestion').update(ideaData).eq('post_id', getParamPostId);
+export const updateChallengeIdea = async ({ ideaData, postId }: { ideaData: IdeaPost; postId: string }) => {
+  const { error } = await supabase.from('challengeSuggestion').update(ideaData).eq('post_id', postId);
   if (error) {
     throw error;
   }
 };
 
-// Challenge Idea delete
 export const deleteChallengeIdea = async (slug: string) => {
   const { error } = await supabase.from('challengeSuggestion').delete().eq('post_id', `${slug}`);
   if (error) {
@@ -40,8 +31,7 @@ export const deleteChallengeIdea = async (slug: string) => {
   }
 };
 
-// 첨부된 image storage upload
-export const postChallengeIdeaImg = async ({ imgName, imgFile }: TPostImg) => {
+export const postChallengeIdeaImg = async ({ imgName, imgFile }: { imgName: string; imgFile: File }) => {
   const { error } = await supabase.storage.from('project').upload(`challengeSuggestion/${imgName}`, imgFile, {
     cacheControl: '3600',
     upsert: false,
@@ -49,6 +39,11 @@ export const postChallengeIdeaImg = async ({ imgName, imgFile }: TPostImg) => {
   if (error) {
     throw error;
   }
+};
+
+export const getChallengeIdeaImgUrl = async (imgName: string) => {
+  const { data } = await supabase.storage.from('project').getPublicUrl(`challengeSuggestion/${imgName}`);
+  return data;
 };
 
 export const getIdeaInfinite = async ({ queryKey, pageParam = 1 }: any) => {

@@ -31,20 +31,20 @@ export default function ContentSlide() {
       <div className=" border-b-2 mt-20 pb-20 my-20">
         <p className="text-xl opacity-50 underline underline-offset-4 font-montserrat">Contents</p>
         <h2 className="mt-4">멸종위기 동물들의 생활</h2>
-        <div className="flex gap-10 mt-20">
+        <div className="flex flex-col gap-10 mt-20 md:flex-row">
           {contentData[selectedItem]?.category === 'youtube' ? (
-            <div className="w-[690px] h-[420px]">
-              <iframe width={690} height={420} rel="0" allowFullScreen src={`https://www.youtube.com/embed/${contentData[selectedItem]?.video_url}?amp;loop=1&modestbranding=1&rel=0&fs=1`} />
+            <div className="w-full h-[420px] sm:w-[690px]">
+              <iframe width={690} height={420} rel="0" allowFullScreen src={`https://www.youtube.com/embed/${contentData[selectedItem]?.video_url}?amp;loop=1&modestbranding=1&rel=0&fs=1`} className="w-full h-[420px] sm:w-[690px]" />
             </div>
           ) : (
-            <div className="w-[690px] h-[420px] overflow-hidden">
+            <div className="w-full h-[420px] overflow-hidden sm:w-[690px]">
               <Image width={690} height={420} src={contentData[selectedItem]?.img_url} alt="natureStroyImg" />
             </div>
           )}
           <div className="my-auto">
             <p className="mb-4">{contentData[selectedItem]?.category}</p>
             <h1 className="text-2xl mb-[14px]">{contentData[selectedItem]?.title}</h1>
-            <div className="flex  text-black opacity-50  mb-9">
+            <div className="hidden text-black opacity-50 mb-9 md:flex">
               <p>Updated</p>
               &nbsp;
               <span>|</span>

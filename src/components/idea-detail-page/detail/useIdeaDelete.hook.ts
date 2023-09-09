@@ -1,4 +1,3 @@
-import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
 import { deleteChallengeIdea } from '@/app/api/challenge-idea';
@@ -10,14 +9,11 @@ export default function useIdeaDelete(post_id: string) {
   const queryParams = new URLSearchParams();
   const { Confirm } = useDialog();
   const router = useRouter();
-  const mutation = useMutation({
-    mutationFn: deleteChallengeIdea,
-  });
 
   const handleDeleteChallengeIdeaData = async () => {
     const confirmed = await Confirm('해당 게시글을 삭제하시겠습니까?');
     if (confirmed) {
-      mutation.mutate(post_id);
+      deleteChallengeIdea(post_id);
       router.push(`/idea`);
     }
   };
