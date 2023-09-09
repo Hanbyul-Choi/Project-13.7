@@ -9,6 +9,7 @@ import { BarLoader } from 'react-spinners';
 import { getNatureStory } from '@/app/api/nature-story';
 import { NATURESTORY } from '@/app/shared/queries.keys';
 import { Button } from '@/components/common';
+import { useTakeDeviceSize } from '@/hooks/useTakeDeviceSize';
 
 import Slide from './Slide';
 import nextIcon from '../../../../public/rightArrow.svg';
@@ -17,7 +18,15 @@ export default function ContentSlide() {
   const { isLoading, isError, data: contentData } = useQuery([NATURESTORY], getNatureStory);
 
   const [selectedItem, setSelectedItem] = useState(0);
-
+  const { width } = useTakeDeviceSize()
+  let showContentNum
+  if (width < 768) {
+    showContentNum = 2; // 작은 화면 크기에 대한 값
+  } else if (width < 1024) {
+    showContentNum = 3; // 중간 화면 크기에 대한 값
+  } else {
+    showContentNum = 4; // 큰 화면 크기에 대한 값
+  }
   const onClickItem = (i: number) => {
     if (!contentData) return;
     setSelectedItem(i);
@@ -59,8 +68,8 @@ export default function ContentSlide() {
             </Link>
           </div>
         </div>
-        <div className={'flex justify-center items-center mt-10 gap-x-6 '}>
-          <Slide showContentNum={4} type="column" contents={contentData} onClickHandler={onClickItem}></Slide>
+        <div className={'flex justify-center items-center mt-10 gap-x-6'}>
+          <Slide showContentNum={showContentNum} type="column" contents={contentData} onClickHandler={onClickItem}></Slide>
         </div>
       </div>
     );
