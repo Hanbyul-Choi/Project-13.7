@@ -28,16 +28,7 @@ export function IdeaHeader() {
           최신순
         </h5>
       </div>
-      {/* <div className="flex">
-        {countDown ? (
-          <>
-            <p className="text-lg font-medium flex">투표마감까지 남은 시간 : &nbsp; </p>
-            <h5 className="w-48">{countDown}</h5>
-          </>
-        ) : (
-          <h5>투표가 종료되었습니다.</h5>
-        )}
-      </div> */}
+
       <Button btnType="black" size="large-mo" onClick={clickSuggestionButton}>
         챌린지 제안하기
       </Button>

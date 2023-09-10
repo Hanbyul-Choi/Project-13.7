@@ -1,21 +1,14 @@
-import React from 'react';
 
 import { Layout } from '@/components/common';
-import { Content, SideBar } from '@/components/nature-story';
+import NatureDetail from '@/components/nature-story-detail/NatureDetail';
 
 import type { Props } from '@/types/page-props.type';
 
-export default function NaturePage({ params }: Props) {
+export default function Page({ params: { slug } }: Props) {
+
   return (
-    <>
-      <div className={`w-full h-[400px] bg-[#white] bg-[url('/nature-banner.png')] bg-no-repeat bg-center border-t-2 border-t-black/.5 mb-6`} />
-      <Layout>
-        <div className="w-full h-[1px] bg-opacityblack mt-10" />
-        <section className="flex mt-20">
-          <SideBar params={params} />
-          <Content />
-        </section>
-      </Layout>
-    </>
-  );
+    <Layout>
+      <NatureDetail postId={slug} />
+    </Layout>
+  )
 }

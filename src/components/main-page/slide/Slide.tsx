@@ -1,7 +1,9 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { v4 } from 'uuid';
+
+import useSlideThrottle from '@/hooks/useSlideThrottle';
 
 import ColumnSlideCard from './ColumnSlideCard';
 import IdeaSlideCard from './IdeaSlideCard';
@@ -46,7 +48,7 @@ export default function Slide({ showContentNum = 3, contents, type, onClickHandl
     overContents = false;
   }
 
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentSlide, initCurrentSlide, handleClick] = useSlideThrottle();
   const cloneContents = [...contents];
 
   if (overContents) {
@@ -59,22 +61,16 @@ export default function Slide({ showContentNum = 3, contents, type, onClickHandl
   const TOTAL_SLIDES = cloneContents.length - 1;
   const isLastSlide = currentSlide === TOTAL_SLIDES + 1 - showContentNum;
   const lastSlide = TOTAL_SLIDES - showContentNum + 1;
-  const nextSlide = () => {
-    setCurrentSlide(currentSlide + 1);
-  };
 
-  const prevSlide = () => {
-    setCurrentSlide(currentSlide - 1);
-  };
 
   useEffect(() => {
     if (slideRef.current) {
       slideRef.current.style.transition = 'all 0.5s ease-in-out';
-      slideRef.current.style.transform = `translateX(-${currentSlide * (slideObj[type].size[0] + slideObj[type].size[1])}px)`;
-      if (currentSlide > lastSlide) {
+      slideRef.current.style.transform = `translateX(-${currentSlide as number * (slideObj[type].size[0] + slideObj[type].size[1])}px)`;
+      if (currentSlide as number > lastSlide) {
         slideRef.current.style.transition = '';
         slideRef.current.style.transform = `translateX(0px)`;
-        setCurrentSlide(0);
+        initCurrentSlide()
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -97,7 +93,7 @@ export default function Slide({ showContentNum = 3, contents, type, onClickHandl
       {
         type !== 'idea' && (
           <div className='my-auto mr-2'>
-            <SlideBtn direction="prev" onClick={prevSlide} />
+            <SlideBtn direction="prev" onClickFunc={handleClick} />
           </div>
         )
       }
@@ -108,8 +104,8 @@ export default function Slide({ showContentNum = 3, contents, type, onClickHandl
         {
           type === 'idea' && (
             <div className={'flex gap-4 top-[-80px] sm:top-[-105px] right-0 absolute'}>
-              <SlideBtn direction="prev" onClick={prevSlide} />
-              <SlideBtn direction="next" onClick={nextSlide} />
+              <SlideBtn direction="prev" onClickFunc={handleClick} />
+              <SlideBtn direction="next" onClickFunc={handleClick} />
             </div>
           )
         }
@@ -117,7 +113,7 @@ export default function Slide({ showContentNum = 3, contents, type, onClickHandl
       {
         type !== 'idea' && (
           <div className='my-auto ml-2'>
-            <SlideBtn direction="next" onClick={nextSlide} />
+            <SlideBtn direction="next" onClickFunc={handleClick} />
           </div>
         )
       }

@@ -15,7 +15,8 @@ export const Button: React.FC<ButtonProps> = ({ children, btnType, size = 'mediu
   let buttonSize = '';
   let buttonType = '';
   let buttonRounded = 'rounded-lg';
-  let buttonDefault = 'cursor-pointer flex gap-1 items-center justify-center box-border font-semibold transition ease-in-out duration-300 font-regular hover:box-border';
+  let buttonDefault =
+    'cursor-pointer flex gap-1 items-center whitespace-nowrap justify-center box-border font-semibold transition ease-in-out duration-300 font-regular hover:box-border';
   if (rounded) buttonRounded = 'rounded-full';
 
   switch (size) {

@@ -4,12 +4,14 @@ import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
+import { BrowserView, MobileView } from 'react-device-detect';
 import { BarLoader } from 'react-spinners';
 
 import { getNatureStory } from '@/app/api/nature-story';
 import { NATURESTORY } from '@/app/shared/queries.keys';
 import { Button } from '@/components/common';
 
+import ColumnSlideCard from './ColumnSlideCard';
 import Slide from './Slide';
 import nextIcon from '../../../../public/rightArrow.svg';
 
@@ -59,9 +61,18 @@ export default function ContentSlide() {
             </Link>
           </div>
         </div>
-        <div className={'flex justify-center items-center mt-10 gap-x-6'}>
-          <Slide showContentNum={4} type="column" contents={contentData} onClickHandler={onClickItem}></Slide>
-        </div>
+        <BrowserView>
+          <div className={'flex justify-center items-center mt-10 gap-x-6 '}>
+            <Slide showContentNum={4} type="column" contents={contentData} onClickHandler={onClickItem}></Slide>
+          </div>
+        </BrowserView>
+        <MobileView className="w-full overflow-x-scroll">
+          <div className="flex mt-10 gap-x-6 mb-[10px]">
+            {contentData.map(data => {
+              return <ColumnSlideCard key={data.post_id} data={data} />;
+            })}
+          </div>
+        </MobileView>
       </div>
     );
   } else {

@@ -3,7 +3,7 @@ import { useCallback, useEffect } from 'react';
 
 import { useDialog } from '../common';
 
-export default function useImagePost(setImgFile: React.Dispatch<React.SetStateAction<File | undefined>>, setPreviewImg: React.Dispatch<React.SetStateAction<string | ArrayBuffer | undefined>>, imgUrl: string) {
+export default function useImagePost(setImgFile: React.Dispatch<React.SetStateAction<File | undefined>>, setPreviewImg: React.Dispatch<React.SetStateAction<string | ArrayBuffer | undefined>>, imgUrl?: string) {
   const { Alert } = useDialog();
 
   useEffect(() => {

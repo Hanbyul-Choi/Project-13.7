@@ -2,16 +2,19 @@
 import React, { useState } from 'react';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
+import Image from 'next/image';
+import { v4 } from 'uuid';
 
 import { postCertify } from '@/app/api/challenge-certify';
+import { getChallengeIdeaImgUrl, postChallengeIdeaImg } from '@/app/api/challenge-idea';
 import { mainChallengeCheck } from '@/app/api/main-challenge';
 import { useModalStore } from '@/store/modal.store';
 import useSessionStore from '@/store/sesson.store';
 
 import { supabase } from '../../../supabase/supabaseConfig';
-import { Button, Input, useDialog } from '../common';
+import { Button, useDialog } from '../common';
 import Modal from '../common/Modal';
+import useImagePost from '../idea-post-page/useImagePost';
 
 import type { CertifyPostType } from '@/types/db.type';
 
@@ -19,8 +22,11 @@ const UploadReviewModal = () => {
   const session = useSessionStore((state: { session: any }) => state.session);
   const { Alert } = useDialog();
   const [instaUrl, setInstaUrl] = useState('');
-  const [errorMsg, setErrorMsg] = useState('');
+  const [imgFile, setImgFile] = useState<File | undefined>(undefined);
+  const [previewImg, setPreviewImg] = useState<string | ArrayBuffer | undefined>(undefined);
   const { isOpenMainModal, mainCloseModal } = useModalStore();
+  const { handleChangeImg, handleCancelImg } = useImagePost(setImgFile, setPreviewImg);
+
   const { data: mainChallenge } = useQuery(['mainChallenge'], mainChallengeCheck);
   const queryClient = useQueryClient();
   const certifyPostMutation = useMutation(postCertify, {
@@ -29,42 +35,29 @@ const UploadReviewModal = () => {
     },
   });
 
-  const isValidateUrl = async (url: string) => {
-    if (!url.includes('https://www.instagram.com/p/')) {
-      setErrorMsg('유효한 URL을 입력해주세요');
-      return false;
-    }
-    const { imageUrl, hashtags } = (await axios.get(`/api/crawler?url=${instaUrl}`)).data.res;
-    if (!hashtags) {
-      setErrorMsg('#13.7챌린지 해시태그를 추가해주세요');
-      return false;
-    }
-    if (!hashtags.includes('#13.7챌린지')) {
-      setErrorMsg('#13.7챌린지 해시태그를 추가해주세요');
-      return false;
-    }
-    return { imageUrl, hashtags };
-  };
-
   const onClickSaveReview = async () => {
     try {
-      let res = await isValidateUrl(instaUrl);
-      if (!res) {
-        return false;
-      }
       if (!mainChallenge) return;
+      const imgName = v4();
+      if (imgFile) {
+        await postChallengeIdeaImg({ imgFile, imgName });
+      }
+      const storageImgUrl = await getChallengeIdeaImgUrl(imgName);
       const certifyPost: CertifyPostType = {
         user_id: session?.user_id as string,
         insta_url: instaUrl,
         challenge_id: mainChallenge?.challenge_Id,
-        img_url: res.imageUrl,
-        tags: res.hashtags,
+        img_url: storageImgUrl.publicUrl,
+        tags: '#13.7 챌린지',
       };
-      // reviews table 추가
+
       certifyPostMutation.mutate(certifyPost);
 
-      // user point 업데이트
-      const { data: existingUserPoint, error: existingUserPointError } = await supabase.from('users').select('point').eq('user_id', session?.user_id).single();
+      const { data: existingUserPoint, error: existingUserPointError } = await supabase
+        .from('users')
+        .select('point')
+        .eq('user_id', session?.user_id)
+        .single();
 
       if (existingUserPointError) {
         console.error('Error fetching existing data:', existingUserPointError);
@@ -73,7 +66,11 @@ const UploadReviewModal = () => {
 
         const updatedPoint = currentPoint + 10;
 
-        const { data: updatePointData, error: updatePointError } = await supabase.from('users').update({ point: updatedPoint }).eq('user_id', session?.user_id).single();
+        const { data: updatePointData, error: updatePointError } = await supabase
+          .from('users')
+          .update({ point: updatedPoint })
+          .eq('user_id', session?.user_id)
+          .single();
 
         if (updatePointError) {
           console.error('Error updating user point data:', updatePointError);
@@ -82,7 +79,6 @@ const UploadReviewModal = () => {
         }
       }
 
-      // joinChallenge reviews 1 추가
       const { data: existingData, error: existingError } = await supabase
         .from('joinChallenge')
         .select('reviews')
@@ -95,7 +91,7 @@ const UploadReviewModal = () => {
       if (existingError) {
         console.error('Error fetching existing data:', existingError);
       } else if (existingData) {
-        const currentReviews = existingData.reviews || 0; // Default to 0 if reviews is not present
+        const currentReviews = existingData.reviews || 0;
 
         const updatedReviews = currentReviews + 1;
 
@@ -126,10 +122,13 @@ const UploadReviewModal = () => {
       console.error('Error adding review', error);
     }
   };
-
-  // reviews 갯수에 따른 성공여부(completedMission) 업데이트
   const updateChallengeStatus = async () => {
-    let { data: updatedChallenge } = await supabase.from('joinChallenge').update({ completedMission: true }).eq('user_id', session?.user.id).gte('reviews', 10).select(`*, mainChallenge(*)`);
+    let { data: updatedChallenge } = await supabase
+      .from('joinChallenge')
+      .update({ completedMission: true })
+      .eq('user_id', session?.user.id)
+      .gte('reviews', 10)
+      .select(`*, mainChallenge(*)`);
     if (updatedChallenge) {
       Alert('챌린지 10회 성공! 마이페이지에서 뱃지를 확인하세요.');
     }
@@ -141,22 +140,35 @@ const UploadReviewModal = () => {
   return (
     <Modal>
       {isOpenMainModal && (
-        <div className="flex flex-col justify-center text-center">
+        <div className="flex flex-col justify-center text-center ">
           <div className="max-w-fit px-4 py-1 rounded bg-lightblue m-auto mb-4">
             <p className="text-blue text-sm ">{animals.animal}을 위한 챌린지</p>
           </div>
-          <h3 className="mb-8">{mainChallenge?.title}</h3>
+          <h3 className="mb-8 whitespace-nowrap">{mainChallenge?.title}</h3>
           <div className="text-center">
-            <Input
-              value={instaUrl}
-              _size="lg"
-              placeholder="인증 게시글 링크 붙여넣기"
-              onChange={e => {
-                setInstaUrl(e.target.value);
-              }}
-            />
-            <p className="text-sm text-nagative leading-[150%] mt-[8px]">주의사항: 타인 도용 및 해당 챌린지와 연관이 없는 인증시 챌린지 이용이 제한될 수 있습니다.</p>
-            <p className="text-red-800">{errorMsg}</p>
+            {typeof previewImg === 'string' ? (
+              <div className="w-[32rem] h-[21.87rem] rounded-lg overflow-hidden relative ">
+                <Image src={previewImg} fill alt="Preview Img" className="object-cover" />
+                <button className="absolute top-2.5 right-[1.56rem] text-[2.5rem]" onClick={handleCancelImg}>
+                  x
+                </button>
+              </div>
+            ) : (
+              <button className="px-4 py-1 border border-blue rounded-lg text-sm text-blue leading-[150%] relative w-[8rem] sm:mb-[12px]">
+                인증사진 업로드
+                <input
+                  type="file"
+                  accept="image/*"
+                  id="challengeImage"
+                  className="absolute left-[-68px] top-0 w-[11.06rem] h-[31px] opacity-0 cursor-pointer"
+                  onChange={handleChangeImg}
+                />
+              </button>
+            )}
+            <p className="text-sm text-nagative leading-[150%] mt-[8px] whitespace-nowrap md:whitespace-normal">
+              주의사항: 타인 도용 및 해당 챌린지와 연관이 없는 인증 시 서비스 이용이 제한됩니다.
+            </p>
+            {/* <p className="text-red-800">{errorMsg}</p> */}
             <div className="flex justify-center mt-12">
               <Button onClick={mainCloseModal} btnType={'borderBlack'} size={'large'}>
                 취소
