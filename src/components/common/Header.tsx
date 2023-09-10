@@ -66,17 +66,18 @@ export function Header() {
       }
     });
   }, []);
+
   return (
     <>
       <div className="w-full sticky top-0 bg-white text-black text-lg z-10">
         <Layout>
-          <div className="md:flex items-center justify-between hidden px-10 py-8">
+          <div className="md:flex items-center justify-between hidden px-10 py-8 md:px-4">
             <div className="flex gap-8">
               <Link href="/" className="flex font-semibold gap-2">
                 <Image src={logo} alt="logo" />
                 <Image src={logoTitle} alt="logo title" />
               </Link>
-              <nav className="flex gap-8 ml-8">
+              <nav className="flex gap-3 ml-4 lg:gap-8 lg:ml-8">
                 {navCategory.map(item => (
                   <Link href={item.pathname} className="text-sub6" key={item.title}>
                     <h5 className={`${params === item.pathname ? 'text-black' : ''} font-semibold `}>{item.title}</h5>
