@@ -53,7 +53,11 @@ const UploadReviewModal = () => {
 
       certifyPostMutation.mutate(certifyPost);
 
-      const { data: existingUserPoint, error: existingUserPointError } = await supabase.from('users').select('point').eq('user_id', session?.user_id).single();
+      const { data: existingUserPoint, error: existingUserPointError } = await supabase
+        .from('users')
+        .select('point')
+        .eq('user_id', session?.user_id)
+        .single();
 
       if (existingUserPointError) {
         console.error('Error fetching existing data:', existingUserPointError);
@@ -62,7 +66,11 @@ const UploadReviewModal = () => {
 
         const updatedPoint = currentPoint + 10;
 
-        const { data: updatePointData, error: updatePointError } = await supabase.from('users').update({ point: updatedPoint }).eq('user_id', session?.user_id).single();
+        const { data: updatePointData, error: updatePointError } = await supabase
+          .from('users')
+          .update({ point: updatedPoint })
+          .eq('user_id', session?.user_id)
+          .single();
 
         if (updatePointError) {
           console.error('Error updating user point data:', updatePointError);
@@ -115,7 +123,12 @@ const UploadReviewModal = () => {
     }
   };
   const updateChallengeStatus = async () => {
-    let { data: updatedChallenge } = await supabase.from('joinChallenge').update({ completedMission: true }).eq('user_id', session?.user.id).gte('reviews', 10).select(`*, mainChallenge(*)`);
+    let { data: updatedChallenge } = await supabase
+      .from('joinChallenge')
+      .update({ completedMission: true })
+      .eq('user_id', session?.user.id)
+      .gte('reviews', 10)
+      .select(`*, mainChallenge(*)`);
     if (updatedChallenge) {
       Alert('챌린지 10회 성공! 마이페이지에서 뱃지를 확인하세요.');
     }
@@ -143,10 +156,18 @@ const UploadReviewModal = () => {
             ) : (
               <button className="px-4 py-1 border border-blue rounded-lg text-sm text-blue leading-[150%] relative w-[8rem] sm:mb-[12px]">
                 인증사진 업로드
-                <input type="file" accept="image/*" id="challengeImage" className="absolute left-[-68px] top-0 w-[11.06rem] h-[31px] opacity-0 cursor-pointer" onChange={handleChangeImg} />
+                <input
+                  type="file"
+                  accept="image/*"
+                  id="challengeImage"
+                  className="absolute left-[-68px] top-0 w-[11.06rem] h-[31px] opacity-0 cursor-pointer"
+                  onChange={handleChangeImg}
+                />
               </button>
             )}
-            <p className="text-sm text-nagative whitespace-nowrap leading-[150%] mt-[8px]">주의사항: 타인 도용 및 해당 챌린지와 연관이 없는 인증 시 서비스 이용이 제한됩니다.</p>
+            <p className="text-sm text-nagative leading-[150%] mt-[8px] whitespace-nowrap md:whitespace-normal">
+              주의사항: 타인 도용 및 해당 챌린지와 연관이 없는 인증 시 서비스 이용이 제한됩니다.
+            </p>
             {/* <p className="text-red-800">{errorMsg}</p> */}
             <div className="flex justify-center mt-12">
               <Button onClick={mainCloseModal} btnType={'borderBlack'} size={'large'}>

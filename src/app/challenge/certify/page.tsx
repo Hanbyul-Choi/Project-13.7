@@ -25,11 +25,15 @@ export default function CertifyPage() {
   }
   return (
     <>
-      <div className={`w-full sm:h-[400px] h-[600px] bg-[#white] sm:bg-[url('/certify-banner.png')] bg-[url('/certify-banner-mo.png')] bg-no-repeat bg-center border-[1px] border-y-black/.5 mb-20`} />
+      <div
+        className={`w-full sm:h-[350px] h-[600px] bg-[#white] sm:bg-[url('/certify-banner.png')] bg-[url('/certify-banner-mo.png')] bg-no-repeat bg-center border-[1px] border-y-black/.5 mb-20`}
+      />
       <Layout>
-        <div className="flex justify-between pb-4 border-b-[1px]">
-          <div className="flex">
-            <div className="max-w-fit mr-4 px-4 py-1 rounded bg-lightblue flex justify-center items-center text-blue text-sm">북극곰을 위한 챌린지</div>
+        <div className="flex flex-col pb-4 border-b-[1px] gap-4 justify-center items-center sm:flex-row sm:justify-between">
+          <div className="flex w-full flex-col items-center sm:flex-row">
+            <div className="max-w-fit mr-4 px-4 py-1 rounded bg-lightblue flex justify-center items-center text-blue text-sm">
+              북극곰을 위한 챌린지
+            </div>
             <h3>{mainChallenge?.title}</h3>
           </div>
           {mainChallenge && <CertifyPost user_id={session?.user_id} challengeId={mainChallenge.challenge_Id} />}
