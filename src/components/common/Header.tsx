@@ -158,6 +158,6 @@ const navCategory = [
   },
   {
     title: '환경 이야기',
-    pathname: '/nature-story',
+    pathname: '/nature-story?category=all',
   },
 ];

@@ -31,6 +31,12 @@ const nextConfig = {
         port: '',
         pathname: '/dn/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'cdn.newspenguin.com',
+        port: '',
+        pathname: '/news/**',
+      },
     ],
   },
   
