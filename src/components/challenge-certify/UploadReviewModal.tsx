@@ -127,11 +127,11 @@ const UploadReviewModal = () => {
   return (
     <Modal>
       {isOpenMainModal && (
-        <div className="flex flex-col justify-center text-center">
+        <div className="flex flex-col justify-center text-center ">
           <div className="max-w-fit px-4 py-1 rounded bg-lightblue m-auto mb-4">
             <p className="text-blue text-sm ">{animals.animal}을 위한 챌린지</p>
           </div>
-          <h3 className="mb-8">{mainChallenge?.title}</h3>
+          <h3 className="mb-8 whitespace-nowrap">{mainChallenge?.title}</h3>
           <div className="text-center">
             {typeof previewImg === 'string' ? (
               <div className="w-[32rem] h-[21.87rem] rounded-lg overflow-hidden relative ">
@@ -146,7 +146,7 @@ const UploadReviewModal = () => {
                 <input type="file" accept="image/*" id="challengeImage" className="absolute left-[-68px] top-0 w-[11.06rem] h-[31px] opacity-0 cursor-pointer" onChange={handleChangeImg} />
               </button>
             )}
-            <p className="text-sm text-nagative leading-[150%] mt-[8px]">주의사항: 타인 도용 및 해당 챌린지와 연관이 없는 인증 시 서비스 이용이 제한됩니다.</p>
+            <p className="text-sm text-nagative whitespace-nowrap leading-[150%] mt-[8px]">주의사항: 타인 도용 및 해당 챌린지와 연관이 없는 인증 시 서비스 이용이 제한됩니다.</p>
             {/* <p className="text-red-800">{errorMsg}</p> */}
             <div className="flex justify-center mt-12">
               <Button onClick={mainCloseModal} btnType={'borderBlack'} size={'large'}>
