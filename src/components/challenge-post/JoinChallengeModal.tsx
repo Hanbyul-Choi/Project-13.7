@@ -61,7 +61,10 @@ export default function JoinChallengeModal() {
         return;
       }
       if (!mainChallenge) return;
-      await supabase.from('joinChallenge').insert({ user_id: session.user_id, challenge_id: mainChallenge.challenge_Id, address: data.address });
+
+      await supabase
+        .from('joinChallenge')
+        .insert({ user_id: session.user_id, challenge_id: mainChallenge.challenge_Id, address: data.address, name: data.name, phone: data.phone });
 
       if (isDefaultAddress) {
         const { error: userDataUpdateError } = await supabase
@@ -103,7 +106,11 @@ export default function JoinChallengeModal() {
               readOnly={userInfoData?.name ? true : false}
               defaultValue={userData.name || ''}
               // onChange={e => setUserData(prev => ({ ...prev, name: e.target.value }))}
-              className={`${userInfoData?.name ? 'bg-[#f4f6f8;]' : 'bg-white'} rounded-lg font-normal text-base border border-opacityblack outline-none w-[200px] sm:w-[9.375rem] h-[1.375rem] py-2 px-6 box-content sm:mt-[8px]`}
+
+              className={`${
+                userInfoData?.name ? 'bg-[#f4f6f8;]' : 'bg-white'
+              } rounded-lg font-normal text-base border border-opacityblack outline-none w-[200px] sm:w-[9.375rem] h-[1.375rem] py-2 px-6 box-content sm:mt-[8px]`}
+
               {...register('name', { required: '이름은 필수 입력사항입니다.' })}
             />
             {errors.name && <p>{errors.name.message}</p>}
