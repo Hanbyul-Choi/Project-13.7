@@ -42,7 +42,7 @@ const Modal: React.FC<ModalProps> = ({ children }) => {
           <div onClick={() => mainCloseModal()} className="fixed top-0 left-0 w-full h-full bg-[#00000060] z-20">
             <div
               onClick={e => e.stopPropagation()}
-              className="bg-white top-1/2 sm:left-1/2 sm:fixed sm:py-8 sm:px-[5rem] relative px-3 py-1 mx-5 flex sm:flex-col justify-center items-start rounded-2xl sm:translate-x-[-50%] sm:translate-y-[-50%] translate-y-[-50%] z-30"
+              className="bg-white top-1/2 sm:left-1/2 sm:fixed sm:py-8 relative px-3 py-1 mx-5 flex sm:flex-col justify-center items-start rounded-2xl sm:translate-x-[-50%] sm:translate-y-[-50%] translate-y-[-50%] z-30"
             >
               {children}
             </div>
