@@ -95,7 +95,7 @@ export default function JoinChallengeModal() {
   return (
     <Modal>
       <form className="my-[30px]">
-        <h5 className="mb-8">신청자 정보</h5>
+        <h5 className="mb-4 sm:mb-8">신청자 정보</h5>
         <div className="flex flex-col sm:flex-row">
           <Label name="name" size="base" labelStyle="flex flex-col leading-[150%]">
             이름
@@ -124,8 +124,8 @@ export default function JoinChallengeModal() {
             {errors.phone && <p className="text-sm text-nagative">{errors.phone.message}</p>}
           </Label>
         </div>
-        <div className="my-10 flex flex-col">
-          <div className="mb-8 flex flex-col sm:items-center sm:flex-row">
+        <div className="my-5 flex flex-col sm:my-10">
+          <div className="mb-4 flex flex-col sm:items-center sm:flex-row sm:mb-8 ">
             <h5>배송지 정보</h5>
             <p className="text-sm sm:ml-[15px]">챌린지 관련 물품이 있을 시 배송받으실 주소를 입력해주세요.</p>
           </div>
@@ -135,7 +135,7 @@ export default function JoinChallengeModal() {
           <textarea
             defaultValue={userData.address || ''}
             // onChange={e => setUserData(prev => ({ ...prev, address: e.target.value }))}
-            className="rounded-lg font-normal text-base border border-opacityblack outline-none my-[8px] w-[200px] h-[80px] py-2 px-6 box-content resize-none sm:w-[23.56rem] sm:h-[1.5rem]"
+            className="rounded-lg font-normal text-base border border-opacityblack outline-none my-[8px] w-[200px] h-[40px] py-2 px-6 box-content resize-none sm:w-[23.56rem] sm:h-[1.5rem]"
             {...register('address', { required: '상세주소는 필수 입력사항입니다.' })}
           />
           {errors.address && <p className="text-sm text-nagative">{errors.address.message}</p>}
@@ -145,21 +145,25 @@ export default function JoinChallengeModal() {
         </div>
 
         <hr className="border border-[#E6E6E6] w-full" />
-        <div className="my-10">
-          <label htmlFor="paymentMethod" className="font-bold leading-[150%] ">
-            결제 방식
-          </label>
-          <div className="flex items-center text-sm leading-[150%] mt-[12px]">
-            <input type="radio" id="paymentMethod" className="mr-[8px]" defaultChecked />
-            포인트 결제
+        <div className="flex my-5 justify-between sm:my-10 sm:block">
+          <div className="flex flex-col sm:block">
+            <label htmlFor="paymentMethod" className="font-bold leading-[150%] sm:h-auto">
+              결제 방식
+            </label>
+            <div className="flex items-center text-sm leading-[150%] mt-[12px]">
+              <input type="radio" id="paymentMethod" className="mr-[8px]" defaultChecked />
+              포인트 결제
+            </div>
           </div>
-          <p className="leading-[150%] my-[16px]">
-            <span className="font-bold ">보유중인 나무 : </span>
-            {`${session?.point} 그루`}
-          </p>
-          <p className="leading-[150%]">
-            <span className="font-bold leading-[150%]">배송비 :</span> 무료
-          </p>
+          <div>
+            <p className="leading-[150%] mb-[12px] sm:my-[16px]">
+              <span className="font-bold ">보유중인 나무 : </span>
+              {`${session?.point} 그루`}
+            </p>
+            <p className="leading-[150%]">
+              <span className="font-bold leading-[150%]">배송비 :</span> 무료
+            </p>
+          </div>
         </div>
         <hr className="border border-[#E6E6E6] w-full mb-[1.25rem]" />
         <div className="flex justify-between w-full">
