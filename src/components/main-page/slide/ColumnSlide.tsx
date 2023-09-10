@@ -32,8 +32,8 @@ export default function ContentSlide() {
     return (
       <div className=" border-b-2 mt-20 pb-20 my-20">
         <p className="text-xl opacity-50 underline underline-offset-4 font-montserrat">Contents</p>
-        <h2 className="mt-4">멸종위기 동물들의 생활</h2>
-        <div className="flex flex-col gap-10 mt-20 md:flex-row">
+        <h2 className="mt-4 text-[23px] sm:text-[36px]">멸종위기 동물들의 생활</h2>
+        <div className="flex flex-col gap-10 mt-16 md:flex-row">
           {contentData[selectedItem]?.category === 'youtube' ? (
             <div className="w-full h-[420px] sm:w-[690px]">
               <iframe width={690} height={420} rel="0" allowFullScreen src={`https://www.youtube.com/embed/${contentData[selectedItem]?.video_url}?amp;loop=1&modestbranding=1&rel=0&fs=1`} className="w-full h-[420px] sm:w-[690px]" />
@@ -51,7 +51,7 @@ export default function ContentSlide() {
               &nbsp;
               <span>|</span>
               &nbsp;
-              {/* <p>{date ? date[1] : ''}</p> */}
+              <p>{contentData[selectedItem]?.created_at.slice(0, 10).replaceAll('-', '.')}</p>
             </div>
             <Link href={`/nature-story/${contentData[selectedItem]?.post_id}`}>
               <Button btnType="borderBlack" size="large" rounded={true}>

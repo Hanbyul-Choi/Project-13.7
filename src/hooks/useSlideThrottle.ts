@@ -1,7 +1,7 @@
 import  {  useState } from "react";
 
 export default function useSlideThrottle():[number, () => void, (direction: string) => void] {
-  const [currentSlide , setCurrentSlide ] = useState(0);
+  const [currentSlide , setCurrentSlide ] = useState<number>(0);
   const [throttle, setThrottle] = useState(false);
 
   const handleClick = (direction:string):void => {
