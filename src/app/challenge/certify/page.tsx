@@ -25,7 +25,7 @@ export default function CertifyPage() {
   }
   return (
     <>
-      <div className={`w-full h-[400px] bg-[#white] bg-[url('/certify-banner.png')] bg-no-repeat bg-center border-[1px] border-y-black/.5 mb-20`} />
+      <div className={`w-full sm:h-[400px] h-[600px] bg-[#white] sm:bg-[url('/certify-banner.png')] bg-[url('/certify-banner-mo.png')] bg-no-repeat bg-center border-[1px] border-y-black/.5 mb-20`} />
       <Layout>
         <div className="flex justify-between pb-4 border-b-[1px]">
           <div className="flex">
