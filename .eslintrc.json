@@ -36,7 +36,6 @@
     ],
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/consistent-type-imports": "error",
-    "no-null/no-null": 2,
     "curly": ["error", "multi-line", "consistent"],
     "nonblock-statement-body-position": ["error", "beside"]
   }
