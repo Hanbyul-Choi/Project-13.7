@@ -11,7 +11,7 @@ export default function NaturePage({ searchParams }: { searchParams: { category:
         <div className="w-full h-[1px] bg-opacityblack mt-10" />
         <section className="flex mt-20">
           <SideBar searchParams={searchParams.category} />
-          <Content />
+          <Content searchParams={searchParams.category} />
         </section>
       </Layout>
     </>
