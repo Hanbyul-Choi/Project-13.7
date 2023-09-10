@@ -36,10 +36,13 @@ export function CertifyList() {
   }
   return (
     <>
-      <div className="mt-28">
+      <div className="mt-28 py-4">
         <Masonry
           breakpointCols={{
             default: 4,
+            1100: 3,
+            800: 2,
+            400: 1,
           }}
           className="my-masonry-grid"
           columnClassName="my-masonry-grid_column"

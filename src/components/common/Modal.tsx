@@ -29,7 +29,10 @@ const Modal: React.FC<ModalProps> = ({ children }) => {
         !isOpenMainModal &&
         createPortal(
           <div onClick={() => closeModal()} className="fixed top-0 left-0 w-full h-full bg-[#00000060] z-20">
-            <div onClick={e => e.stopPropagation()} className="bg-white fixed top-1/2 left-1/2 lg:px-[5.5rem] py-12 px-4 flex flex-col justify-center items-start rounded-2xl translate-x-[-50%] translate-y-[-50%] z-30">
+            <div
+              onClick={e => e.stopPropagation()}
+              className="bg-white top-1/2 left-1/2 absolute -translate-x-center -translate-y-center py-10 px-8 flex flex-col justify-center items-start rounded-2xl z-30 sm:px-20"
+            >
               {children}
             </div>
           </div>,
@@ -42,7 +45,7 @@ const Modal: React.FC<ModalProps> = ({ children }) => {
           <div onClick={() => mainCloseModal()} className="fixed top-0 left-0 w-full h-full bg-[#00000060] z-20">
             <div
               onClick={e => e.stopPropagation()}
-              className="bg-white top-1/2 sm:left-1/2 sm:fixed sm:py-8 sm:px-[5rem] relative px-3 py-1 mx-5 flex sm:flex-col justify-center items-start rounded-2xl sm:translate-x-[-50%] sm:translate-y-[-50%] translate-y-[-50%] z-30"
+              className="bg-white top-1/2 left-1/2 absolute -translate-x-center -translate-y-center px-3 py-2 flex z-30 sm:flex-col justify-center items-start rounded-2xl sm:py-8"
             >
               {children}
             </div>
