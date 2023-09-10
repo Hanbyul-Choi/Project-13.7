@@ -13,7 +13,7 @@ import RankingGuide from './RankingGuide';
 
 import type { User } from '@/types/db.type';
 
-const profileDefault = 'https://fvkzqozjdtlaogexuuin.supabase.co/storage/v1/object/public/project/userProfileImg/userProfileDefault?t=2023-09-04T01%3A41%3A06.168Z';
+const profileDefault = 'https://fvkzqozjdtlaogexuuin.supabase.co/storage/v1/object/public/project/userProfileImg/defaultProfileImage2.png';
 
 export default function UserProfile() {
   const session = useSessionStore((state: { session: any }) => state.session);
