@@ -7,7 +7,8 @@ import useSessionStore from '@/store/sesson.store';
 
 import type { Badge } from '@/types/db.type';
 
-const defaultProfileImg = 'https://fvkzqozjdtlaogexuuin.supabase.co/storage/v1/object/public/project/badgeImages/badge1.png?t=2023-09-06T17%3A56%3A48.744Z';
+const defaultProfileImg =
+  'https://fvkzqozjdtlaogexuuin.supabase.co/storage/v1/object/public/project/badgeImages/badge1.png?t=2023-09-06T17%3A56%3A48.744Z';
 
 export default function BadgesList() {
   const session = useSessionStore((state: { session: any }) => state.session);
@@ -22,9 +23,7 @@ export default function BadgesList() {
     getUserBadges();
   }, [session?.user_id]);
 
-  useEffect(() => {
-    console.log('Get badgeUrl:', userBadges);
-  }, [userBadges]);
+  useEffect(() => {}, [userBadges]);
 
   if (!userBadges) {
     return <div>Loading...</div>;

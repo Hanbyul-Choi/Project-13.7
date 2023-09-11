@@ -2,17 +2,12 @@ import { supabase } from '../../../supabase/supabaseConfig';
 
 import type { User } from '@/types/db.type';
 
-interface TPostImg {
-  imgName: string;
-  imgFile: File;
-}
-
 export const getUserProfile = async (user_id: string | null) => {
   const response = await supabase.from('users').select('*').eq('user_id', user_id);
   return response.data?.[0];
 };
 
-export const postUserProfileImg = async ({ imgName, imgFile }: TPostImg) => {
+export const postUserProfileImg = async ({ imgName, imgFile }: { imgName: string; imgFile: File }) => {
   const { error } = await supabase.storage.from('project').upload(`userProfileImg/${imgName}`, imgFile, {
     cacheControl: '3600',
     upsert: true,
