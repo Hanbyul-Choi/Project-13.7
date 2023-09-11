@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import Image from 'next/image';
+import { BarLoader } from 'react-spinners';
 
 import { getCompletedChallenges } from '@/app/api/mypage';
 import useSessionStore from '@/store/sesson.store';
@@ -27,7 +28,9 @@ export default function BadgesList() {
   }, [userBadges]);
 
   if (!userBadges) {
-    return <div>Loading...</div>;
+    return (<div className="w-full h-[50vh] flex justify-center items-center ">
+      <BarLoader color="#101828" height={5} width={200} />
+    </div>)
   }
 
   return (

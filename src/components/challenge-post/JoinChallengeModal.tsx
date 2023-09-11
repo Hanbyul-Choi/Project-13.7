@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { BarLoader } from 'react-spinners';
 
 import { mainChallengeCheck } from '@/app/api/main-challenge';
 import { getUser } from '@/app/api/users';
@@ -89,7 +90,12 @@ export default function JoinChallengeModal() {
   };
 
   if (isLoading) {
-    return <div>로딩중입니다...</div>;
+    return (
+      <div className="w-full h-[50vh] flex justify-center items-center ">
+        <BarLoader color="#101828" height={5} width={200} />
+      </div>
+
+    )
   }
   if (isError) {
     return <div>에러입니다...</div>;
@@ -107,9 +113,8 @@ export default function JoinChallengeModal() {
               defaultValue={userData.name || ''}
               // onChange={e => setUserData(prev => ({ ...prev, name: e.target.value }))}
 
-              className={`${
-                userInfoData?.name ? 'bg-[#f4f6f8;]' : 'bg-white'
-              } rounded-lg font-normal text-base border border-opacityblack outline-none w-[200px] sm:w-[9.375rem] h-[1.375rem] py-2 px-6 box-content sm:mt-[8px]`}
+              className={`${userInfoData?.name ? 'bg-[#f4f6f8;]' : 'bg-white'
+                } rounded-lg font-normal text-base border border-opacityblack outline-none w-[200px] sm:w-[9.375rem] h-[1.375rem] py-2 px-6 box-content sm:mt-[8px]`}
 
               {...register('name', { required: '이름은 필수 입력사항입니다.' })}
             />

@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 import Image from 'next/image';
 import { AiFillEnvironment } from 'react-icons/ai';
+import { BarLoader } from 'react-spinners';
 
 import { getUserProfile } from '@/app/api/mypage';
 import useSessionStore from '@/store/sesson.store';
@@ -35,7 +36,9 @@ export default function UserProfile() {
   };
 
   if (!userProfile) {
-    return <div>Loading...</div>;
+    return (<div className="w-full h-[50vh] flex justify-center items-center " >
+      <BarLoader color="#101828" height={5} width={200} />
+    </div >);
   }
 
   return (
@@ -44,7 +47,7 @@ export default function UserProfile() {
         <EditProfile setEditMode={setEditMode} userProfile={userProfile} setUserProfile={setUserProfile} />
       ) : (
         <>
-          <div className="text-center m-4 ">
+          <div className="text-center m-4">
             <Image src={userProfile?.profile_img || profileDefault} alt="profileDefaultImg" width={100} height={100} className="w-32 h-32 flex justify-center overflow-hidden object-cover rounded-md mx-auto m-2" />
           </div>
           <div className="flex justify-center items-center gap-0.5 p-2">
