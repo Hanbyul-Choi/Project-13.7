@@ -25,9 +25,14 @@ export default function CertifyPage() {
   }
   return (
     <>
-      <div
-        className={`w-full sm:h-[350px] h-[600px] bg-[#white] sm:bg-[url('/certify-banner.png')] bg-[url('/certify-banner-mo.png')] bg-no-repeat bg-center border-[1px] border-y-black/.5 mb-20`}
-      />
+      <div className="px-100w-full mx-auto md:max-w-[77rem] border-y-[1px]">
+        <div
+          className={`float-left ml-2 w-full md:h-[400px] h-[300px] bg-[#white] md:bg-[url('/certify-banner-text.png')] bg-[url('/banner-text-mo.png')] bg-no-repeat bg-left mb-6`}
+        />
+        <div
+          className={`w-full md:h-[400px] h-[600px] bg-[#white] md:bg-[url('/certify-banner.png')] bg-[url('/certify-banner-mo.png')] bg-no-repeat bg-center mb-6`}
+        />
+      </div>
       <Layout>
         <div className="flex flex-col pb-4 border-b-[1px] gap-4 justify-center items-center sm:flex-row sm:justify-between">
           <div className="flex w-full flex-col items-center sm:flex-row">

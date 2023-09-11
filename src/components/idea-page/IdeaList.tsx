@@ -43,7 +43,7 @@ export function IdeaList() {
         <>
           <IdeaHeader />
           <div className="flex flex-col items-center gap-[7.5rem] mb-20">
-            <div className="grid md:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 mt-20 gap-x-4 gap-y-10">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-20 gap-x-4 gap-y-10">
               {ideaData?.map(item => (
                 <IdeaContent key={item.post_id} item={item} />
               ))}
