@@ -22,7 +22,6 @@ export default function ColumnSlideCard({ data }: Props) {
               <Image src={playBtn} alt="play" />
             </div>)
         }
-
       </div>
       <p className="text-black opacity-50 text-sm">{data.category}</p>
       <h1 className="text-lg font-bold">{data.title}</h1>
