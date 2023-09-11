@@ -39,7 +39,7 @@ export default function ContentSlide() {
               <iframe width={690} height={420} rel="0" allowFullScreen src={`https://www.youtube.com/embed/${contentData[selectedItem]?.video_url}?amp;loop=1&modestbranding=1&rel=0&fs=1`} className="w-full h-[420px] sm:w-[690px]" />
             </div>
           ) : (
-            <div className="w-full h-[420px] overflow-hidden sm:w-[690px]">
+            <div className="w-full  overflow-hidden sm:w-[690px]">
               <Image width={690} height={420} src={contentData[selectedItem]?.img_url} alt="natureStroyImg" />
             </div>
           )}
