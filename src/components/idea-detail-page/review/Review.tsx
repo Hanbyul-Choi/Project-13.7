@@ -24,7 +24,7 @@ function Review({ slug }: DetailProps) {
   }
 
   if (!curUser) {
-    return <div> 로그인 하시면 댓글을 볼 수 있어여!</div>;
+    return <div className="text-center"> 로그인 하시면 댓글을 볼 수 있어여!👀</div>;
   }
   return (
     <div>

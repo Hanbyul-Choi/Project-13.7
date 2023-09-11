@@ -17,7 +17,7 @@ export default function IdeaSlideCard({ data }: Props) {
   return (
     <div className="flex flex-col gap-3 hover:drop-shadow-lg ">
       <Link href={`/idea/${data.post_id}`}>
-        <div className="w-[343px] h-[339px] relative">
+        <div className="w-[300px] sm:w-[343px] h-[339px] relative">
           <Image src={data.img_url!} alt="ideaCardImg" fill style={{ objectFit: 'cover' }} />
         </div>
         <div className="flex text-black opacity-50 text-sm">
