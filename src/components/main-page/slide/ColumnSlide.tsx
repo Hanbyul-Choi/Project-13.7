@@ -36,7 +36,14 @@ export default function ContentSlide() {
         <div className="flex flex-col gap-10 mt-20 md:flex-row">
           {contentData[selectedItem]?.category === 'youtube' ? (
             <div className="w-full h-[420px] sm:w-[690px]">
-              <iframe width={690} height={420} rel="0" allowFullScreen src={`https://www.youtube.com/embed/${contentData[selectedItem]?.video_url}?amp;loop=1&modestbranding=1&rel=0&fs=1`} className="w-full h-[420px] sm:w-[690px]" />
+              <iframe
+                width={690}
+                height={420}
+                rel="0"
+                allowFullScreen
+                src={`https://www.youtube.com/embed/${contentData[selectedItem]?.video_url}?amp;loop=1&modestbranding=1&rel=0&fs=1`}
+                className="w-full h-[420px] sm:w-[690px]"
+              />
             </div>
           ) : (
             <div className="w-full h-[420px] overflow-hidden sm:w-[690px]">
@@ -68,8 +75,12 @@ export default function ContentSlide() {
         </BrowserView>
         <MobileView className="w-full overflow-x-scroll">
           <div className="flex mt-10 gap-x-6 mb-[10px]">
-            {contentData.map(data => {
-              return <ColumnSlideCard key={data.post_id} data={data} />;
+            {contentData.map((data, i) => {
+              return (
+                <div key={data.post_id} onClick={() => onClickItem(i)}>
+                  <ColumnSlideCard data={data} />
+                </div>
+              );
             })}
           </div>
         </MobileView>
