@@ -29,11 +29,11 @@ export default function IdeaSlide() {
   }
 
   return (
-    <section className="border-b-2 mt-20 pb-20">
+    <section className="border-b-2 mx-auto mt-20 pb-20">
       <p className="text-xl opacity-50 underline underline-offset-4 font-montserrat">Next Challenge</p>
       <div className="flex justify-between">
         <Link href={'/idea'}>
-          <h2 className="mt-4">다음 챌린지 제안하기</h2>
+          <h2 className="text-[23px] sm:text-[36px]">다음 챌린지 제안하기</h2>
         </Link>
       </div>
       <div className={'mt-10'}>
