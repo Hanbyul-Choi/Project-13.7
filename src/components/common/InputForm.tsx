@@ -20,7 +20,7 @@ export default function InputForm({ name, register, errors, rules, _size, type, 
   const hasError = !!(errors && errorMessages);
 
   return (
-    <div>
+    <div className="flex flex-col">
       <Input name={name} _size={_size} type={type} {...props} {...(register && register(name, rules))} />
       {hasError && (
         <Label name={name} size="base" type="error">
