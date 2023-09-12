@@ -2,17 +2,15 @@ import { supabase } from '../../../supabase/supabaseConfig';
 
 import type { User } from '@/types/db.type';
 
-interface TPostImg {
-  imgName: string;
-  imgFile: File;
-}
-
 export const getUserProfile = async (user_id: string | null) => {
-  const response = await supabase.from('users').select('*').eq('user_id', user_id);
+  const response = await supabase
+    .from('users')
+    .select('*')
+    .eq('user_id', user_id ?? '');
   return response.data?.[0];
 };
 
-export const postUserProfileImg = async ({ imgName, imgFile }: TPostImg) => {
+export const postUserProfileImg = async ({ imgName, imgFile }: { imgName: string; imgFile: File }) => {
   const { error } = await supabase.storage.from('project').upload(`userProfileImg/${imgName}`, imgFile, {
     cacheControl: '3600',
     upsert: true,
@@ -35,16 +33,34 @@ export const updateUserProfile = async ({ userData, getParamUserSession }: { use
 };
 
 export const getCurUserChallenges = async (user_id: string | null) => {
-  const { data } = await supabase.from('joinChallenge').select(`*, mainChallenge (*)`).eq('user_id', user_id);
+  const { data } = await supabase
+    .from('joinChallenge')
+    .select(`*, mainChallenge (*)`)
+    .eq('user_id', user_id ?? '');
   return data;
 };
 
 export const getCompletedChallenges = async (user_id: string | null) => {
-  const { data } = await supabase.from('joinChallenge').select(`*, mainChallenge (*)`).eq('user_id', user_id).eq('completedMission', true);
+  const { data } = await supabase
+    .from('joinChallenge')
+    .select(`*, mainChallenge (*)`)
+    .eq('user_id', user_id ?? '')
+    .eq('completedMission', true);
   return data;
 };
 
 export const getCurUserReviews = async (user_id: string | null) => {
-  const { data } = await supabase.from('reviews').select(`*, mainChallenge (title)`).eq('user_id', user_id);
+  const { data } = await supabase
+    .from('reviews')
+    .select(`*, mainChallenge (title)`)
+    .eq('user_id', user_id ?? '');
+  return data;
+};
+
+export const getUserChallengeSuggestions = async (user_id: string | null) => {
+  const { data } = await supabase
+    .from('challengeSuggestion')
+    .select(`*`)
+    .eq('user_id', user_id ?? '');
   return data;
 };
