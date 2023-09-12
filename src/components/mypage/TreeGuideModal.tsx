@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { AiOutlineClose } from 'react-icons/ai';
 
 import { Button } from '@/components/common/Button';
@@ -19,6 +19,11 @@ export const treeGuideArray: HowToGetTrees[] = [
 
 const TreeGuideModal: React.FC = () => {
   const { mainCloseModal } = useModalStore(state => state);
+  const route = useRouter();
+
+  const onClickToJoinChallenge = () => {
+    route.push('/challenge');
+  };
 
   return (
     <>
@@ -39,11 +44,9 @@ const TreeGuideModal: React.FC = () => {
               </ul>
             ))}
           </div>
-          <div className="mt-6">
-            <Button btnType={'primary'} size={'full'}>
-              <Link href={'/challenge'} onClick={mainCloseModal}>
-                챌린지 참여하기
-              </Link>
+          <div className="mt-6" onClick={mainCloseModal}>
+            <Button onClick={onClickToJoinChallenge} btnType={'primary'} size={'full'}>
+              챌린지 참여하기
             </Button>
           </div>
         </div>
