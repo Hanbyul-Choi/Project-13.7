@@ -2,8 +2,14 @@ import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-q
 import { useInView } from 'react-intersection-observer';
 
 import { getIdeaCommentInfinite, postChallengeIdeaComment } from '@/app/api/idea-comments';
+import { IDEA_COMMENTS } from '@/app/shared/queries.keys';
 
-export default function useReview(slug: string, userId: string | undefined, comment: string, setComment: React.Dispatch<React.SetStateAction<string>>) {
+export default function useReview(
+  slug: string,
+  userId: string | undefined,
+  comment: string,
+  setComment: React.Dispatch<React.SetStateAction<string>>,
+) {
   const {
     data: commentsData,
     isError: commentsError,
@@ -11,7 +17,7 @@ export default function useReview(slug: string, userId: string | undefined, comm
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: ['ideaComments', slug],
+    queryKey: [IDEA_COMMENTS, slug],
     queryFn: getIdeaCommentInfinite,
     getNextPageParam: lastPage => {
       if (lastPage.page < lastPage.total_pages) {
@@ -32,7 +38,7 @@ export default function useReview(slug: string, userId: string | undefined, comm
   const queryClient = useQueryClient();
   const postMutation = useMutation(postChallengeIdeaComment, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['ideaComments']);
+      queryClient.invalidateQueries([IDEA_COMMENTS]);
     },
   });
 

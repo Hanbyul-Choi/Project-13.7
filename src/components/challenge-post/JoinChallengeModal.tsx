@@ -1,19 +1,15 @@
 import React, { useEffect, useState } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { BarLoader } from 'react-spinners';
 
-import { mainChallengeCheck } from '@/app/api/main-challenge';
 import { getUser } from '@/app/api/users';
-import { useModalStore } from '@/store/modal.store';
 import useSessionStore from '@/store/sesson.store';
 
-import { supabase } from '../../../supabase/supabaseConfig';
-import { Button, Label, useDialog } from '../common';
+import useJoinChallenge from './useJoinChallenge';
+import { Button, Label } from '../common';
 import Modal from '../common/Modal';
-
-import type { SubmitHandler } from 'react-hook-form';
 
 export default function JoinChallengeModal() {
   const {
@@ -22,11 +18,9 @@ export default function JoinChallengeModal() {
     formState: { errors },
   } = useForm<UpdateUserData>({ mode: 'onChange' });
   const { session } = useSessionStore(state => state);
-  const route = useRouter();
-  const { Alert } = useDialog();
-  const { mainCloseModal } = useModalStore(state => state);
+
   const { isLoading, isError, data: userInfoData } = useQuery(['user'], () => getUser(session!.user_id));
-  const [isDefaultAddress, setIsDefaultAddress] = useState(true);
+
   const [userData, setUserData] = useState<UpdateUserData>({
     address: '',
     point: 0,
@@ -39,57 +33,14 @@ export default function JoinChallengeModal() {
     setUserData({ address: userInfoData?.address || '', point: 0, rank: 0, phone: userInfoData?.phone || '', name: userInfoData?.name || '' });
   }, [userInfoData]);
 
-  const handleDefaultAddress = () => {
-    setIsDefaultAddress(!isDefaultAddress);
-  };
-
-  const { data: mainChallenge } = useQuery({ queryKey: ['mainChallenge'], queryFn: mainChallengeCheck });
-
-  const onClickJoinChallenge: SubmitHandler<UpdateUserData> = async data => {
-    if (!session) {
-      Alert('챌린지에 참여하려면 로그인이 필요합니다.');
-      mainCloseModal();
-      return;
-    }
-
-    try {
-      const updatedPoint = session.point - 25;
-      setUserData(prev => ({ ...prev, ...data, point: updatedPoint }));
-      const { error: updateError } = await supabase.from('users').update({ point: updatedPoint }).eq('user_id', session.user_id);
-      if (updateError) {
-        console.error('데이터 업데이트 오류:', updateError);
-        return;
-      }
-      if (!mainChallenge) return;
-
-      await supabase
-        .from('joinChallenge')
-        .insert({ user_id: session.user_id, challenge_id: mainChallenge.challenge_Id, address: data.address, name: data.name, phone: data.phone });
-
-      if (isDefaultAddress) {
-        const { error: userDataUpdateError } = await supabase
-          .from('users')
-          .update({ ...userData, ...data, point: updatedPoint })
-          .eq('user_id', session.user_id);
-        if (userDataUpdateError) {
-          console.error('사용자 데이터 업데이트 오류:', userDataUpdateError);
-          return;
-        }
-      }
-      await Alert('챌린지 참여신청이 완료되었습니다!', '참여 인증페이지에서 활동을 인증하고 지구 온도를 지켜주세요!');
-      route.push('/challenge/certify');
-      mainCloseModal();
-    } catch (error) {
-      console.error('데이터 전송 오류', error);
-    }
-  };
-
-  const handleCancelClick = () => {
-    mainCloseModal();
-  };
+  const { onClickJoinChallenge, handleDefaultAddress, handleCancelClick } = useJoinChallenge(session, userData);
 
   if (isLoading) {
-    return <div>로딩중입니다...</div>;
+    return (
+      <div className="absolute top-[50%] left-[50%] -translate-x-center -translate-y-center">
+        <BarLoader color="#101828" height={5} width={200} />
+      </div>
+    );
   }
   if (isError) {
     return <div>에러입니다...</div>;
@@ -103,14 +54,12 @@ export default function JoinChallengeModal() {
           <Label name="name" size="base" labelStyle="flex flex-col leading-[150%]">
             이름
             <input
+              maxLength={5}
               readOnly={userInfoData?.name ? true : false}
               defaultValue={userData.name || ''}
-              // onChange={e => setUserData(prev => ({ ...prev, name: e.target.value }))}
-
               className={`${
                 userInfoData?.name ? 'bg-[#f4f6f8;]' : 'bg-white'
               } rounded-lg font-normal text-base border border-opacityblack outline-none w-[200px] sm:w-[9.375rem] h-[1.375rem] py-2 px-6 box-content sm:mt-[8px]`}
-
               {...register('name', { required: '이름은 필수 입력사항입니다.' })}
             />
             {errors.name && <p>{errors.name.message}</p>}
@@ -118,14 +67,13 @@ export default function JoinChallengeModal() {
           <Label name="phoneNumber" size="base" labelStyle="flex leading-[150%] mt-[8px] flex-col sm:ml-4 sm:mt-0">
             연락처
             <input
-              placeholder="ex)010-1234-5678"
+              maxLength={11}
+              placeholder="ex)01012345678"
               defaultValue={userData.phone || ''}
-              // onChange={e => setUserData(prev => ({ ...prev, phone: e.target.value }))}
               className="rounded-lg font-normal text-base border border-opacityblack outline-none ml-0 w-[200px] h-[1.375rem] py-2 px-6 box-content sm:mt-[8px] sm:w-[16.31rem]"
               {...register('phone', {
                 required: '휴대폰 번호는 필수 입력사항입니다.',
-                // minLength: { value: 8, message: '휴대폰 번호 형식에 맞지 않습니다.' },
-                pattern: { value: /^[0-9-]+$/, message: "숫자와 '-'만 입력해주세요. ex)010-1234-5678" },
+                pattern: { value: /^[0-9]+$/, message: '숫자만 입력해주세요. ex)01012345678' },
               })}
             />
             {errors.phone && <p className="text-sm text-nagative">{errors.phone.message}</p>}
@@ -141,7 +89,6 @@ export default function JoinChallengeModal() {
           </Label>
           <textarea
             defaultValue={userData.address || ''}
-            // onChange={e => setUserData(prev => ({ ...prev, address: e.target.value }))}
             className="rounded-lg font-normal text-base border border-opacityblack outline-none my-[8px] w-[200px] h-[40px] py-2 px-6 box-content resize-none sm:w-[23.56rem] sm:h-[1.5rem]"
             {...register('address', { required: '상세주소는 필수 입력사항입니다.' })}
           />
@@ -190,7 +137,7 @@ export default function JoinChallengeModal() {
   );
 }
 
-type UpdateUserData = {
+export type UpdateUserData = {
   rank: number;
   address: string | null;
   point: number;

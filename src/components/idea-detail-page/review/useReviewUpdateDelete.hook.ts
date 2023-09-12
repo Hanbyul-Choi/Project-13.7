@@ -1,15 +1,20 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { deleteChallengeIdeaComment, updateChallengeIdeaComment } from '@/app/api/idea-comments';
+import { IDEA_COMMENTS } from '@/app/shared/queries.keys';
 import { useDialog } from '@/components/common';
 
-export default function useReviewUpdateDelete(editComment: string, setEditCommentId: React.Dispatch<React.SetStateAction<string>>, setEditComment: React.Dispatch<React.SetStateAction<string>>) {
+export default function useReviewUpdateDelete(
+  editComment: string,
+  setEditCommentId: React.Dispatch<React.SetStateAction<string>>,
+  setEditComment: React.Dispatch<React.SetStateAction<string>>,
+) {
   const queryClient = useQueryClient();
   const { Confirm } = useDialog();
 
   const editMutation = useMutation(updateChallengeIdeaComment, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['ideaComments']);
+      queryClient.invalidateQueries([IDEA_COMMENTS]);
     },
   });
 
@@ -21,7 +26,7 @@ export default function useReviewUpdateDelete(editComment: string, setEditCommen
 
   const deleteMutation = useMutation(deleteChallengeIdeaComment, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['ideaComments']);
+      queryClient.invalidateQueries([IDEA_COMMENTS]);
     },
   });
 
