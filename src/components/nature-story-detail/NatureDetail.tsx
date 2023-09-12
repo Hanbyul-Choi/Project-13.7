@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 import Image from 'next/image';
@@ -14,9 +13,8 @@ type NatureDetailProps = {
 
 export default async function NatureDetail({ postId }: NatureDetailProps) {
   const data = await getNatureStory();
-  console.log(data)
+
   const { category, content, created_at, video_url, img_url, title } = data.filter(item => item.post_id === postId)[0];
-  console.log(content)
 
   return (
     <Layout>

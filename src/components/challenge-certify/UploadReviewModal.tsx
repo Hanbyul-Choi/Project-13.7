@@ -66,16 +66,10 @@ const UploadReviewModal = () => {
 
         const updatedPoint = currentPoint + 10;
 
-        const { data: updatePointData, error: updatePointError } = await supabase
-          .from('users')
-          .update({ point: updatedPoint })
-          .eq('user_id', session?.user_id)
-          .single();
+        const { error: updatePointError } = await supabase.from('users').update({ point: updatedPoint }).eq('user_id', session?.user_id).single();
 
         if (updatePointError) {
           console.error('Error updating user point data:', updatePointError);
-        } else {
-          console.log('User point data updated successfully:', updatePointData);
         }
       }
 

@@ -36,11 +36,8 @@ export function ImageUpload({ onSuccess, profileImg }: ImageUploadProps) {
   const handleImageUpload = async (imgFile: File | undefined) => {
     try {
       if (imgFile) {
-        console.log('imgFile:', imgFile);
         const imgName = v4();
         const imgUrl = await uploadImageAndGetUrl(imgFile, imgName);
-
-        console.log('Image URL:', imgUrl);
         onSuccess(imgUrl);
       }
     } catch (error) {
