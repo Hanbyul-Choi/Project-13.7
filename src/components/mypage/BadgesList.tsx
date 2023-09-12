@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 
 import Image from 'next/image';
+import { BarLoader } from 'react-spinners';
 
 import { getCompletedChallenges } from '@/app/api/mypage';
 import useSessionStore from '@/store/sesson.store';
 
 import type { Badge } from '@/types/db.type';
 
-const defaultProfileImg = 'https://fvkzqozjdtlaogexuuin.supabase.co/storage/v1/object/public/project/badgeImages/badge1.png?t=2023-09-06T17%3A56%3A48.744Z';
+const defaultProfileImg =
+  'https://fvkzqozjdtlaogexuuin.supabase.co/storage/v1/object/public/project/badgeImages/badge1.png?t=2023-09-06T17%3A56%3A48.744Z';
 
 export default function BadgesList() {
   const session = useSessionStore((state: { session: any }) => state.session);
@@ -22,12 +24,12 @@ export default function BadgesList() {
     getUserBadges();
   }, [session?.user_id]);
 
-  useEffect(() => {
-    console.log('Get badgeUrl:', userBadges);
-  }, [userBadges]);
+  useEffect(() => {}, [userBadges]);
 
   if (!userBadges) {
-    return <div>Loading...</div>;
+    return (<div className="w-full h-[50vh] flex justify-center items-center ">
+      <BarLoader color="#101828" height={5} width={200} />
+    </div>)
   }
 
   return (

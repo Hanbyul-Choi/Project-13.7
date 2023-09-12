@@ -46,7 +46,7 @@ export default function ContentSlide() {
               />
             </div>
           ) : (
-            <div className="w-full h-[420px] overflow-hidden sm:w-[690px]">
+            <div className="w-full  overflow-hidden sm:w-[690px]">
               <Image width={690} height={420} src={contentData[selectedItem]?.img_url} alt="natureStroyImg" />
             </div>
           )}

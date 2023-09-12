@@ -122,17 +122,19 @@ const UploadReviewModal = () => {
       console.error('Error adding review', error);
     }
   };
+
   const updateChallengeStatus = async () => {
     let { data: updatedChallenge } = await supabase
       .from('joinChallenge')
       .update({ completedMission: true })
-      .eq('user_id', session?.user.id)
+      .eq('user_id', session?.user_id)
       .gte('reviews', 10)
       .select(`*, mainChallenge(*)`);
     if (updatedChallenge) {
       Alert('챌린지 10회 성공! 마이페이지에서 뱃지를 확인하세요.');
     }
   };
+
   const animals = {
     animal: '북극곰',
   };
