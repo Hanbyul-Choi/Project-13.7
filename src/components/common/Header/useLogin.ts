@@ -1,3 +1,4 @@
+'use client';
 import { useEffect } from 'react';
 
 import { getUserDataByToken, setUserData } from '@/app/api/auth';
@@ -11,13 +12,9 @@ import type { User } from '@/types/db.type';
 export default function useLogin() {
   const { session, isLoaded, setSession } = useSessionStore();
 
-  const access_token = localStorage.getItem('access_token');
-  const refresh_token = window.localStorage.getItem('refresh_token');
-
-  const login = async () => {
+  const login = async (access_token: string | null, refresh_token: string | null) => {
     if (access_token && refresh_token) {
       const data = await getUserDataByToken(access_token, refresh_token);
-
       if (!data) return setSession(null);
       const session = data.session;
       const user_id = session?.user.id!;
@@ -54,9 +51,11 @@ export default function useLogin() {
       }
     }
   };
-
   useEffect(() => {
-    login();
+    const access_token = localStorage.getItem('access_token');
+    const refresh_token = window.localStorage.getItem('refresh_token');
+    login(access_token, refresh_token);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoaded]);
 
   return { isLoaded, session };
