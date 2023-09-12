@@ -16,7 +16,6 @@ const profileDefault =
   'https://fvkzqozjdtlaogexuuin.supabase.co/storage/v1/object/public/project/userProfileImg/userProfileDefault?t=2023-09-04T01%3A41%3A06.168Z';
 
 export function ImageUpload({ onSuccess, profileImg }: ImageUploadProps) {
-  const [imgFile, setImgFile] = useState<File | undefined>(undefined);
   const [previewImg, setPreviewImg] = useState<string | undefined>(undefined);
 
   const uploadImageAndGetUrl = async (imgFile: File, imgName: string) => {
@@ -51,7 +50,6 @@ export function ImageUpload({ onSuccess, profileImg }: ImageUploadProps) {
 
   const handleImageChange = (selectedFile: File | undefined) => {
     if (selectedFile) {
-      setImgFile(selectedFile);
       const reader = new FileReader();
       reader.readAsDataURL(selectedFile);
       reader.onloadend = async () => {
@@ -67,7 +65,6 @@ export function ImageUpload({ onSuccess, profileImg }: ImageUploadProps) {
   };
 
   const handleImageCancel = () => {
-    setImgFile(undefined);
     setPreviewImg(undefined);
   };
 
