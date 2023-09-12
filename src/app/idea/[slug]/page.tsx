@@ -5,11 +5,13 @@ import { useQuery } from '@tanstack/react-query';
 
 import { getSuggestions } from '@/app/api/challenge-idea';
 import { CHALLENGE_SUGGESTION } from '@/app/shared/queries.keys';
+import ListButton from '@/components/common/ListButton';
 import IdeaDetail from '@/components/idea-detail-page/detail/IdeaDetail';
 import Review from '@/components/idea-detail-page/review/Review';
 import SingleLayout from '@/components/layout/SingleLayout';
 
 import type { Props } from '@/types/page-props.type';
+
 export interface DetailProps {
   slug: string;
 }
@@ -27,6 +29,7 @@ export default function Page({ params: { slug } }: Props) {
     <SingleLayout title="챌린지 응원하기🙌" size>
       {filteredData ? <IdeaDetail item={filteredData} /> : null}
       <Review slug={slug} />
+      <ListButton href="/idea" />
     </SingleLayout>
   );
 }
