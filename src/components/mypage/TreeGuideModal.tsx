@@ -10,11 +10,11 @@ import { useModalStore } from '@/store/modal.store';
 import type { HowToGetTrees } from '@/types/db.type';
 
 export const treeGuideArray: HowToGetTrees[] = [
-  { title: '챌린지 참가 인증', trees: 25 },
+  { title: '챌린지 참가 인증', trees: 10 },
   { title: '챌린지 제안', trees: 5 },
   { title: '챌린지 응원/댓글', trees: 2 },
   { title: '챌린지 투표(좋아요)', trees: 2 },
-  { title: '등급 UP 혜택', trees: 20 },
+  { title: '등급 UP 혜택', trees: 30 },
 ];
 
 const TreeGuideModal: React.FC = () => {
