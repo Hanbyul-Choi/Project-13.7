@@ -42,7 +42,7 @@ const ChallengeTabContent: React.FC<ChallengeTabContentProps> = ({
               </ul>
             ))}
 
-            <div className="relative grid lg:grid-cols-5 gap-2 grid-cols-3">
+            <div className="z-5 relative grid lg:grid-cols-5 gap-2 grid-cols-3">
               {userReviews?.map((item: any, index: number) => (
                 <ul key={item.post_id} className="flex flex-col w-38 h-38 items-left rounded-lg bg-sub1 px-2 py-1">
                   <li className="text-sm">
