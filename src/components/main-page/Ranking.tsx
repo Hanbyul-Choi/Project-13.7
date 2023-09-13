@@ -11,6 +11,8 @@ export const animals: AnimalMap = {
   3: '북극곰 마스터',
 };
 
+export const revalidate = 10
+
 export default async function Ranking() {
   const topRanker = await getUsers();
 
