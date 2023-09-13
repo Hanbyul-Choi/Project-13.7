@@ -24,12 +24,12 @@ export default function BadgesList() {
     getUserBadges();
   }, [session?.user_id]);
 
-  useEffect(() => {}, [userBadges]);
-
   if (!userBadges) {
-    return (<div className="w-full h-[50vh] flex justify-center items-center ">
-      <BarLoader color="#101828" height={5} width={200} />
-    </div>)
+    return (
+      <div className="w-full h-[50vh] flex justify-center items-center ">
+        <BarLoader color="#101828" height={5} width={200} />
+      </div>
+    );
   }
 
   return (

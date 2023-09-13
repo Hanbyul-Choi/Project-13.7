@@ -5,14 +5,15 @@ import { redirect } from 'next/navigation';
 
 import useSessionStore from '@/store/sesson.store';
 
-import { animals } from '../main-page/Ranking';
+import { animals, getRank } from '../main-page/Ranking';
 
 export default function RankingGuide() {
   const session = useSessionStore((state: { session: any }) => state.session);
   const [showRankGuide, setShowRankGuide] = useState(false);
   if (!session) return redirect('/');
   const { rank } = session;
-  const userTitle = animals[rank >= 10 ? 3 : rank >= 5 ? 2 : rank >= 1 ? 1 : 0];
+
+  const userTitle = animals[getRank(rank)];
 
   return (
     <div>
@@ -21,9 +22,9 @@ export default function RankingGuide() {
           <p className="text-black text-sm">{userTitle} ⓘ</p>
         </div>
       </div>
-      <div className="fixed z-10 bg-white">
+      <div className="sm:fixed z-10 bg-white">
         {showRankGuide && (
-          <div className="absolute bg-white border rounded shadow w-[40rem] p-8 pt-4 pb-8">
+          <div className="sm:fixed bg-white border rounded shadow w-[40rem] p-8 pt-4 pb-8">
             <p className="font-semibold my-4 text-lg">등급별 혜택</p>
             <div className="border-t border-black opacity-25 mb-6"></div>
             <div className="flex item-center justify-between gap-2 bg-sub1 rounded-lg px-8 py-4 mb-3">

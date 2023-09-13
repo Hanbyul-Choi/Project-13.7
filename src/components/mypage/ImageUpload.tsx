@@ -21,11 +21,6 @@ export function ImageUpload({ onSuccess, profileImg }: ImageUploadProps) {
   const uploadImageAndGetUrl = async (imgFile: File, imgName: string) => {
     try {
       await postUserProfileImg({ imgFile, imgName });
-    } catch (error) {
-      console.error('예외 발생:', error);
-    }
-
-    try {
       const imgUrlResponse = await getImgUrl(imgName);
       return imgUrlResponse.data.publicUrl;
     } catch (error) {
@@ -36,11 +31,9 @@ export function ImageUpload({ onSuccess, profileImg }: ImageUploadProps) {
   const handleImageUpload = async (imgFile: File | undefined) => {
     try {
       if (imgFile) {
-        console.log('imgFile:', imgFile);
         const imgName = v4();
         const imgUrl = await uploadImageAndGetUrl(imgFile, imgName);
 
-        console.log('Image URL:', imgUrl);
         onSuccess(imgUrl);
       }
     } catch (error) {
@@ -96,14 +89,7 @@ export function ImageUpload({ onSuccess, profileImg }: ImageUploadProps) {
               className="w-32 h-32 flex justify-center overflow-hidden object-cover rounded-md mx-auto m-2"
             />
             <label className="cursor-pointer text-sm opacity-50 mb-2">
-              <input
-                accept="image/*"
-                type="file"
-                {...getInputProps()}
-                onChange={event => {
-                  return handleImageChange(event.target.files?.[0]);
-                }}
-              />
+              <input accept="image/*" type="file" {...getInputProps()} onChange={event => handleImageChange(event.target.files?.[0])} />
               이미지 선택하기
             </label>
           </div>
