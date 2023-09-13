@@ -52,7 +52,6 @@ export default function EditProfile({ setEditMode, userProfile, setUserProfile }
         <ImageUpload
           profileImg={userProfile?.profile_img || undefined}
           onSuccess={(imageUrl: string) => {
-            console.log('Received Image URL:', imageUrl);
             setEditedProfile((prev: any) => ({ ...prev, profile_img: imageUrl }));
           }}
         />
