@@ -5,7 +5,9 @@ import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 
+import { updateUserPointIdea } from '@/app/api/challenge-idea';
 import { Button, Label } from '@/components/common';
+import useSessionStore from '@/store/sesson.store';
 
 import IdeaImagePost from './IdeaImagePost';
 import useIdeaPost from './useIdeaPostUpdate';
@@ -32,7 +34,23 @@ function IdeaContentsPost() {
   const isEdit = Boolean(searchParams.get('is_edit'));
   const postId = searchParams.get('post_id');
 
-  const { handleGetImg } = useIdeaPost(imgFile, imgUrl!, previewImg, isEdit, postId!);
+  const { session } = useSessionStore();
+  const loginUser = session?.user_id;
+  const curUserPoint = session?.point;
+
+  const { handleGetImg } = useIdeaPost(imgFile, imgUrl!, previewImg, isEdit, postId!, loginUser!);
+
+  const pointUpdate = async () => {
+    if (curUserPoint !== undefined && loginUser !== undefined) {
+      const updatedPoint = curUserPoint + 5;
+      await updateUserPointIdea(updatedPoint, loginUser);
+    }
+  };
+
+  const onSubmit = async (data: Inputs) => {
+    await handleGetImg(data);
+    await pointUpdate();
+  };
 
   return (
     <form
@@ -76,7 +94,7 @@ function IdeaContentsPost() {
         >
           취소하기
         </Button>
-        <Button type="submit" btnType="primary" size="small" buttonStyle="ml-6" onClick={handleSubmit(handleGetImg)}>
+        <Button type="submit" btnType="primary" size="small" buttonStyle="ml-6" onClick={handleSubmit(onSubmit)}>
           {isEdit ? '수정하기' : '등록하기'}
         </Button>
       </div>

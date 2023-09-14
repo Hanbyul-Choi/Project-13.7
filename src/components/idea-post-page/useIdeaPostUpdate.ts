@@ -2,7 +2,6 @@ import { useRouter } from 'next/navigation';
 import { v4 } from 'uuid';
 
 import { getChallengeIdeaImgUrl, postChallengeIdea, postChallengeIdeaImg, updateChallengeIdea } from '@/app/api/challenge-idea';
-import useSessionStore from '@/store/sesson.store';
 
 import { useDialog } from '../common';
 
@@ -10,9 +9,16 @@ import type { Inputs } from './IdeaContentsPost';
 import type { IdeaPost } from '@/types/db.type';
 import type { SubmitHandler } from 'react-hook-form';
 
-export default function useIdeaPost(imgFile: File | undefined, imgUrl: string, previewImg: string | ArrayBuffer | undefined, isEdit: boolean, postId: string) {
-  const { session } = useSessionStore();
-  const loginUser = session?.user_id;
+export default function useIdeaPost(
+  imgFile: File | undefined,
+  imgUrl: string,
+  previewImg: string | ArrayBuffer | undefined,
+  isEdit: boolean,
+  postId: string,
+  loginUser: string,
+) {
+  // const { session } = useSessionStore();
+  // const loginUser = session?.user_id;
 
   const { Alert } = useDialog();
   const router = useRouter();
