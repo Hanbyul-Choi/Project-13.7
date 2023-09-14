@@ -34,7 +34,6 @@ export default function EditProfile({ setEditMode, userProfile, setUserProfile }
       if (!editedProfile) {
         return;
       }
-
       await updateUserProfile({ userData: editedProfile, getParamUserSession: session?.user_id });
       setEditMode(false);
       setUserProfile(editedProfile);

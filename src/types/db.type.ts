@@ -40,6 +40,11 @@ export interface HowToGetTrees {
   title: string;
   trees: number;
 }
+export interface HowToRankUp {
+  title: string;
+  animals: string;
+  trees: number;
+}
 
 export interface IdeaComments {
   id: string;

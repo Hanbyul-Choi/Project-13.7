@@ -36,9 +36,11 @@ export default function UserProfile() {
   };
 
   if (!userProfile) {
-    return (<div className="w-full h-[50vh] flex justify-center items-center " >
-      <BarLoader color="#101828" height={5} width={200} />
-    </div >);
+    return (
+      <div className="w-full h-[50vh] flex justify-center items-center">
+        <BarLoader color="#101828" height={5} width={200} />
+      </div>
+    );
   }
 
   return (
@@ -48,7 +50,13 @@ export default function UserProfile() {
       ) : (
         <>
           <div className="text-center m-4">
-            <Image src={userProfile?.profile_img || profileDefault} alt="profileDefaultImg" width={100} height={100} className="w-32 h-32 flex justify-center overflow-hidden object-cover rounded-md mx-auto m-2" />
+            <Image
+              src={userProfile?.profile_img || profileDefault}
+              alt="profileDefaultImg"
+              width={100}
+              height={100}
+              className="w-32 h-32 flex justify-center overflow-hidden object-cover rounded-md mx-auto m-2"
+            />
           </div>
           <div className="flex justify-center items-center gap-0.5 p-2">
             <p className="font-semibold text-lg">{userProfile?.nickname}</p>
@@ -58,7 +66,10 @@ export default function UserProfile() {
             <AiFillEnvironment size={15} /> {userProfile?.address}
           </p>
           <div className="flex justify-center items-center my-3">
-            <button className="border-sub5 text-sub6 px-4 py-1 gap-2 border rounded-md text-sm mb-2 flex justify-center items-center" onClick={handleEditClick}>
+            <button
+              className="border-sub5 text-sub6 px-4 py-1 gap-2 border rounded-md text-sm mb-2 flex justify-center items-center"
+              onClick={handleEditClick}
+            >
               프로필 수정
             </button>
           </div>

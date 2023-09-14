@@ -1,9 +1,15 @@
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 
-import { getIdeaCommentInfinite, postChallengeIdeaComment } from '@/app/api/idea-comments';
+import { getIdeaCommentInfinite, postChallengeIdeaComment, updateUserPoint } from '@/app/api/idea-comments';
 
-export default function useReview(slug: string, userId: string | undefined, comment: string, setComment: React.Dispatch<React.SetStateAction<string>>) {
+export default function useReview(
+  slug: string,
+  userId: string | undefined,
+  curUserPoint: number,
+  comment: string,
+  setComment: React.Dispatch<React.SetStateAction<string>>,
+) {
   const {
     data: commentsData,
     isError: commentsError,
@@ -41,10 +47,14 @@ export default function useReview(slug: string, userId: string | undefined, comm
     user_id: userId,
     comment,
   };
+
   const handlePostComment = () => {
+    const updatedPoint = curUserPoint + 2;
+
     if (!userId) return;
     postMutation.mutate(commentData);
     setComment('');
+    updateUserPoint(updatedPoint, userId);
   };
 
   return { commentsError, challengeCommentsData, ref, hasNextPage, handlePostComment };
