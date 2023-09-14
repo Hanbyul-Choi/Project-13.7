@@ -16,8 +16,15 @@ function Review({ slug }: DetailProps) {
 
   const { session } = useSessionStore();
   const curUser = session;
+  const curUserPoint = session?.point;
 
-  const { commentsError, challengeCommentsData, hasNextPage, ref, handlePostComment } = useReview(slug, curUser?.user_id, comment, setComment);
+  const { commentsError, challengeCommentsData, hasNextPage, ref, handlePostComment } = useReview(
+    slug,
+    curUser?.user_id,
+    curUserPoint ?? 0,
+    comment,
+    setComment,
+  );
 
   if (commentsError) {
     return <p>에러입니다.</p>;

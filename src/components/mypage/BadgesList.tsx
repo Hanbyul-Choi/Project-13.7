@@ -24,13 +24,9 @@ export default function BadgesList() {
     getUserBadges();
   }, [session?.user_id]);
 
-  useEffect(() => {
-    console.log('Get badgeUrl:', userBadges);
-  }, [userBadges]);
-
   if (!userBadges) {
     return (
-      <div className="absolute top-[50%] left-[50%] -translate-x-center -translate-y-center">
+      <div className="w-full h-[50vh] flex justify-center items-center ">
         <BarLoader color="#101828" height={5} width={200} />
       </div>
     );

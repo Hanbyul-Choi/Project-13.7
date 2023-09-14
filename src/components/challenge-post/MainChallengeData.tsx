@@ -45,9 +45,9 @@ export default function MainChallengeData() {
       <SingleLayout title={mainChallenge.title} animal="북극곰을">
         <div className="relative mb-[40px] sm:mb-0">
           {countDown && (
-            <p className="absolute right-0 -top-5 font-medium flex items-center">
+            <div className="absolute right-0 -top-5 font-medium flex items-center">
               챌린지 종료까지 남은 시간&nbsp; : &nbsp; <h5>{countDown}</h5>
-            </p>
+            </div>
           )}
           <h5 className="pt-4 mb-4 flex items-center sm:before:content-[' '] sm:before:w-[2px] sm:before:bg-blue before:h-[18px] sm:before:inline-block sm:before:mr-[8px]">
             챌린지 내용

@@ -13,8 +13,8 @@ type NatureDetailProps = {
 
 export default async function NatureDetail({ postId }: NatureDetailProps) {
   const data = await getNatureStory();
+
   const { category, content, created_at, video_url, img_url, title } = data.filter(item => item.post_id === postId)[0];
-  console.log(content);
 
   return (
     <Layout>
@@ -39,7 +39,7 @@ export default async function NatureDetail({ postId }: NatureDetailProps) {
             />
           ) : (
             <>
-              <div className="w-full aspect-video relative">
+              <div className="w-full h- aspect-video relative">
                 <Image fill src={img_url} alt="contentImg" className="mx-auto object-cover" />
               </div>
               <article>

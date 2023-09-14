@@ -1,25 +1,22 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { AiOutlineAlignRight, AiOutlineClose } from 'react-icons/ai';
 
-import { getUser } from '@/app/api/users';
-import useSessionStore from '@/store/sesson.store';
-
-import logoTitle from '../../../public/logo/logo-title.svg';
-import logo from '../../../public/logo/logo.svg';
-import { supabase } from '../../../supabase/supabaseConfig';
-import { Auth, SignOut } from '../auth';
-
-import { Layout } from '.';
+import useLogin from './useLogin';
+import { Layout } from '..';
+import logoTitle from '../../../../public/logo/logo-title.svg';
+import logo from '../../../../public/logo/logo.svg';
+import { Auth, SignOut } from '../../auth';
 
 export function Header() {
-  const { session, isLoaded, setSession } = useSessionStore();
-  const params = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const params = usePathname();
+
+  const { isLoaded, session } = useLogin();
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -29,53 +26,15 @@ export function Header() {
     setIsMobileMenuOpen(false);
   };
 
-  useEffect(() => {
-    const refresh = async () => {
-      const access_token = localStorage.getItem('access_token');
-      const refresh_token = localStorage.getItem('refresh_token');
-      if (access_token && refresh_token) {
-        const { data } = await supabase.auth.setSession({ access_token, refresh_token });
-        if (!data) return setSession(null);
-        const session = data.session;
-        const user_id = session?.user.id!;
-        const userData = await getUser(user_id);
-        setSession(userData);
-      } else {
-        setSession(null);
-      }
-    };
-    refresh();
-  }, []);
-
-  useEffect(() => {
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-      if (!session) return;
-      const access_token = session.access_token;
-      const refresh_token = session.refresh_token;
-      localStorage.setItem('access_token', access_token);
-      localStorage.setItem('refresh_token', refresh_token);
-
-      const user_id = session?.user.id;
-      const userData = await getUser(user_id);
-      if (!userData) {
-        const { email, name: nickname, avatar_url: profile_img } = session?.user.user_metadata;
-        const { data } = await supabase.from('users').insert({ user_id, email, nickname, profile_img });
-        setSession(data);
-      } else {
-        setSession(userData);
-      }
-    });
-  }, []);
-
   return (
     <>
-      <div className="w-full sticky top-0 bg-white text-black text-lg z-10">
+      <div className="w-full sticky top-0 bg-white text-black text-lg z-20">
         <Layout>
           <div className="md:flex items-center justify-between hidden px-10 py-8 md:px-4">
             <div className="flex gap-8">
               <Link href="/" className="flex font-semibold gap-2">
-                <Image src={logo} alt="logo" />
-                <Image src={logoTitle} alt="logo title" />
+                <Image src={logo} alt="logo" style={{ width: '80px', height: 'auto' }} />
+                <Image src={logoTitle} alt="logo title" style={{ width: '145px', height: 'auto' }} />
               </Link>
               <nav className="flex gap-3 ml-4 lg:gap-8 lg:ml-8">
                 {navCategory.map(item => (

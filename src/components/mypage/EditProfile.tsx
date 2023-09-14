@@ -34,10 +34,6 @@ export default function EditProfile({ setEditMode, userProfile, setUserProfile }
       if (!editedProfile) {
         return;
       }
-
-      console.log('userProfile.profile_img', userProfile?.profile_img);
-      console.log('editedProfile.profile_img', editedProfile.profile_img); // 확인용 로그
-
       await updateUserProfile({ userData: editedProfile, getParamUserSession: session?.user_id });
       setEditMode(false);
       setUserProfile(editedProfile);
@@ -56,25 +52,42 @@ export default function EditProfile({ setEditMode, userProfile, setUserProfile }
         <ImageUpload
           profileImg={userProfile?.profile_img || undefined}
           onSuccess={(imageUrl: string) => {
-            console.log('Received Image URL:', imageUrl);
             setEditedProfile((prev: any) => ({ ...prev, profile_img: imageUrl }));
           }}
         />
         <div className="space-y-1 flex flex-col my-4 items-center">
           <div className="flex items-center gap-3 font-semibold mb-2">
             <p className="w-10">이름</p>
-            <Input type="text" value={editedProfile?.nickname || ''} _size="xs" onChange={e => setEditedProfile((prev: any) => ({ ...prev, nickname: e.target.value }))} placeholder="이름" />
+            <Input
+              type="text"
+              value={editedProfile?.nickname || ''}
+              _size="xs"
+              onChange={e => setEditedProfile((prev: any) => ({ ...prev, nickname: e.target.value }))}
+              placeholder="이름"
+            />
           </div>
           <div className="flex items-center gap-3 font-semibold mb-2">
             <p className="w-10">주소</p>
-            <Input type="text" value={editedProfile?.address || ''} _size="xs" onChange={e => setEditedProfile((prev: any) => ({ ...prev, address: e.target.value }))} placeholder="주소" />
+            <Input
+              type="text"
+              value={editedProfile?.address || ''}
+              _size="xs"
+              onChange={e => setEditedProfile((prev: any) => ({ ...prev, address: e.target.value }))}
+              placeholder="주소"
+            />
           </div>
         </div>
         <div className="flex gap-2 justify-center mx-auto my-4">
-          <button className="border-sub5 text-sub6 px-4 py-1 gap-2 border rounded-md text-sm flex justify-center items-center" onClick={handleCancelClick}>
+          <button
+            className="border-sub5 text-sub6 px-4 py-1 gap-2 border rounded-md text-sm flex justify-center items-center"
+            onClick={handleCancelClick}
+          >
             수정 취소
           </button>
-          <button className="border-sub5 text-sub6 px-4 py-1 gap-2 border rounded-md text-sm flex justify-center items-center" onClick={handleSaveClick}>
+          <button
+            className="border-sub5 text-sub6 px-4 py-1 gap-2 border rounded-md text-sm flex justify-center items-center"
+            onClick={handleSaveClick}
+          >
             저장하기
           </button>
         </div>

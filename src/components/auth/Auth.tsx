@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 import { useModalStore } from '@/store/modal.store';
 
-import AuthModal from './AuthModal';
+import AuthModal from './Auth-modal/AuthModal';
 
 export const Auth: React.FC = () => {
   const { openModal, isOpen } = useModalStore(state => state);

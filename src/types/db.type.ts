@@ -23,7 +23,7 @@ export interface NatureStory {
 }
 export interface User {
   user_id: string;
-  created_at: string;
+  created_at?: string;
   point: number;
   address: string | null;
   profile_img: string | null;
@@ -38,6 +38,11 @@ export interface AnimalMap {
 }
 export interface HowToGetTrees {
   title: string;
+  trees: number;
+}
+export interface HowToRankUp {
+  title: string;
+  animals: string;
   trees: number;
 }
 

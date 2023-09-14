@@ -4,6 +4,7 @@ import { Montserrat } from 'next/font/google';
 import localFont from 'next/font/local';
 
 import { Footer, Header } from '@/components/common';
+import TopButton from '@/components/common/TopButton';
 import Providers from '@/provider/Provider';
 
 import type { Metadata } from 'next';
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${myFont.className} ${montserrat.variable} flex flex-col min-h-screen`}>
         <Providers>
           <Header />
+          <TopButton />
           <div className="flex-1">{children}</div>
           <Footer />
         </Providers>

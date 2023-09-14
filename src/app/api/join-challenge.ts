@@ -5,7 +5,12 @@ import type { User } from '@/types/db.type';
 import type { Tables } from '@/types/supabase.type';
 
 export const userJoinChallengeCheck = async (user_id: string | undefined, challenge_id: string) => {
-  const { data } = await supabase.from('joinChallenge').select('*').eq('user_id', user_id).eq('challenge_id', challenge_id).single();
+  const { data } = await supabase
+    .from('joinChallenge')
+    .select('*')
+    .eq('user_id', user_id ?? '')
+    .eq('challenge_id', challenge_id)
+    .single();
 
   return data;
 };

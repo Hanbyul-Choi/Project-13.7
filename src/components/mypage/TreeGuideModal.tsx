@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { AiOutlineClose } from 'react-icons/ai';
 
 import { Button } from '@/components/common/Button';
@@ -10,15 +10,20 @@ import { useModalStore } from '@/store/modal.store';
 import type { HowToGetTrees } from '@/types/db.type';
 
 export const treeGuideArray: HowToGetTrees[] = [
-  { title: '챌린지 참가 인증', trees: 25 },
-  { title: '챌린지 제안하기', trees: 5 },
-  { title: '챌린지 응원하기', trees: 2 },
-  { title: '챌린지 투표하기', trees: 2 },
-  { title: '등급 UP 혜택', trees: 20 },
+  { title: '챌린지 참가 인증', trees: 10 },
+  { title: '챌린지 제안', trees: 5 },
+  { title: '챌린지 응원/댓글', trees: 2 },
+  { title: '챌린지 투표(좋아요)', trees: 2 },
+  { title: '등급 UP 혜택', trees: 30 },
 ];
 
 const TreeGuideModal: React.FC = () => {
   const { mainCloseModal } = useModalStore(state => state);
+  const route = useRouter();
+
+  const onClickToJoinChallenge = () => {
+    route.push('/challenge');
+  };
 
   return (
     <>
@@ -31,19 +36,15 @@ const TreeGuideModal: React.FC = () => {
             </button>
           </div>
           <div className="border-t border-black opacity-25 mb-6 justify-between"></div>
-          <div className="">
-            {treeGuideArray.map((item: HowToGetTrees) => (
-              <ul key={item.title} className="flex item-center justify-between gap-2 md:bg-sub1 rounded-lg md:px-8 md:py-4 md:mb-3">
-                <li className="text-lg font-semibold">{item.title}</li>
-                <li className="text-sub6 text-base">나무 {item.trees} 그루 지급</li>
-              </ul>
-            ))}
-          </div>
-          <div className="mt-6">
-            <Button btnType={'primary'} size={'full'}>
-              <Link href={'/challenge'} onClick={mainCloseModal}>
-                챌린지 참여하기
-              </Link>
+          {treeGuideArray.map((item: HowToGetTrees) => (
+            <ul key={item.title} className="flex items-center justify-between gap-2 md:bg-sub1 rounded-lg md:px-6 md:py-4 md:mb-3">
+              <li className="text-lg font-semibold">{item.title}</li>
+              <li className="text-sub6 text-sm">나무 {item.trees} 그루 지급</li>
+            </ul>
+          ))}
+          <div className="mt-6" onClick={mainCloseModal}>
+            <Button onClick={onClickToJoinChallenge} btnType={'primary'} size={'full'}>
+              챌린지 참여하기
             </Button>
           </div>
         </div>

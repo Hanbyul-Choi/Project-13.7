@@ -37,7 +37,7 @@ export default function UserProfile() {
 
   if (!userProfile) {
     return (
-      <div className="absolute top-[50%] left-[50%] -translate-x-center -translate-y-center">
+      <div className="w-full h-[50vh] flex justify-center items-center">
         <BarLoader color="#101828" height={5} width={200} />
       </div>
     );
@@ -49,7 +49,7 @@ export default function UserProfile() {
         <EditProfile setEditMode={setEditMode} userProfile={userProfile} setUserProfile={setUserProfile} />
       ) : (
         <>
-          <div className="text-center m-4 ">
+          <div className="text-center m-4">
             <Image
               src={userProfile?.profile_img || profileDefault}
               alt="profileDefaultImg"

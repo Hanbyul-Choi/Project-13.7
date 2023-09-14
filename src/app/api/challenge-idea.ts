@@ -24,6 +24,14 @@ export const updateChallengeIdea = async ({ ideaData, postId }: { ideaData: Idea
   }
 };
 
+export const updateUserPointIdea = async (updatedPoint: number, loginUser: string) => {
+  const { data, error } = await supabase.from('users').update({ point: updatedPoint }).eq('user_id', loginUser);
+  if (error) {
+    throw error;
+  }
+  return data;
+};
+
 export const deleteChallengeIdea = async (slug: string) => {
   const { error } = await supabase.from('challengeSuggestion').delete().eq('post_id', `${slug}`);
   if (error) {
