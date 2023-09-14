@@ -10,7 +10,7 @@ export default function useReviewUpdateDelete(
   setEditComment: React.Dispatch<React.SetStateAction<string>>,
 ) {
   const queryClient = useQueryClient();
-  const { Confirm } = useDialog();
+  const { Confirm, Alert } = useDialog();
 
   const editMutation = useMutation(updateChallengeIdeaComment, {
     onSuccess: () => {
@@ -19,6 +19,11 @@ export default function useReviewUpdateDelete(
   });
 
   const handleUpdateChallengeIdeaCommentData = (id: string) => {
+    if (editComment === '') return;
+    if (editComment.length > 300) {
+      Alert('글자 수 300자를 넘었습니다.');
+      return;
+    }
     const newUpdateComment = { id, editComment };
     editMutation.mutate(newUpdateComment);
     setEditCommentId('');

@@ -7,6 +7,7 @@ import { BarLoader } from 'react-spinners';
 import { getUser } from '@/app/api/users';
 import useSessionStore from '@/store/sesson.store';
 
+import useInputRegister from './useInputRegister';
 import useJoinChallenge from './useJoinChallenge';
 import { Button, Label } from '../common';
 import Modal from '../common/Modal';
@@ -19,7 +20,7 @@ export default function JoinChallengeModal() {
   } = useForm<UpdateUserData>({ mode: 'onChange' });
   const { session } = useSessionStore(state => state);
 
-  const { isLoading, isError, data: userInfoData } = useQuery(['user'], () => getUser(session!.user_id));
+  const { isLoading: userLoading, isError: userError, data: userInfoData } = useQuery(['user'], () => getUser(session!.user_id));
 
   const [userData, setUserData] = useState<UpdateUserData>({
     address: '',
@@ -33,22 +34,33 @@ export default function JoinChallengeModal() {
     setUserData({ address: userInfoData?.address || '', point: 0, rank: 0, phone: userInfoData?.phone || '', name: userInfoData?.name || '' });
   }, [userInfoData]);
 
-  const { onClickJoinChallenge, handleDefaultAddress, handleCancelClick } = useJoinChallenge(session, userData);
+  const { debounce, handleDefaultAddress, handleCancelClick, mainChallengeLoading, mainChallengeError } = useJoinChallenge(
+    session,
+    userData,
+    handleSubmit,
+  );
 
-  if (isLoading) {
+  const { nameNumRegister, phoneNumRegister, addressNumRegister } = useInputRegister(register);
+
+  if (userLoading || mainChallengeLoading) {
     return (
       <div className="absolute top-[50%] left-[50%] -translate-x-center -translate-y-center">
         <BarLoader color="#101828" height={5} width={200} />
       </div>
     );
   }
-  if (isError) {
+  if (userError || mainChallengeError) {
     return <div>에러입니다...</div>;
   }
 
   return (
     <Modal>
-      <form className="my-[30px]">
+      <form
+        onSubmit={e => {
+          e.preventDefault();
+        }}
+        className="my-[30px]"
+      >
         <h5 className="mb-4 sm:mb-8">신청자 정보</h5>
         <div className="flex flex-col sm:flex-row">
           <Label name="name" size="base" labelStyle="flex flex-col leading-[150%]">
@@ -60,7 +72,7 @@ export default function JoinChallengeModal() {
               className={`${
                 userInfoData?.name ? 'bg-[#f4f6f8;]' : 'bg-white'
               } rounded-lg font-normal text-base border border-opacityblack outline-none w-[200px] sm:w-[9.375rem] h-[1.375rem] py-2 px-6 box-content sm:mt-[8px]`}
-              {...register('name', { required: '이름은 필수 입력사항입니다.' })}
+              {...nameNumRegister}
             />
             {errors.name && <p>{errors.name.message}</p>}
           </Label>
@@ -71,10 +83,7 @@ export default function JoinChallengeModal() {
               placeholder="ex)01012345678"
               defaultValue={userData.phone || ''}
               className="rounded-lg font-normal text-base border border-opacityblack outline-none ml-0 w-[200px] h-[1.375rem] py-2 px-6 box-content sm:mt-[8px] sm:w-[16.31rem]"
-              {...register('phone', {
-                required: '휴대폰 번호는 필수 입력사항입니다.',
-                pattern: { value: /^[0-9]+$/, message: '숫자만 입력해주세요. ex)01012345678' },
-              })}
+              {...phoneNumRegister}
             />
             {errors.phone && <p className="text-sm text-nagative">{errors.phone.message}</p>}
           </Label>
@@ -90,7 +99,7 @@ export default function JoinChallengeModal() {
           <textarea
             defaultValue={userData.address || ''}
             className="rounded-lg font-normal text-base border border-opacityblack outline-none my-[8px] w-[200px] h-[40px] py-2 px-6 box-content resize-none sm:w-[23.56rem] sm:h-[1.5rem]"
-            {...register('address', { required: '상세주소는 필수 입력사항입니다.' })}
+            {...addressNumRegister}
           />
           {errors.address && <p className="text-sm text-nagative">{errors.address.message}</p>}
           <div className="flex text-sm">
@@ -115,7 +124,7 @@ export default function JoinChallengeModal() {
               {`${session?.point} 그루`}
             </p>
             <p className="leading-[150%]">
-              <span className="font-bold leading-[150%]">배송비 :</span> 무료
+              <span className="font-bold leading-[150%]">배송비 : </span> 무료
             </p>
           </div>
         </div>
@@ -125,10 +134,10 @@ export default function JoinChallengeModal() {
           <p className="text-lg font-bold leading-[140%]">25그루</p>
         </div>
         <div className="flex gap-2 justify-center mt-8 w-full">
-          <Button type="submit" onClick={handleSubmit(onClickJoinChallenge)} btnType={'primary'}>
+          <Button onClick={() => debounce(500)} type="submit" btnType={'primary'}>
             참여 신청하기
           </Button>
-          <Button btnType={'borderBlack'} size={'small'} onClick={handleCancelClick}>
+          <Button type="button" btnType={'borderBlack'} size={'small'} onClick={handleCancelClick}>
             취소
           </Button>
         </div>

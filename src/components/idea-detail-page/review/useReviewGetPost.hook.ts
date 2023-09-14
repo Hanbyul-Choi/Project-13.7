@@ -3,6 +3,7 @@ import { useInView } from 'react-intersection-observer';
 
 import { getIdeaCommentInfinite, postChallengeIdeaComment } from '@/app/api/idea-comments';
 import { IDEA_COMMENTS } from '@/app/shared/queries.keys';
+import { useDialog } from '@/components/common';
 
 export default function useReview(
   slug: string,
@@ -10,6 +11,7 @@ export default function useReview(
   comment: string,
   setComment: React.Dispatch<React.SetStateAction<string>>,
 ) {
+  const { Alert } = useDialog();
   const {
     data: commentsData,
     isError: commentsError,
@@ -48,6 +50,11 @@ export default function useReview(
     comment,
   };
   const handlePostComment = () => {
+    if (comment === '') return;
+    if (comment.length > 300) {
+      Alert('글자 수 300자를 넘었습니다.');
+      return;
+    }
     if (!userId) return;
     postMutation.mutate(commentData);
     setComment('');

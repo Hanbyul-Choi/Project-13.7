@@ -1,29 +1,60 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
+import { defaultAddressCheck, insertJoinChallenge, updateUserPoint } from '@/app/api/join-challenge';
 import { mainChallengeCheck } from '@/app/api/main-challenge';
 import { MAIN_CHALLENGE } from '@/app/shared/queries.keys';
 import { useModalStore } from '@/store/modal.store';
 
-import { supabase } from '../../../supabase/supabaseConfig';
 import { useDialog } from '../common';
 
 import type { UpdateUserData } from './JoinChallengeModal';
 import type { User } from '@/types/db.type';
-import type { SubmitHandler } from 'react-hook-form';
+import type { SubmitHandler, UseFormHandleSubmit } from 'react-hook-form';
 
-export default function useJoinChallenge(session: User | null, userData: UpdateUserData) {
+export default function useJoinChallenge(
+  session: User | null,
+  userData: UpdateUserData,
+  handleSubmit: UseFormHandleSubmit<UpdateUserData, undefined>,
+) {
   const route = useRouter();
   const { Alert } = useDialog();
   const { mainCloseModal } = useModalStore(state => state);
   const [isDefaultAddress, setIsDefaultAddress] = useState(true);
-  const { data: mainChallenge } = useQuery({ queryKey: [MAIN_CHALLENGE], queryFn: mainChallengeCheck });
+  const {
+    isLoading: mainChallengeLoading,
+    isError: mainChallengeError,
+    data: mainChallenge,
+  } = useQuery({ queryKey: [MAIN_CHALLENGE], queryFn: mainChallengeCheck });
 
   const handleDefaultAddress = () => {
     setIsDefaultAddress(!isDefaultAddress);
   };
+
+  let timerId: any = null;
+  useEffect(() => {
+    return () => {
+      if (timerId) {
+        clearTimeout(timerId);
+      }
+    };
+  }, []);
+  const debounce = (delay: number) => {
+    console.log('1', timerId);
+    if (timerId) {
+      console.log('2', timerId);
+      clearTimeout(timerId);
+    }
+    timerId = setTimeout(() => {
+      console.log(`마지막 요청으로부터 ${delay}ms 지났으므로 API요청 실행!`);
+      handleSubmit(onClickJoinChallenge)();
+      console.log('3', timerId);
+      timerId = null;
+    }, delay);
+  };
+
   const onClickJoinChallenge: SubmitHandler<UpdateUserData> = async data => {
     if (!session) {
       Alert('챌린지에 참여하려면 로그인이 필요합니다.');
@@ -33,26 +64,14 @@ export default function useJoinChallenge(session: User | null, userData: UpdateU
 
     try {
       const updatedPoint = session.point - 25;
-      const { error: updateError } = await supabase.from('users').update({ point: updatedPoint }).eq('user_id', session.user_id);
-      if (updateError) {
-        console.error('데이터 업데이트 오류:', updateError);
-        return;
-      }
+      updateUserPoint(updatedPoint, session);
+
       if (!mainChallenge) return;
 
-      await supabase
-        .from('joinChallenge')
-        .insert({ user_id: session.user_id, challenge_id: mainChallenge.challenge_Id, address: data.address, name: data.name, phone: data.phone });
+      insertJoinChallenge(session, mainChallenge, data);
 
       if (isDefaultAddress) {
-        const { error: userDataUpdateError } = await supabase
-          .from('users')
-          .update({ ...userData, ...data, point: updatedPoint })
-          .eq('user_id', session.user_id);
-        if (userDataUpdateError) {
-          console.error('사용자 데이터 업데이트 오류:', userDataUpdateError);
-          return;
-        }
+        defaultAddressCheck(userData, data, updatedPoint, session);
       }
       await Alert('챌린지 참여신청이 완료되었습니다!', '참여 인증페이지에서 활동을 인증하고 지구 온도를 지켜주세요!');
       route.push('/challenge/certify');
@@ -64,5 +83,5 @@ export default function useJoinChallenge(session: User | null, userData: UpdateU
   const handleCancelClick = () => {
     mainCloseModal();
   };
-  return { onClickJoinChallenge, handleDefaultAddress, handleCancelClick };
+  return { debounce, handleDefaultAddress, handleCancelClick, mainChallengeLoading, mainChallengeError };
 }
