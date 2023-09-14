@@ -28,7 +28,7 @@ export function Header() {
 
   return (
     <>
-      <div className="w-full sticky top-0 bg-white text-black text-lg z-10">
+      <div className="w-full sticky top-0 bg-white text-black text-lg z-20">
         <Layout>
           <div className="md:flex items-center justify-between hidden px-10 py-8 md:px-4">
             <div className="flex gap-8">

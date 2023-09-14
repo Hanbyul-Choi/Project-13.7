@@ -99,6 +99,7 @@ export default function SignInForm() {
       <div className="flex gap-6 rounded-lg items-center mx-auto mt-[34px]">
         <SocialSignIn social="google" />
         <SocialSignIn social="kakao" />
+        <SocialSignIn social="naver" />
       </div>
     </>
   );
