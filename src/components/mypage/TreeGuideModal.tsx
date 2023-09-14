@@ -36,14 +36,12 @@ const TreeGuideModal: React.FC = () => {
             </button>
           </div>
           <div className="border-t border-black opacity-25 mb-6 justify-between"></div>
-          <div className="">
-            {treeGuideArray.map((item: HowToGetTrees) => (
-              <ul key={item.title} className="flex item-center justify-between gap-2 md:bg-sub1 rounded-lg md:px-8 md:py-4 md:mb-3">
-                <li className="text-lg font-semibold">{item.title}</li>
-                <li className="text-sub6 text-base">나무 {item.trees} 그루 지급</li>
-              </ul>
-            ))}
-          </div>
+          {treeGuideArray.map((item: HowToGetTrees) => (
+            <ul key={item.title} className="flex items-center justify-between gap-2 md:bg-sub1 rounded-lg md:px-6 md:py-4 md:mb-3">
+              <li className="text-lg font-semibold">{item.title}</li>
+              <li className="text-sub6 text-sm">나무 {item.trees} 그루 지급</li>
+            </ul>
+          ))}
           <div className="mt-6" onClick={mainCloseModal}>
             <Button onClick={onClickToJoinChallenge} btnType={'primary'} size={'full'}>
               챌린지 참여하기
