@@ -27,21 +27,19 @@ export default function JoinedChallenge() {
   });
 
   return (
-    <>
-      <div className="md:p-6 md:mt-3 w-full lg:w-2/3">
-        <div className="flex justify-evenly md:justify-start mt-3">
-          <RenderTabs tabName="myChallenge" isActive={activeTab === 'myChallenge'} onClick={handleTabClick} tabText="나의 챌린지 인증" />
-          <RenderTabs tabName="joinedChallenge" isActive={activeTab === 'joinedChallenge'} onClick={handleTabClick} tabText="참여 챌린지" />
-          <RenderTabs tabName="mySuggestion" isActive={activeTab === 'mySuggestion'} onClick={handleTabClick} tabText="내가 제안한 챌린지" />
-        </div>
-        <ChallengeTabContent
-          activeTab={activeTab}
-          userChallenges={userChallenges}
-          userReviews={userReviews}
-          userChallengeSuggestions={userChallengeSuggestions}
-          TOTAL_REVIEW_NUMBER={TOTAL_REVIEW_NUMBER}
-        />
+    <div className="md:p-6 md:mt-3 w-full lg:w-2/3">
+      <div className="flex justify-evenly md:justify-start mt-3">
+        <RenderTabs tabName="myChallenge" isActive={activeTab === 'myChallenge'} onClick={handleTabClick} tabText="나의 챌린지 인증" />
+        <RenderTabs tabName="joinedChallenge" isActive={activeTab === 'joinedChallenge'} onClick={handleTabClick} tabText="참여 챌린지" />
+        <RenderTabs tabName="mySuggestion" isActive={activeTab === 'mySuggestion'} onClick={handleTabClick} tabText="내가 제안한 챌린지" />
       </div>
-    </>
+      <ChallengeTabContent
+        activeTab={activeTab}
+        userChallenges={userChallenges}
+        userReviews={userReviews}
+        userChallengeSuggestions={userChallengeSuggestions}
+        TOTAL_REVIEW_NUMBER={TOTAL_REVIEW_NUMBER}
+      />
+    </div>
   );
 }

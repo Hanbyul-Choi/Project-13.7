@@ -2,7 +2,7 @@ import { supabase } from '../../../supabase/supabaseConfig';
 
 import type { User } from '@/types/db.type';
 
-export const getUserProfile = async (user_id: string | null) => {
+export const getUserProfile = async (user_id: string) => {
   const response = await supabase
     .from('users')
     .select('*')
@@ -32,7 +32,7 @@ export const updateUserProfile = async ({ userData, getParamUserSession }: { use
   }
 };
 
-export const getCurUserChallenges = async (user_id: string | null) => {
+export const getCurUserChallenges = async (user_id: string) => {
   const { data } = await supabase
     .from('joinChallenge')
     .select(`*, mainChallenge (*)`)
@@ -40,7 +40,7 @@ export const getCurUserChallenges = async (user_id: string | null) => {
   return data;
 };
 
-export const getCompletedChallenges = async (user_id: string | null) => {
+export const getCompletedChallenges = async (user_id: string) => {
   const { data } = await supabase
     .from('joinChallenge')
     .select(`*, mainChallenge (*)`)
@@ -49,7 +49,7 @@ export const getCompletedChallenges = async (user_id: string | null) => {
   return data;
 };
 
-export const getCurUserReviews = async (user_id: string | null) => {
+export const getCurUserReviews = async (user_id: string) => {
   const { data } = await supabase
     .from('reviews')
     .select(`*, mainChallenge (title)`)
@@ -57,7 +57,7 @@ export const getCurUserReviews = async (user_id: string | null) => {
   return data;
 };
 
-export const getUserChallengeSuggestions = async (user_id: string | null) => {
+export const getUserChallengeSuggestions = async (user_id: string) => {
   const { data } = await supabase
     .from('challengeSuggestion')
     .select(`*`)
