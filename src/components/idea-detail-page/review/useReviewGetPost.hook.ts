@@ -2,6 +2,8 @@ import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-q
 import { useInView } from 'react-intersection-observer';
 
 import { getIdeaCommentInfinite, postChallengeIdeaComment, updateUserPoint } from '@/app/api/idea-comments';
+import { IDEA_COMMENTS } from '@/app/shared/queries.keys';
+import { useDialog } from '@/components/common';
 
 export default function useReview(
   slug: string,
@@ -10,6 +12,7 @@ export default function useReview(
   comment: string,
   setComment: React.Dispatch<React.SetStateAction<string>>,
 ) {
+  const { Alert } = useDialog();
   const {
     data: commentsData,
     isError: commentsError,
@@ -17,7 +20,7 @@ export default function useReview(
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: ['ideaComments', slug],
+    queryKey: [IDEA_COMMENTS, slug],
     queryFn: getIdeaCommentInfinite,
     getNextPageParam: lastPage => {
       if (lastPage.page < lastPage.total_pages) {
@@ -38,7 +41,7 @@ export default function useReview(
   const queryClient = useQueryClient();
   const postMutation = useMutation(postChallengeIdeaComment, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['ideaComments']);
+      queryClient.invalidateQueries([IDEA_COMMENTS]);
     },
   });
 
@@ -49,6 +52,11 @@ export default function useReview(
   };
 
   const handlePostComment = () => {
+    if (comment === '') return;
+    if (comment.length > 300) {
+      Alert('글자 수 300자를 넘었습니다.');
+      return;
+    }
     const updatedPoint = curUserPoint + 2;
 
     if (!userId) return;

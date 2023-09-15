@@ -53,11 +53,7 @@ function IdeaContentsPost() {
   };
 
   return (
-    <form
-      onSubmit={e => {
-        e.preventDefault();
-      }}
-    >
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex sm:items-center justify-center flex-col sm:flex-row">
         <Label size="" name="title" labelStyle="w-[8rem] mb-[10px] sm:mb-0">
           <span className="text-nagative">* </span>챌린지 제목
@@ -85,7 +81,7 @@ function IdeaContentsPost() {
       <IdeaImagePost setImgFile={setImgFile} setPreviewImg={setPreviewImg} previewImg={previewImg} imgUrl={imgUrl!} />
       <div className="flex sm:items-center justify-center mt-10 md:mt-20">
         <Button
-          type="submit"
+          type="button"
           btnType="black"
           size="small"
           onClick={() => {
@@ -94,7 +90,7 @@ function IdeaContentsPost() {
         >
           취소하기
         </Button>
-        <Button type="submit" btnType="primary" size="small" buttonStyle="ml-6" onClick={handleSubmit(onSubmit)}>
+        <Button type="submit" btnType="primary" size="small" buttonStyle="ml-6">
           {isEdit ? '수정하기' : '등록하기'}
         </Button>
       </div>
