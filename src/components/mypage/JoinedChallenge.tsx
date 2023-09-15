@@ -4,14 +4,14 @@ import { useQuery } from '@tanstack/react-query';
 
 import { getCurUserChallenges, getCurUserReviews, getUserChallengeSuggestions } from '@/app/api/mypage';
 import { CHALLENGE_SUGGESTION, USER_CHALLENGES, USER_REVIEWS } from '@/app/shared/queries.keys';
-import useSessionStore from '@/store/sesson.store';
+import useSessionStore from '@/store/session.store';
 
 import ChallengeTabContent from './RenderTabContent';
 import RenderTabs from './RenderTabs';
 
 export default function JoinedChallenge() {
   const TOTAL_REVIEW_NUMBER = 10;
-  const session = useSessionStore((state: { session: any }) => state.session);
+  const { session } = useSessionStore();
 
   const [activeTab, setActiveTab] = useState('myChallenge');
 

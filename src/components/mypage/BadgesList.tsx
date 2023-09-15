@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { BarLoader } from 'react-spinners';
 
 import { getCompletedChallenges } from '@/app/api/mypage';
-import useSessionStore from '@/store/sesson.store';
+import useSessionStore from '@/store/session.store';
 
 import type { Badge } from '@/types/db.type';
 

@@ -32,7 +32,10 @@ export const updateUserProfile = async ({ userData, getParamUserSession }: { use
   }
 };
 
-export const getCurUserChallenges = async (user_id: string) => {
+export const getCurUserChallenges = async (user_id: string | undefined) => {
+  if (!user_id) {
+    return null;
+  }
   const { data } = await supabase
     .from('joinChallenge')
     .select(`*, mainChallenge (*)`)
@@ -40,7 +43,10 @@ export const getCurUserChallenges = async (user_id: string) => {
   return data;
 };
 
-export const getCompletedChallenges = async (user_id: string) => {
+export const getCompletedChallenges = async (user_id: string | undefined) => {
+  if (!user_id) {
+    return null;
+  }
   const { data } = await supabase
     .from('joinChallenge')
     .select(`*, mainChallenge (*)`)
@@ -49,7 +55,10 @@ export const getCompletedChallenges = async (user_id: string) => {
   return data;
 };
 
-export const getCurUserReviews = async (user_id: string) => {
+export const getCurUserReviews = async (user_id: string | undefined) => {
+  if (!user_id) {
+    return null;
+  }
   const { data } = await supabase
     .from('reviews')
     .select(`*, mainChallenge (title)`)
@@ -57,7 +66,10 @@ export const getCurUserReviews = async (user_id: string) => {
   return data;
 };
 
-export const getUserChallengeSuggestions = async (user_id: string) => {
+export const getUserChallengeSuggestions = async (user_id: string | undefined) => {
+  if (!user_id) {
+    return null;
+  }
   const { data } = await supabase
     .from('challengeSuggestion')
     .select(`*`)

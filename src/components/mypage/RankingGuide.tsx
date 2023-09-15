@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { AiOutlineClose } from 'react-icons/ai';
 
 import { useModalStore } from '@/store/modal.store';
-import useSessionStore from '@/store/sesson.store';
+import useSessionStore from '@/store/session.store';
 
 import { Button } from '../common';
 import Modal from '../common/Modal';

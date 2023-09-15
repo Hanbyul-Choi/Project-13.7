@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { clickLike } from '@/app/api/idea-likes';
 import { CHALLENGE_SUGGESTION } from '@/app/shared/queries.keys';
 import { useDialog } from '@/components/common';
-import useSessionStore from '@/store/sesson.store';
+import useSessionStore from '@/store/session.store';
 import useSortWayStore from '@/store/sortway.store';
 
 import type { Suggestion } from '@/types/db.type';
