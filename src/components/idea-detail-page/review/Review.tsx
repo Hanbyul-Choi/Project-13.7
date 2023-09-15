@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 
-import useSessionStore from '@/store/sesson.store';
+import useSessionStore from '@/store/session.store';
 
 import ReviewItem from './ReviewItem';
 import useReview from './useReviewGetPost.hook';

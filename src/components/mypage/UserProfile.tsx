@@ -6,7 +6,7 @@ import { AiFillEnvironment } from 'react-icons/ai';
 import { BarLoader } from 'react-spinners';
 
 import { getUserProfile } from '@/app/api/mypage';
-import useSessionStore from '@/store/sesson.store';
+import useSessionStore from '@/store/session.store';
 
 import BadgesList from './BadgesList';
 import EditProfile from './EditProfile';

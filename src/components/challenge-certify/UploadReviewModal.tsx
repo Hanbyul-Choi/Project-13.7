@@ -9,7 +9,7 @@ import { postCertify } from '@/app/api/challenge-certify';
 import { getChallengeIdeaImgUrl, postChallengeIdeaImg } from '@/app/api/challenge-idea';
 import { mainChallengeCheck } from '@/app/api/main-challenge';
 import { useModalStore } from '@/store/modal.store';
-import useSessionStore from '@/store/sesson.store';
+import useSessionStore from '@/store/session.store';
 
 import { supabase } from '../../../supabase/supabaseConfig';
 import { Button, useDialog } from '../common';

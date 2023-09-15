@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { updateUserProfile } from '@/app/api/mypage';
 import { Input } from '@/components/common';
-import useSessionStore from '@/store/sesson.store';
+import useSessionStore from '@/store/session.store';
 
 import { ImageUpload } from './ImageUpload';
 
