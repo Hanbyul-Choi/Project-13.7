@@ -54,7 +54,7 @@ export const getChallengeIdeaImgUrl = async (imgName: string) => {
   return data;
 };
 
-export const getIdeaInfinite = async ({ queryKey, pageParam = 1 }: { queryKey: string[]; pageParam: number }) => {
+export const getIdeaInfinite = async ({ queryKey, pageParam = 1 }: any) => {
   const { count } = await supabase.from('challengeSuggestion').select('*', { count: 'exact', head: true });
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
