@@ -40,7 +40,7 @@ export default function JoinChallengeModal() {
     handleSubmit,
   );
 
-  const { nameNumRegister, phoneNumRegister, addressNumRegister } = useInputRegister(register);
+  const { nameRegister, phoneRegister, addressRegister } = useInputRegister(register);
 
   if (userLoading || mainChallengeLoading) {
     return (
@@ -72,7 +72,7 @@ export default function JoinChallengeModal() {
               className={`${
                 userInfoData?.name ? 'bg-[#f4f6f8;]' : 'bg-white'
               } rounded-lg font-normal text-base border border-opacityblack outline-none w-[200px] sm:w-[9.375rem] h-[1.375rem] py-2 px-6 box-content sm:mt-[8px]`}
-              {...nameNumRegister}
+              {...nameRegister}
             />
             {errors.name && <p>{errors.name.message}</p>}
           </Label>
@@ -83,7 +83,7 @@ export default function JoinChallengeModal() {
               placeholder="ex)01012345678"
               defaultValue={userData.phone || ''}
               className="rounded-lg font-normal text-base border border-opacityblack outline-none ml-0 w-[200px] h-[1.375rem] py-2 px-6 box-content sm:mt-[8px] sm:w-[16.31rem]"
-              {...phoneNumRegister}
+              {...phoneRegister}
             />
             {errors.phone && <p className="text-sm text-nagative">{errors.phone.message}</p>}
           </Label>
@@ -99,7 +99,7 @@ export default function JoinChallengeModal() {
           <textarea
             defaultValue={userData.address || ''}
             className="rounded-lg font-normal text-base border border-opacityblack outline-none my-[8px] w-[200px] h-[40px] py-2 px-6 box-content resize-none sm:w-[23.56rem] sm:h-[1.5rem]"
-            {...addressNumRegister}
+            {...addressRegister}
           />
           {errors.address && <p className="text-sm text-nagative">{errors.address.message}</p>}
           <div className="flex text-sm">
