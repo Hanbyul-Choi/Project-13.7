@@ -42,15 +42,11 @@ export default function useJoinChallenge(
     };
   }, []);
   const debounce = (delay: number) => {
-    console.log('1', timerId);
     if (timerId) {
-      console.log('2', timerId);
       clearTimeout(timerId);
     }
     timerId = setTimeout(() => {
-      console.log(`마지막 요청으로부터 ${delay}ms 지났으므로 API요청 실행!`);
       handleSubmit(onClickJoinChallenge)();
-      console.log('3', timerId);
       timerId = null;
     }, delay);
   };
