@@ -32,6 +32,18 @@ export interface User {
   rank: number;
   name?: string | null;
 }
+export interface DonationHistory {
+  donation_id: string;
+  created_at: string;
+  point: number;
+  user_id: string;
+}
+export interface Donation {
+  donation_total_id: string;
+  created_at: number;
+  point: number;
+  isCompleted: boolean;
+}
 
 export interface AnimalMap {
   [key: string]: string;

@@ -10,6 +10,7 @@ import useSessionStore from '@/store/sesson.store';
 
 import BadgesList from './BadgesList';
 import EditProfile from './EditProfile';
+import PointTree from './PointTree';
 import RankingGuide from './RankingGuide';
 
 import type { User } from '@/types/db.type';
@@ -30,6 +31,9 @@ export default function UserProfile() {
 
     fetchUserProfile();
   }, [session?.user_id]);
+
+  const curUserTrees = userProfile?.point ?? 0;
+  const userId = session?.user_id;
 
   const handleEditClick = () => {
     setEditMode(true);
@@ -74,11 +78,7 @@ export default function UserProfile() {
             </button>
           </div>
           <BadgesList />
-          <div className="text-lg flex justify-center items-baseline gap-1 mt-8">
-            <p>현재 나무 총</p>
-            <p className="text-xl align-text-bottom font-semibold">{userProfile?.point}</p>
-            <p>그루</p>
-          </div>
+          <PointTree curUserTrees={curUserTrees} userId={userId} />
         </>
       )}
     </>
