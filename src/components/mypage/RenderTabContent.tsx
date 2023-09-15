@@ -41,7 +41,7 @@ const ChallengeTabContent: React.FC<ChallengeTabContentProps> = ({
                 </div>
               </ul>
             ))}
-
+            <h1 className="flex justify-between items-center text-lg px-6 sm:px-4 py-3 mb-4">현재 진행 중인 챌린지</h1>
             <div className="z-5 relative grid lg:grid-cols-5 gap-2 grid-cols-3">
               {userReviews?.map((item: any, index: number) => (
                 <ul key={item.post_id} className="flex flex-col w-38 h-38 items-left rounded-lg bg-sub1 px-2 py-1">
