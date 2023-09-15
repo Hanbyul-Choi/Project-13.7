@@ -8,7 +8,7 @@ import { mainChallengeCheck } from '@/app/api/main-challenge';
 import { CertifyList, CertifyPost } from '@/components/challenge-certify';
 import { Layout } from '@/components/common';
 import Banner from '@/components/common/Banner';
-import useSessionStore from '@/store/sesson.store';
+import useSessionStore from '@/store/session.store';
 
 export default function CertifyPage() {
   const { isLoading, isError, data: mainChallenge } = useQuery(['mainChallenge'], mainChallengeCheck);

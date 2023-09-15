@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 
 import { updateUserPointIdea } from '@/app/api/challenge-idea';
 import { Button, Label } from '@/components/common';
-import useSessionStore from '@/store/sesson.store';
+import useSessionStore from '@/store/session.store';
 
 import IdeaImagePost from './IdeaImagePost';
 import useIdeaPost from './useIdeaPostUpdate';

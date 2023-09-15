@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { userJoinChallengeCheck } from '@/app/api/join-challenge';
 import { JOIN_CHALLENGE } from '@/app/shared/queries.keys';
 import { useModalStore } from '@/store/modal.store';
-import useSessionStore from '@/store/sesson.store';
+import useSessionStore from '@/store/session.store';
 
 import JoinChallengeModal from './JoinChallengeModal';
 import { Button, useDialog } from '../common';
@@ -23,7 +23,11 @@ export default function JoinChallenge({ mainChallenge }: Props) {
   const { session } = useSessionStore();
   const { mainOpenModal, isOpenMainModal } = useModalStore(state => state);
   const { Alert } = useDialog();
-  const { data: joinChallenge } = useQuery({ queryKey: [JOIN_CHALLENGE], queryFn: () => userJoinChallengeCheck(session?.user_id!, mainChallenge?.challenge_Id!), enabled: !!session });
+  const { data: joinChallenge } = useQuery({
+    queryKey: [JOIN_CHALLENGE],
+    queryFn: () => userJoinChallengeCheck(session?.user_id!, mainChallenge?.challenge_Id!),
+    enabled: !!session,
+  });
 
   const joinChallengeCurrentPoint = () => {
     if (!session || session?.point === null || session?.point < 25) {

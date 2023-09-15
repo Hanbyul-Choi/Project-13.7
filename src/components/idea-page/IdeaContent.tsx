@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import useLike from '@/hooks/useLike.hook';
-import useSessionStore from '@/store/sesson.store';
+import useSessionStore from '@/store/session.store';
 
 import disLiked from '../../../public/empty-heart.svg';
 import liked from '../../../public/heart.svg';
