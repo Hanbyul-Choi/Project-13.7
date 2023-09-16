@@ -12,11 +12,11 @@ export function CertifyPost({ challengeId, user_id }: { challengeId: string; use
   return (
     <>
       {joinChallenge ? (
-        <Button onClick={onClickUploadReview} btnType={'primary'} size="small">
+        <Button onClick={onClickUploadReview} btnType={'black'} size="medium">
           인증하기
         </Button>
       ) : (
-        <Button onClick={onClickUploadReviewFalseConfirm} btnType={'primary'} size="small">
+        <Button onClick={onClickUploadReviewFalseConfirm} btnType={'black'} size="medium">
           챌린지 참여하기
         </Button>
       )}
