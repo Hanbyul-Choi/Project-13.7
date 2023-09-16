@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
 import { AiOutlineClose } from 'react-icons/ai';
 
 import { getTotalNumberDonation, postDonationHistory, udpateUserPoint, updateTotalNumberDonation } from '@/app/api/mypage';
@@ -28,7 +27,6 @@ const TreeDonation = ({ curUserTrees, userId }: TreeDonationProps) => {
   const [count, setCount] = useState(0);
 
   const { Alert } = useDialog();
-  const route = useRouter();
 
   const donationData: PartialDonationHistory = {
     point: count,
@@ -53,12 +51,13 @@ const TreeDonation = ({ curUserTrees, userId }: TreeDonationProps) => {
     if (count > 0 && count < curUserTrees) {
       console.log('updatedTotalTrees', updatedTotalTrees);
       await updateTotalNumberDonation(updatedTotalTrees);
+
       await udpateUserPoint(updatedUserTrees, userId);
       await postDonationHistory(donationData);
 
-      await Alert('후원이 완료되었습니다.');
+      await Alert(`지금까지 모인 나무 총 ${updatedTotalTrees} 그루`, '후원이 완료되었습니다.');
+
       sub2CloseModal();
-      await route.push('/');
     } else {
       await Alert('후원하실 나무의 갯수를 확인해주세요.', '나무 1 그루부터 후원이 가능합니다.');
     }
