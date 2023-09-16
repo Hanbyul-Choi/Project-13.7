@@ -14,6 +14,7 @@ import useSessionStore from '@/store/session.store';
 import { supabase } from '../../../supabase/supabaseConfig';
 import { Button, useDialog } from '../common';
 import Modal from '../common/Modal';
+import useToast from '../common/Toast/useToast';
 import useImagePost from '../idea-post-page/useImagePost';
 
 import type { CertifyPostType } from '@/types/db.type';
@@ -21,6 +22,7 @@ import type { CertifyPostType } from '@/types/db.type';
 const UploadReviewModal = () => {
   const session = useSessionStore((state: { session: any }) => state.session);
   const { Alert } = useDialog();
+  const { toast } = useToast();
   const [instaUrl, setInstaUrl] = useState('');
   const [imgFile, setImgFile] = useState<File | undefined>(undefined);
   const [previewImg, setPreviewImg] = useState<string | ArrayBuffer | undefined>(undefined);
@@ -71,6 +73,7 @@ const UploadReviewModal = () => {
         if (updatePointError) {
           console.error('Error updating user point data:', updatePointError);
         }
+        toast('나무 10그루가 지급되었습니다.');
       }
 
       const { data: existingData, error: existingError } = await supabase

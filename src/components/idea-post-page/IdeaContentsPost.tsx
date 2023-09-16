@@ -11,6 +11,7 @@ import useSessionStore from '@/store/session.store';
 
 import IdeaImagePost from './IdeaImagePost';
 import useIdeaPost from './useIdeaPostUpdate';
+import useToast from '../common/Toast/useToast';
 
 export interface Inputs {
   title: string;
@@ -20,6 +21,7 @@ export interface Inputs {
 
 function IdeaContentsPost() {
   const inputStyle = 'rounded-lg font-normal text-base border border-opacityblack outline-none w-full py-2 px-6 sm:ml-[20px] ';
+  const { toast } = useToast();
   const { register, handleSubmit } = useForm<Inputs>();
   const [imgFile, setImgFile] = useState<File | undefined>(undefined);
   const [previewImg, setPreviewImg] = useState<string | ArrayBuffer | undefined>(undefined);
@@ -44,6 +46,8 @@ function IdeaContentsPost() {
     if (curUserPoint !== undefined && loginUser !== undefined) {
       const updatedPoint = curUserPoint + 5;
       await updateUserPointIdea(updatedPoint, loginUser);
+
+      toast('나무 5그루가 지급되었습니다.');
     }
   };
 
