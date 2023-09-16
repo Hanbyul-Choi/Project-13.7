@@ -3,17 +3,14 @@ import { useInView } from 'react-intersection-observer';
 
 import { getIdeaCommentInfinite, postChallengeIdeaComment, updateUserPoint } from '@/app/api/idea-comments';
 import { IDEA_COMMENTS } from '@/app/shared/queries.keys';
-import { useDialog } from '@/components/common';
 import useToast from '@/components/common/Toast/useToast';
 
-export default function useReview(
-  slug: string,
-  userId: string | undefined,
-  curUserPoint: number,
-  comment: string,
-  setComment: React.Dispatch<React.SetStateAction<string>>,
-) {
-  const { Alert } = useDialog();
+import type { FieldValues, SubmitHandler } from 'react-hook-form';
+interface Comment {
+  comment: string;
+}
+
+export default function useReview(slug: string, userId: string | undefined, curUserPoint: number) {
   const { toast } = useToast();
   const {
     data: commentsData,
@@ -47,23 +44,19 @@ export default function useReview(
     },
   });
 
-  const commentData = {
-    post_id: slug,
-    user_id: userId,
-    comment,
-  };
-
-  const handlePostComment = () => {
+  const handlePostComment: SubmitHandler<Comment | FieldValues> = async data => {
+    const { comment } = data;
     if (comment === '') return;
-    if (comment.length > 300) {
-      Alert('글자 수 300자를 넘었습니다.');
-      return;
-    }
+    const commentData = {
+      post_id: slug,
+      user_id: userId,
+      ...data,
+    };
+
     const updatedPoint = curUserPoint + 2;
 
     if (!userId) return;
     postMutation.mutate(commentData);
-    setComment('');
     updateUserPoint(updatedPoint, userId);
 
     toast('나무 2그루가 지급되었습니다.');

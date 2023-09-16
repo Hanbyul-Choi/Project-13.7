@@ -48,5 +48,5 @@ export const getIdeaCommentInfinite = async ({ queryKey, pageParam = 1 }: any) =
   if (error) {
     throw error;
   }
-  return { data, total_pages: Math.ceil((count ?? 0) / 5), page: pageParam };
+  return { data, total_pages: Math.ceil((count ?? 0) / 5), page: pageParam, count };
 };
