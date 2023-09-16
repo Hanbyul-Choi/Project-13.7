@@ -4,6 +4,7 @@ import { useInView } from 'react-intersection-observer';
 import { getIdeaCommentInfinite, postChallengeIdeaComment, updateUserPoint } from '@/app/api/idea-comments';
 import { IDEA_COMMENTS } from '@/app/shared/queries.keys';
 import { useDialog } from '@/components/common';
+import useToast from '@/components/common/Toast/useToast';
 
 export default function useReview(
   slug: string,
@@ -13,6 +14,7 @@ export default function useReview(
   setComment: React.Dispatch<React.SetStateAction<string>>,
 ) {
   const { Alert } = useDialog();
+  const { toast } = useToast();
   const {
     data: commentsData,
     isError: commentsError,
@@ -63,6 +65,8 @@ export default function useReview(
     postMutation.mutate(commentData);
     setComment('');
     updateUserPoint(updatedPoint, userId);
+
+    toast('나무 2그루가 지급되었습니다.');
   };
 
   return { commentsError, challengeCommentsData, ref, hasNextPage, handlePostComment };
