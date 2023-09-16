@@ -6,7 +6,7 @@ import { v4 } from 'uuid';
 
 import { getUserDataByToken, setUserData } from '@/app/api/auth/auth';
 import { getUser, getUserWithEmail } from '@/app/api/users';
-import useSessionStore from '@/store/sesson.store';
+import useSessionStore from '@/store/session.store';
 
 import { supabase } from '../../../../supabase/supabaseConfig';
 

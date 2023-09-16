@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { userJoinChallengeCheck } from '@/app/api/join-challenge';
 import { JOIN_CHALLENGE } from '@/app/shared/queries.keys';
 import { useModalStore } from '@/store/modal.store';
-import useSessionStore from '@/store/sesson.store';
+import useSessionStore from '@/store/session.store';
 
 import JoinChallengeModal from './JoinChallengeModal';
 import { Button, useDialog } from '../common';

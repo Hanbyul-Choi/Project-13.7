@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { BarLoader } from 'react-spinners';
 
 import { getUser } from '@/app/api/users';
-import useSessionStore from '@/store/sesson.store';
+import useSessionStore from '@/store/session.store';
 
 import useInputRegister from './useInputRegister';
 import useJoinChallenge from './useJoinChallenge';

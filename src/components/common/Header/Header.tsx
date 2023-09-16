@@ -14,6 +14,7 @@ import { Auth, SignOut } from '../../auth';
 
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   const params = usePathname();
 
   const { isLoaded, session } = useLogin();

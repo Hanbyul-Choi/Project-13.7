@@ -64,7 +64,42 @@ export const udpateUserPoint = async (updatedPoint: number, userId: string) => {
   }
 };
 
-export const getCurUserChallenges = async (user_id: string) => {
+export const getTotalNumberDonation = async () => {
+  const { data } = await supabase.from('donation').select('point').eq('isCompleted', false);
+  if (data && data.length > 0 && 'point' in data[0]) {
+    const pointValue = data[0].point;
+    return Number(pointValue);
+  }
+  return 0;
+};
+export const updateTotalNumberDonation = async (updatedPoint: number) => {
+  const { error } = await supabase.from('donation').update({ point: updatedPoint }).eq('isCompleted', false);
+  if (error) {
+    throw error;
+  }
+};
+
+export const postDonationHistory = async (donationData: any) => {
+  const { data, error } = await supabase.from('donationHistory').insert(donationData);
+  if (error) {
+    throw error;
+  }
+
+  console.log('기부 내역이 성공적으로 등록되었습니다.', data);
+  return data;
+};
+
+export const udpateUserPoint = async (updatedPoint: number, userId: string) => {
+  const { error } = await supabase.from('users').update({ point: updatedPoint }).eq('user_id', userId);
+  if (error) {
+    throw error;
+  }
+};
+
+export const getCurUserChallenges = async (user_id: string | undefined) => {
+  if (!user_id) {
+    return null;
+  }
   const { data } = await supabase
     .from('joinChallenge')
     .select(`*, mainChallenge (*)`)
@@ -72,7 +107,10 @@ export const getCurUserChallenges = async (user_id: string) => {
   return data;
 };
 
-export const getCompletedChallenges = async (user_id: string) => {
+export const getCompletedChallenges = async (user_id: string | undefined) => {
+  if (!user_id) {
+    return null;
+  }
   const { data } = await supabase
     .from('joinChallenge')
     .select(`*, mainChallenge (*)`)
@@ -81,7 +119,10 @@ export const getCompletedChallenges = async (user_id: string) => {
   return data;
 };
 
-export const getCurUserReviews = async (user_id: string) => {
+export const getCurUserReviews = async (user_id: string | undefined) => {
+  if (!user_id) {
+    return null;
+  }
   const { data } = await supabase
     .from('reviews')
     .select(`*, mainChallenge (title)`)
@@ -89,7 +130,10 @@ export const getCurUserReviews = async (user_id: string) => {
   return data;
 };
 
-export const getUserChallengeSuggestions = async (user_id: string) => {
+export const getUserChallengeSuggestions = async (user_id: string | undefined) => {
+  if (!user_id) {
+    return null;
+  }
   const { data } = await supabase
     .from('challengeSuggestion')
     .select(`*`)
