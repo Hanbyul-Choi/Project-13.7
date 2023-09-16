@@ -11,7 +11,7 @@ interface InputFormProps<T extends FieldValues> extends InputHTMLAttributes<HTML
   placeholder?: string;
   register?: UseFormRegister<T>;
   errors?: FieldErrors<T>;
-  rules: Pick<RegisterOptions<T>, 'maxLength' | 'minLength' | 'validate' | 'required' | 'pattern'>;
+  rules?: Pick<RegisterOptions<T>, 'maxLength' | 'minLength' | 'validate' | 'required' | 'pattern'>;
   _size: string;
 }
 

@@ -24,6 +24,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps & InputHTMLAttribut
           return (inputSize = 'w-[75%] h-[2.5rem] py-1 px-2 sm:h-[3rem] sm:py-3 sm:px-4 md:w-[473px] md:h-[51px] md:py-[12px] md:px-[40px]');
         case 'lg':
           return (inputSize = 'w-[543px] py-[8px] px-[24px]');
+        case 'full':
+          return (inputSize = 'w-full py-2 px-6 sm:ml-[20px]');
       }
     };
     sizeFunc();

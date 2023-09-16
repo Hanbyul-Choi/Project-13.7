@@ -11,7 +11,10 @@ import useSessionStore from '@/store/session.store';
 
 import IdeaImagePost from './IdeaImagePost';
 import useIdeaPost from './useIdeaPostUpdate';
+import InputForm from '../common/InputForm';
 import useToast from '../common/Toast/useToast';
+
+import type { FieldValues } from 'react-hook-form';
 
 export interface Inputs {
   title: string;
@@ -20,9 +23,8 @@ export interface Inputs {
 }
 
 function IdeaContentsPost() {
-  const inputStyle = 'rounded-lg font-normal text-base border border-opacityblack outline-none w-full py-2 px-6 sm:ml-[20px] ';
   const { toast } = useToast();
-  const { register, handleSubmit } = useForm<Inputs>();
+  const { register, handleSubmit } = useForm();
   const [imgFile, setImgFile] = useState<File | undefined>(undefined);
   const [previewImg, setPreviewImg] = useState<string | ArrayBuffer | undefined>(undefined);
 
@@ -46,12 +48,11 @@ function IdeaContentsPost() {
     if (curUserPoint !== undefined && loginUser !== undefined) {
       const updatedPoint = curUserPoint + 5;
       await updateUserPointIdea(updatedPoint, loginUser);
-
       toast('나무 5그루가 지급되었습니다.');
     }
   };
 
-  const onSubmit = async (data: Inputs) => {
+  const onSubmit = async (data: Inputs | FieldValues) => {
     await handleGetImg(data);
     await pointUpdate();
   };
@@ -62,7 +63,16 @@ function IdeaContentsPost() {
         <Label size="" name="title" labelStyle="w-[8rem] mb-[10px] sm:mb-0">
           <span className="text-nagative">* </span>챌린지 제목
         </Label>
-        <input placeholder="제목을 입력하세요." className={`${inputStyle}`} id="title" defaultValue={title!} {...register('title')} />
+        <InputForm
+          type="text"
+          _size="full"
+          name="title"
+          register={register}
+          autoFocus
+          placeholder="제목을 입력하세요."
+          id="title"
+          defaultValue={title!}
+        />
       </div>
       <div className="flex justify-center my-[24px] flex-col sm:flex-row">
         <Label size="" name="content" labelStyle="w-[8rem] mb-[10px] sm:mb-0">
@@ -80,7 +90,15 @@ function IdeaContentsPost() {
         <Label size="" name="product" labelStyle="w-[8rem] mb-[10px] sm:mb-0">
           챌린지 물품
         </Label>
-        <input placeholder="필요 물품을 입력하세요." id="product" defaultValue={product} className={`${inputStyle}`} {...register('product')} />
+        <InputForm
+          type="text"
+          _size="full"
+          name="product"
+          placeholder="필요 물품을 입력하세요."
+          id="product"
+          defaultValue={product}
+          register={register}
+        />
       </div>
       <IdeaImagePost setImgFile={setImgFile} setPreviewImg={setPreviewImg} previewImg={previewImg} imgUrl={imgUrl!} />
       <div className="flex sm:items-center justify-center mt-10 md:mt-20">
