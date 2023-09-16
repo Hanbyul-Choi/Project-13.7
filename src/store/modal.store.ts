@@ -40,7 +40,7 @@ export const useModalStore = create<ModalOpen>()(set => ({
     return set({ isOpenSubModal: false });
   },
   sub2OpenModal: () => {
-    return set({ isOpen: false, isOpenMainModal: false, isOpenSub2Modal: false, isOpenSub2Modal: true });
+    return set({ isOpen: false, isOpenMainModal: false, isOpenSubModal: false, isOpenSub2Modal: true });
   },
   sub2CloseModal: () => {
     return set({ isOpenSub2Modal: false });
