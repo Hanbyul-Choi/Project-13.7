@@ -49,15 +49,13 @@ const TreeDonation = ({ curUserTrees, userId }: TreeDonationProps) => {
     const updatedUserTrees = curUserTrees - count;
 
     if (count > 0 && count < curUserTrees) {
-      console.log('updatedTotalTrees', updatedTotalTrees);
       await updateTotalNumberDonation(updatedTotalTrees);
-
       await udpateUserPoint(updatedUserTrees, userId);
       await postDonationHistory(donationData);
 
       await Alert(`지금까지 모인 나무 총 ${updatedTotalTrees} 그루`, '후원이 완료되었습니다.');
-
       sub2CloseModal();
+      window.location.reload();
     } else {
       await Alert('후원하실 나무의 갯수를 확인해주세요.', '나무 1 그루부터 후원이 가능합니다.');
     }

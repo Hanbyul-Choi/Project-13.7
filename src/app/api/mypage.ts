@@ -53,8 +53,6 @@ export const postDonationHistory = async (donationData: any) => {
   if (error) {
     throw error;
   }
-
-  console.log('기부 내역이 성공적으로 등록되었습니다.', data);
   return data;
 };
 
