@@ -71,32 +71,29 @@ const TreeDonation = ({ curUserTrees, userId }: TreeDonationProps) => {
               <AiOutlineClose size={25} />
             </button>
           </div>
-          <div>
-            <div className="border-t border-black opacity-25 mb-6 justify-between"></div>
-            <p>{donationGuide}</p>
-            <div className="mt-4">
+          <div className="border-t border-black opacity-25 mb-6 justify-between"></div>
+          <p>{donationGuide}</p>
+          <div className="py-6">
+            <div className="flex gap-2 items-center">
+              <p>현재 나의 나무 :</p>
+              <p>{curUserTrees}</p>
+            </div>
+            <div className="flex justify-between">
               <div className="flex gap-2 items-center">
-                <p>현재 나의 나무 수:</p>
-                <p>{curUserTrees}</p>
+                <p>후원할 나무 :</p>
+                <h4>{count}</h4>
               </div>
-              <div className="flex justify-between">
-                <div className="flex items-center gap-2">
-                  <p>후원할 나무 수:</p>
-                  <h4>{count}</h4>
-                </div>
-                <div className="flex gap-2">
-                  <Button onClick={minusButtonHanlder} btnType={'borderBlack'} size="small">
-                    -
-                  </Button>
-                  <Button onClick={plusButtonHanlder} btnType={'black'} size="small">
-                    +
-                  </Button>
-                </div>
+              <div className="flex gap-2">
+                <Button onClick={minusButtonHanlder} btnType={'borderBlack'} size="small">
+                  -
+                </Button>
+                <Button onClick={plusButtonHanlder} btnType={'black'} size="small">
+                  +
+                </Button>
               </div>
             </div>
           </div>
-
-          <div className="mt-6 my-4" onClick={sub2CloseModal}>
+          <div className="my-2" onClick={sub2CloseModal}>
             <Button onClick={onClickDonation} btnType={'primary'} size={'full'}>
               후원하기
             </Button>

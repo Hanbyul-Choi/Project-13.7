@@ -56,6 +56,14 @@ export const postDonationHistory = async (donationData: any) => {
   return data;
 };
 
+export const getMyDonationHistory = async (userId: string) => {
+  const { data, error } = await supabase.from('donationHistory').select('*').eq('user_id', userId);
+  if (error) {
+    throw error;
+  }
+  return data;
+};
+
 export const udpateUserPoint = async (updatedPoint: number, userId: string) => {
   const { error } = await supabase.from('users').update({ point: updatedPoint }).eq('user_id', userId);
   if (error) {

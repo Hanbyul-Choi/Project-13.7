@@ -24,7 +24,7 @@ const ChallengeTabContent: React.FC<ChallengeTabContentProps> = ({
         <ul className="flex justify-between items-center text-base opacity-50 px-6 sm:px-4 py-3 mb-2">
           <li className="relative w-2/4 text-left">챌린지</li>
           <li className="relative w-1/3 text-center">인증현황</li>
-          <li className="relative w-1/3 text-center">게시글</li>
+          <li className="relative w-1/3 text-center">상태</li>
         </ul>
         {userChallenges?.length !== 0 ? (
           <>
@@ -74,7 +74,7 @@ const ChallengeTabContent: React.FC<ChallengeTabContentProps> = ({
         <ul className="flex justify-between items-center text-base opacity-50 px-6 sm:px-4 py-3 mb-2">
           <li className="relative w-2/4 text-left">챌린지</li>
           <li className="relative w-1/3 text-center">참여기간</li>
-          <li className="relative w-1/3 text-center">진행상황</li>
+          <li className="relative w-1/3 text-center">상태</li>
         </ul>
         {userChallenges?.length !== 0 ? (
           <>
@@ -85,7 +85,7 @@ const ChallengeTabContent: React.FC<ChallengeTabContentProps> = ({
                   {item.mainChallenge?.startDate} - {item.mainChallenge?.endDate?.toString().slice(5, 10)}
                 </li>
                 <div
-                  className={`relative w-1/3 ml-2 text-center rounded text-base md:py-2 ${
+                  className={`relative w-1/3 text-center rounded text-base md:py-2 ${
                     item.mainChallenge?.isCompleted ? 'sm:bg-lightblue text-blue' : 'sm:bg-lightgreen text-green'
                   }`}
                 >
@@ -115,9 +115,12 @@ const ChallengeTabContent: React.FC<ChallengeTabContentProps> = ({
               <ul key={item.post_id} className="flex flex-row justify-between items-center text-lg rounded-lg bg-sub1 px-7 md:px-4 py-4 mb-4">
                 <li className="relative w-2/4 overflow-hidden overflow-ellipsis whitespace-nowrap text-lg">{item?.title}</li>
                 <li className="relative w-1/3 opacity-50 text-center text-base">{item.created_at ? item.created_at.slice(0, 10) : ''}</li>
-                <li className="relative w-1/3 ml-2 text-center rounded sm:bg-opacityblack text-base sm:text-sub8 text-sub6 md:py-3">
-                  <Link href={`/idea/${item?.post_id}`}>바로가기</Link>
-                </li>
+                <Link
+                  href={`/idea/${item?.post_id}`}
+                  className="relative w-1/3 ml-2 text-center rounded sm:bg-opacityblack text-base sm:text-sub8 text-sub6 md:py-2"
+                >
+                  <li>바로가기</li>
+                </Link>
               </ul>
             ))}
           </>
