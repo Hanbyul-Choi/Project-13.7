@@ -36,7 +36,7 @@ export function CertifyList() {
   }
   return (
     <>
-      <div className="mt-16 w-full flex justify-center items-center">
+      <div className="mt-16 w-full flex flex-col justify-center items-center">
         <Masonry
           breakpointCols={{
             default: 4,

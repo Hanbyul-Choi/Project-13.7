@@ -1,7 +1,8 @@
 import React from 'react';
 
-import Image from 'next/image';
 import Link from 'next/link';
+
+import Calendar from './Calendar/Calendar';
 
 type ChallengeTabContentProps = {
   activeTab: string;
@@ -11,13 +12,7 @@ type ChallengeTabContentProps = {
   TOTAL_REVIEW_NUMBER: number;
 };
 
-const ChallengeTabContent: React.FC<ChallengeTabContentProps> = ({
-  activeTab,
-  userChallenges,
-  userReviews,
-  userChallengeSuggestions,
-  TOTAL_REVIEW_NUMBER,
-}) => {
+const ChallengeTabContent: React.FC<ChallengeTabContentProps> = ({ activeTab, userChallenges, userReviews, userChallengeSuggestions }) => {
   if (activeTab === 'myChallenge') {
     return (
       <div>
@@ -41,24 +36,7 @@ const ChallengeTabContent: React.FC<ChallengeTabContentProps> = ({
                 </div>
               </ul>
             ))}
-            <h1 className="flex justify-between items-center text-lg px-6 sm:px-4 py-3 mb-4">현재 진행 중인 챌린지</h1>
-            <div className="z-5 relative grid lg:grid-cols-5 gap-2 grid-cols-3">
-              {userReviews?.map((item: any, index: number) => (
-                <ul key={item.post_id} className="flex flex-col w-38 h-38 items-left rounded-lg bg-sub1 px-2 py-1">
-                  <li className="text-sm">
-                    {index + 1}/{TOTAL_REVIEW_NUMBER}
-                  </li>
-                  <Image
-                    src={item.img_url}
-                    alt={'인증사진'}
-                    width={100}
-                    height={100}
-                    className="w-full h-full justify-center overflow-hidden object-cover rounded-sm"
-                  />
-                  <li className="text-sm">인증일 [{item.created_at ? item.created_at.slice(0, 10) : ''}]</li>
-                </ul>
-              ))}
-            </div>
+            <Calendar userReviews={userReviews} />
           </>
         ) : (
           <>
