@@ -28,7 +28,6 @@ export default function RankingGuide() {
   const { subOpenModal, isOpenSubModal, subCloseModal } = useModalStore(state => state);
   const onClickRankingGuide = () => {
     subOpenModal();
-    console.log('openSubModal:', isOpenSubModal);
   };
 
   const onClickToJoinChallenge = () => {
