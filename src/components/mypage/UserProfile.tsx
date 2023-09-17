@@ -52,8 +52,6 @@ export default function UserProfile() {
       {editMode ? (
         <>
           <EditProfile setEditMode={setEditMode} userProfile={userProfile} setUserProfile={setUserProfile} />
-          <BadgesList />
-          <PointTree curUserTrees={curUserTrees} userId={userId} />
         </>
       ) : (
         <>
@@ -80,11 +78,11 @@ export default function UserProfile() {
                 프로필 수정
               </button>
             </div>
-            <BadgesList />
-            <PointTree curUserTrees={curUserTrees} userId={userId} />
           </div>
         </>
       )}
+      <BadgesList />
+      <PointTree curUserTrees={curUserTrees} userId={userId} />
     </>
   );
 }

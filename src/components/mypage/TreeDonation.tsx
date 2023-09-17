@@ -10,8 +10,7 @@ import { useModalStore } from '@/store/modal.store';
 import { Button, useDialog } from '../common';
 import Modal from '../common/Modal';
 
-export const donationGuide =
-  '프로젝트 13.7에서 창출되는 이익과 참여자분들이 후원해주신 나무는 월 1회 한화로 환산하여 세계자연기금 WWF를 통해 후원됩니다.';
+export const donationGuide = '프로젝트 13.7에서 창출되는 이익과 참여자분들이 후원해주신 나무는 돈으로 환산하여 세계자연기금 WWF를 통해 후원됩니다.';
 
 interface TreeDonationProps {
   curUserTrees: number;
