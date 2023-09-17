@@ -1,9 +1,10 @@
-import { supabase } from '../../../supabase/supabaseConfig';
 
 export const getNatureStory = async () => {
-  const { data, error } = await supabase.from('natureStory').select(`*`);
-  if (error) {
-    throw error;
-  }
-  return data;
+  const response = await fetch('http://localhost:3000/api/nature', {
+    next: {
+      revalidate:20
+    }
+  })
+  const data = await response.json().then(data=>data.res)
+  return data
 };

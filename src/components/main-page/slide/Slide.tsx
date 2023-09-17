@@ -14,7 +14,7 @@ import type { Tables } from '@/types/supabase.type';
 interface Props {
   showContentNum: number;
   type: 'idea' | 'column';
-  contents: Tables<'challengeSuggestion'>[] | Tables<'natureStory'>[];
+  contents: Suggestion[] | Tables<'natureStory'>[];
   onClickHandler?: (i: number) => void;
 }
 

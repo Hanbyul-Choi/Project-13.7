@@ -1,22 +1,22 @@
-
 import React from 'react';
 
 import Image from 'next/image';
 
 import { getNatureStory } from '@/app/api/nature-story';
 
+
 import { Layout } from '../common';
 import ListButton from '../common/ListButton';
+
+import type { Tables } from '@/types/supabase.type';
 
 type NatureDetailProps = {
   postId: string;
 };
 
 export default async function NatureDetail({ postId }: NatureDetailProps) {
-  const data = await getNatureStory();
-  console.log(data)
+  const data: Tables<'natureStory'>[] = await getNatureStory()
   const { category, content, created_at, video_url, img_url, title } = data.filter(item => item.post_id === postId)[0];
-  console.log(content)
 
   return (
     <Layout>

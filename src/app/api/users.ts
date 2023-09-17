@@ -1,13 +1,17 @@
-import { cache } from 'react';
+
 
 import { supabase } from '../../../supabase/supabaseConfig';
 
-export const revalidate = 10
+export const getUsers = async () => {
+  const response = await fetch("http://localhost:3000/api/users", {
+    next: {
+      revalidate: 86400
+    }
+  });
+  const data =await response.json().then(data=>data.res);
+  return data
+};
 
-export const getUsers = cache(async () => {
-  const { data } = await supabase.from('users').select(`*`).range(0, 4).order('rank', { ascending: false });
-  return data;
-});
 
 export const getUser = async (user_id: string) => {
   const { data } = await supabase.from('users').select('*').eq('user_id', user_id).single();

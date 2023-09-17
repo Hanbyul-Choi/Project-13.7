@@ -2,6 +2,15 @@ import { supabase } from '../../../supabase/supabaseConfig';
 
 import type { IdeaPost } from '@/types/db.type';
 
+export const fetchSuggestions = async () => {
+  const response = await fetch("http://localhost:3000/api/suggestions", {
+    next: {
+      revalidate: 5
+    }
+  });
+  return response.json()
+}
+
 export const getSuggestions = async () => {
   const { data, error } = await supabase.from('challengeSuggestion').select(`*, users(*)`).order('liked_count', { ascending: false });
   if (error) {
