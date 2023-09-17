@@ -5,7 +5,7 @@ import ContentCard from './ContentCard';
 import type { Tables } from '@/types/supabase.type';
 
 export async function Content({ searchParams }: { searchParams: string | undefined }) {
-  const data: Tables<'natureStory'>[] = await getNatureStory()
+  const data: Tables<'natureStory'>[] = await getNatureStory().then(data => data.res)
   const filterdData = data.filter(item => item.category === searchParams)
   return (
     <section className="flex flex-col items-center p-2 mb-24 min-h-[300px]">

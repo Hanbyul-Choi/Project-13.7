@@ -12,7 +12,7 @@ import type { Tables } from '@/types/supabase.type';
 
 
 export default async function Main() {
-  const natureStory: Tables<'natureStory'>[] = await getNatureStory()
+  const natureStory: Tables<'natureStory'>[] = await getNatureStory().then(data => data.res)
   return (
     <div className="flex flex-col justify-center items-center">
       <TotalTreeNumber />

@@ -8,16 +8,15 @@ export const mainChallengeCheck = async () => {
   if (error) {
     throw error;
   }
-
   return challenge;
 };
 
-export const fetchMainChallenge = async () => {
-  const response = await fetch(`${process?.env?.NEXT_PUBLIC_SITE_URL}/api/mainChallenge`, {
-    next: {
-      revalidate: 10
-    }
-  });
-  const data = await response.json().then(data=>data.res);
-  return data
-};
+// export const fetchMainChallenge = async () => {
+//   const response = await fetch(`${process?.env?.NEXT_PUBLIC_SITE_URL}/api/mainChallenge`, {
+//     next: {
+//       revalidate: 10
+//     }
+//   });
+//   const data = await response.json().then(data=>data.res);
+//   return data
+// };

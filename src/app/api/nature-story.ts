@@ -5,6 +5,6 @@ export const getNatureStory = async () => {
       revalidate:86400
     }
   })
-  const data = await response.json().then(data=>data.res)
+  const data = await response.json()
   return data
 };
