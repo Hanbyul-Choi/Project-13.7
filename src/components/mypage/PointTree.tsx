@@ -6,6 +6,7 @@ import { useModalStore } from '@/store/modal.store';
 
 import TreeDonation from './TreeDonation';
 import TreeGuideModal from './TreeGuideModal';
+import { Button } from '../common';
 
 interface PointTreeProps {
   curUserTrees: number;
@@ -24,24 +25,20 @@ export default function PointTree({ curUserTrees, userId }: PointTreeProps) {
   return (
     <>
       <div className="flex flex-col text-center">
-        <div className="text-lg flex justify-center items-baseline gap-1 mt-8">
+        <div className="text-lg flex justify-center items-baseline gap-1 my-3">
           <p>현재 나무 총</p>
           <p className="text-xl align-text-bottom font-semibold">{curUserTrees}</p>
           <p>그루</p>
         </div>
-        <button
-          onClick={onClickTreeGuide}
-          className="bg-green text-white px-3 py-1 my-3 gap-2 border rounded-full text-sm mb-2 flex justify-center items-center"
-        >
-          <p className="font-semibold sm:text-base">나무를 얻으려면?</p> <AiOutlineArrowRight size={15} />
-        </button>
-        {isOpenMainModal && <TreeGuideModal />}
-        <button
-          onClick={onClickTreeDonation}
-          className="bg-green text-white px-3 py-1 my-3 gap-2 border rounded-full text-sm mb-2 flex justify-center items-center"
-        >
-          <p className="font-semibold sm:text-base">나무로 후원하기</p> <AiOutlineArrowRight size={15} />
-        </button>
+        <div className="flex flex-col gap-2">
+          <Button onClick={onClickTreeGuide} btnType={'green'} size={'medium'}>
+            <p className="font-semibold sm:text-base">나무를 얻으려면?</p> <AiOutlineArrowRight size={15} />
+          </Button>
+          {isOpenMainModal && <TreeGuideModal />}
+          <Button onClick={onClickTreeDonation} btnType={'green'} size={'medium'}>
+            <p className="font-semibold sm:text-base">나무로 후원하기</p> <AiOutlineArrowRight size={15} />
+          </Button>
+        </div>
         {isOpenSub2Modal && <TreeDonation curUserTrees={curUserTrees} userId={userId} />}
       </div>
     </>
