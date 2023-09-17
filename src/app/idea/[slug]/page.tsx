@@ -2,6 +2,7 @@
 import React from 'react';
 
 import { useQuery } from '@tanstack/react-query';
+import { BarLoader } from 'react-spinners';
 
 import { getSuggestions } from '@/app/api/challenge-idea';
 import { CHALLENGE_SUGGESTION } from '@/app/shared/queries.keys';
@@ -23,7 +24,11 @@ export default function Page({ params: { slug } }: Props) {
   const { data } = useQuery([CHALLENGE_SUGGESTION], getSuggestions);
 
   if (!data) {
-    return <div>로딩중...</div>;
+    return (
+      <div className="absolute top-[50%] left-[50%] -translate-x-center -translate-y-center">
+        <BarLoader color="#101828" height={5} width={200} />
+      </div>
+    );
   }
 
   const filteredData = data.find(idea => idea.post_id === slug);

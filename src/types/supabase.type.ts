@@ -529,3 +529,8 @@ export interface Database {
 }
 
 export type Tables<T extends keyof Database['public']['Tables']> = Database['public']['Tables'][T]['Row'];
+
+export type MainChallenge = Pick<
+  Tables<'mainChallenge'>,
+  'badgeUrl' | 'challenge_Id' | 'content' | 'created_at' | 'endDate' | 'howto' | 'isCompleted' | 'limit' | 'point' | 'product' | 'startDate' | 'title'
+>;

@@ -14,6 +14,19 @@ export const animals: AnimalMap = {
   3: '북극곰 마스터',
 };
 
+export const getRank = (a: number): number => {
+  if (a >= 10) {
+    return 3;
+  }
+  if (a >= 5) {
+    return 2;
+  }
+  if (a >= 1) {
+    return 1;
+  }
+  return 0;
+};
+
 export default async function Ranking() {
   const topRanker: Tables<'users'>[] = await getUsers()
   const colorMatch = ['text-blue bg-lightblue', 'text-green bg-lightgreen', 'text-orange bg-lightorange', 'text-sub6 bg-lightsub6', 'text-sub6 bg-lightsub6'];
@@ -27,7 +40,7 @@ export default async function Ranking() {
             <div key={i} className="px-7 py-3 bg-white rounded-lg border-[1px] w-[18%] md:w-auto ">
               <p className="text-black opacity-50">{item.nickname}</p>
               <div className="flex flex-col gap-3 md:w-auto md:flex-row md:items-center">
-                <p className="text-lg ">{animals[item.rank >= 10 ? 3 : item.rank >= 5 ? 2 : item.rank >= 1 ? 1 : 0]}</p>
+                <p className="text-lg ">{animals[getRank(item.rank)]}</p>
                 <div className={`rounded-[4px] w-fit mx-auto text-xs py-1 px-3 ${colorMatch[i]} md:static`}>{item.rank}회 성공</div>
               </div>
             </div>

@@ -3,18 +3,21 @@ import React from 'react';
 
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 
 import google from '../../../../public/social-signin-icon/google.svg';
 import kakao from '../../../../public/social-signin-icon/kakao.svg';
+import naver from '../../../../public/social-signin-icon/naver.svg';
 import { supabase } from '../../../../supabase/supabaseConfig';
 
 const icons = {
   google,
   kakao,
+  naver,
 };
 
 interface Props {
-  social: 'kakao' | 'google';
+  social: 'kakao' | 'google' | 'naver';
 }
 
 export default function SocialSignIn({ social }: Props) {
@@ -29,6 +32,10 @@ export default function SocialSignIn({ social }: Props) {
   };
 
   async function signInWithSocial() {
+    if (social === 'naver') {
+      await signIn('naver');
+      return;
+    }
     const { error } = await supabase.auth.signInWithOAuth({
       provider: social,
       options: {
@@ -44,8 +51,23 @@ export default function SocialSignIn({ social }: Props) {
     }
   }
 
+  let iconStyle = '';
+  switch (social) {
+    case 'google':
+      iconStyle = 'p-[12px] bg-sub3';
+      break;
+    case 'kakao':
+      iconStyle = 'p-[10px] bg-[#FFEB3B]';
+      break;
+    case 'naver':
+      iconStyle = 'bg-[#06BE34] px-[14px] py-[14.5px]';
+      break;
+    default:
+      break;
+  }
+
   return (
-    <button className={`${social === 'google' ? 'p-[12px] bg-sub3 ' : 'p-[10px] bg-[#FFEB3B]'} rounded-lg`} onClick={signInWithSocial}>
+    <button className={`${iconStyle} rounded-lg`} onClick={signInWithSocial}>
       <Image src={icons[social]} alt={`${social} login`} />
     </button>
   );

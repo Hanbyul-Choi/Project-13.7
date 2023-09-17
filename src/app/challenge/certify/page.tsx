@@ -7,7 +7,8 @@ import { BarLoader } from 'react-spinners';
 import { mainChallengeCheck } from '@/app/api/main-challenge';
 import { CertifyList, CertifyPost } from '@/components/challenge-certify';
 import { Layout } from '@/components/common';
-import useSessionStore from '@/store/sesson.store';
+import Banner from '@/components/common/Banner';
+import useSessionStore from '@/store/session.store';
 
 export default function CertifyPage() {
   const { isLoading, isError, data: mainChallenge } = useQuery(['mainChallenge'], mainChallengeCheck);
@@ -26,9 +27,7 @@ export default function CertifyPage() {
   return (
     <>
       <div className="px-100w-full mx-auto md:max-w-[77rem] border-y-[1px]">
-        <div
-          className={`float-left ml-2 w-full md:h-[400px] h-[300px] bg-[#white] md:bg-[url('/certify-banner-text.png')] bg-[url('/banner-text-mo.png')] bg-no-repeat bg-left mb-6`}
-        />
+        <Banner challenge="certify challenge" title="챌린지 인증하기" />
         <div
           className={`w-full md:h-[400px] h-[600px] bg-[#white] md:bg-[url('/certify-banner.png')] bg-[url('/certify-banner-mo.png')] bg-no-repeat bg-center mb-6`}
         />

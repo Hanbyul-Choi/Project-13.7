@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 
-import useSessionStore from '@/store/sesson.store';
+import useSessionStore from '@/store/session.store';
 
 import ReviewItem from './ReviewItem';
 import useReview from './useReviewGetPost.hook';
@@ -16,8 +16,15 @@ function Review({ slug }: DetailProps) {
 
   const { session } = useSessionStore();
   const curUser = session;
+  const curUserPoint = session?.point;
 
-  const { commentsError, challengeCommentsData, hasNextPage, ref, handlePostComment } = useReview(slug, curUser?.user_id, comment, setComment);
+  const { commentsError, challengeCommentsData, hasNextPage, ref, handlePostComment } = useReview(
+    slug,
+    curUser?.user_id,
+    curUserPoint ?? 0,
+    comment,
+    setComment,
+  );
 
   if (commentsError) {
     return <p>에러입니다.</p>;

@@ -23,7 +23,7 @@ export interface NatureStory {
 }
 export interface User {
   user_id: string;
-  created_at: string;
+  created_at?: string;
   point: number;
   address: string | null;
   profile_img: string | null;
@@ -32,12 +32,29 @@ export interface User {
   rank: number;
   name?: string | null;
 }
+export interface DonationHistory {
+  donation_id: string;
+  created_at: string;
+  point: number;
+  user_id: string;
+}
+export interface Donation {
+  donation_total_id: string;
+  created_at: number;
+  point: number;
+  isCompleted: boolean;
+}
 
 export interface AnimalMap {
   [key: string]: string;
 }
 export interface HowToGetTrees {
   title: string;
+  trees: number;
+}
+export interface HowToRankUp {
+  title: string;
+  animals: string;
   trees: number;
 }
 

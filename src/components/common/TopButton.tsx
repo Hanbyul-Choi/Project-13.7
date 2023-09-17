@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { useEffect, useState } from 'react';
 
 function TopButton() {
@@ -25,12 +25,11 @@ function TopButton() {
       top: 0,
       behavior: 'smooth',
     });
-
   };
 
   return (
     showButton && (
-      <button className="fixed bottom-20 right-5 w-10 h-10 bg-[#00000020] rounded-full" onClick={scrollToTop}>
+      <button className="fixed bottom-20 right-5 w-10 h-10 z-50 bg-sub3 rounded-full" onClick={scrollToTop}>
         ↑
       </button>
     )

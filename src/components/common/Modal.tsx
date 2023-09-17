@@ -11,7 +11,9 @@ type ModalProps = {
 
 const Modal: React.FC<ModalProps> = ({ children }) => {
   const [isCSR, setIsCSR] = useState<boolean>(false);
-  const { isOpen, closeModal, isOpenMainModal, mainCloseModal } = useModalStore(state => state);
+  const { isOpen, closeModal, isOpenMainModal, mainCloseModal, isOpenSubModal, subCloseModal, isOpenSub2Modal, sub2CloseModal } = useModalStore(
+    state => state,
+  );
 
   useEffect(() => {
     setIsCSR(true);
@@ -28,9 +30,9 @@ const Modal: React.FC<ModalProps> = ({ children }) => {
       {isOpen &&
         !isOpenMainModal &&
         createPortal(
-          <div onClick={() => closeModal()} className="fixed top-0 left-0 w-full h-full bg-[#00000060] z-20">
+          <div onMouseDown={() => closeModal()} className="fixed top-0 left-0 w-full h-full bg-[#00000060] z-20">
             <div
-              onClick={e => e.stopPropagation()}
+              onMouseDown={e => e.stopPropagation()}
               className="bg-white top-1/2 left-1/2 absolute -translate-x-center -translate-y-center py-10 px-8 flex flex-col justify-center items-start rounded-2xl z-30 sm:px-20"
             >
               {children}
@@ -42,7 +44,34 @@ const Modal: React.FC<ModalProps> = ({ children }) => {
 
       {isOpenMainModal &&
         createPortal(
-          <div onClick={() => mainCloseModal()} className="fixed top-0 left-0 w-full h-full bg-[#00000060] z-20">
+          <div onMouseDown={() => mainCloseModal()} className="fixed top-0 left-0 w-full h-full bg-[#00000060] z-20">
+            <div
+              onMouseDown={e => e.stopPropagation()}
+              className="bg-white top-1/2 left-1/2 absolute -translate-x-center -translate-y-center px-10 py-2 flex z-30 sm:flex-col justify-center items-start rounded-2xl sm:py-8"
+            >
+              {children}
+            </div>
+          </div>,
+          document.getElementById('modal-portal') as HTMLDivElement,
+          // document.body,
+        )}
+
+      {isOpenSubModal &&
+        createPortal(
+          <div onClick={() => subCloseModal()} className="fixed top-0 left-0 w-full h-full bg-[#00000060] z-20">
+            <div
+              onClick={e => e.stopPropagation()}
+              className="bg-white top-1/2 left-1/2 absolute -translate-x-center -translate-y-center px-10 py-2 flex z-30 sm:flex-col justify-center items-start rounded-2xl sm:py-8"
+            >
+              {children}
+            </div>
+          </div>,
+          document.getElementById('modal-portal') as HTMLDivElement,
+          // document.body,
+        )}
+      {isOpenSub2Modal &&
+        createPortal(
+          <div onClick={() => sub2CloseModal()} className="fixed top-0 left-0 w-full h-full bg-[#00000060] z-20">
             <div
               onClick={e => e.stopPropagation()}
               className="bg-white top-1/2 left-1/2 absolute -translate-x-center -translate-y-center px-10 py-2 flex z-30 sm:flex-col justify-center items-start rounded-2xl sm:py-8"
