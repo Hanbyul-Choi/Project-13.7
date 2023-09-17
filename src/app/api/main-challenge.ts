@@ -13,7 +13,7 @@ export const mainChallengeCheck = async () => {
 };
 
 export const fetchMainChallenge = async () => {
-  const response = await fetch("http://localhost:3000/api/mainChallenge", {
+  const response = await fetch(`${process?.env?.NEXT_PUBLIC_SITE_URL}/api/mainChallenge`, {
     next: {
       revalidate: 10
     }

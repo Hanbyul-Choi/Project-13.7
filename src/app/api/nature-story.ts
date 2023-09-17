@@ -1,8 +1,8 @@
 
 export const getNatureStory = async () => {
-  const response = await fetch('http://localhost:3000/api/nature', {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/nature`, {
     next: {
-      revalidate:20
+      revalidate:86400
     }
   })
   const data = await response.json().then(data=>data.res)

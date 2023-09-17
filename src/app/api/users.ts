@@ -3,7 +3,7 @@
 import { supabase } from '../../../supabase/supabaseConfig';
 
 export const getUsers = async () => {
-  const response = await fetch("http://localhost:3000/api/users", {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/users`, {
     next: {
       revalidate: 86400
     }

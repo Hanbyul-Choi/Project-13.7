@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 import { supabase } from '../../../../supabase/supabaseConfig';
-export const revalidate = 5
+export const revalidate = 30
 
 export async function GET(): Promise<any> {
   const { data } = await supabase.from('challengeSuggestion').select(`*, users(*)`).order('liked_count', { ascending: false });
