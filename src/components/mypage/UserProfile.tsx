@@ -50,10 +50,12 @@ export default function UserProfile() {
   return (
     <>
       {editMode ? (
-        <EditProfile setEditMode={setEditMode} userProfile={userProfile} setUserProfile={setUserProfile} />
+        <>
+          <EditProfile setEditMode={setEditMode} userProfile={userProfile} setUserProfile={setUserProfile} />
+        </>
       ) : (
         <>
-          <div className="text-center m-4">
+          <div className="mb-6">
             <Image
               src={userProfile?.profile_img || profileDefault}
               alt="profileDefaultImg"
@@ -61,26 +63,26 @@ export default function UserProfile() {
               height={100}
               className="w-32 h-32 flex justify-center overflow-hidden object-cover rounded-md mx-auto m-2"
             />
+            <div className="flex justify-center items-center gap-0.5 p-2">
+              <p className="font-semibold text-lg">{userProfile?.nickname}</p>
+              <RankingGuide />
+            </div>
+            <p className="text-sm opacity-50 flex justify-center gap-1 items-center">
+              <AiFillEnvironment size={15} /> {userProfile?.address}
+            </p>
+            <div className="flex justify-center items-center my-3">
+              <button
+                className="border-sub5 text-sub6 px-4 py-1 gap-2 border rounded-md text-sm mb-2 flex justify-center items-center"
+                onClick={handleEditClick}
+              >
+                프로필 수정
+              </button>
+            </div>
           </div>
-          <div className="flex justify-center items-center gap-0.5 p-2">
-            <p className="font-semibold text-lg">{userProfile?.nickname}</p>
-            <RankingGuide />
-          </div>
-          <p className="text-sm opacity-50 flex justify-center gap-1 items-center">
-            <AiFillEnvironment size={15} /> {userProfile?.address}
-          </p>
-          <div className="flex justify-center items-center my-3">
-            <button
-              className="border-sub5 text-sub6 px-4 py-1 gap-2 border rounded-md text-sm mb-2 flex justify-center items-center"
-              onClick={handleEditClick}
-            >
-              프로필 수정
-            </button>
-          </div>
-          <BadgesList />
-          <PointTree curUserTrees={curUserTrees} userId={userId} />
         </>
       )}
+      <BadgesList />
+      <PointTree curUserTrees={curUserTrees} userId={userId} />
     </>
   );
 }
