@@ -37,7 +37,7 @@ function IdeaImagePost({ setImgFile, setPreviewImg, previewImg, imgUrl }: IdeaIm
 
         {typeof previewImg === 'string' ? (
           <div className="w-full h-[21.87rem] rounded-lg overflow-hidden relative sm:w-[32rem]">
-            <Image src={previewImg} fill alt="Preview Img" className="object-cover" />
+            <Image src={previewImg} fill alt="Preview" className="object-cover" />
             <button onClick={handleCancelImg} className="absolute top-0 right-[1.56rem] text-[2.5rem]">
               x
             </button>

@@ -29,7 +29,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps & InputHTMLAttribut
       }
     };
     sizeFunc();
-    return <input type={type} className={`${inputDefault} ${inputSize}  ${inputStyle}`} name={name} onChange={onChange} ref={ref} {...props} />;
+    return <input type={type} className={`${inputDefault} ${inputSize} ${inputStyle}`} name={name} onChange={onChange} ref={ref} {...props} />;
   },
 );
 Input.displayName = 'Input';

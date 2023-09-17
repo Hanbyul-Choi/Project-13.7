@@ -10,7 +10,7 @@ export const userJoinChallengeCheck = async (user_id: string | undefined, challe
     .select('*')
     .eq('user_id', user_id ?? '')
     .eq('challenge_id', challenge_id)
-    .single();
+    .maybeSingle();
 
   return data;
 };

@@ -60,7 +60,7 @@ function IdeaContentsPost() {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex sm:items-center justify-center flex-col sm:flex-row">
-        <Label size="" name="title" labelStyle="w-[8rem] mb-[10px] sm:mb-0">
+        <Label size="lg" name="title" labelStyle="w-[8rem] mb-[10px] sm:mb-0">
           <span className="text-nagative">* </span>챌린지 제목
         </Label>
         <InputForm
@@ -75,7 +75,7 @@ function IdeaContentsPost() {
         />
       </div>
       <div className="flex justify-center my-[24px] flex-col sm:flex-row">
-        <Label size="" name="content" labelStyle="w-[8rem] mb-[10px] sm:mb-0">
+        <Label size="lg" name="content" labelStyle="w-[8rem] mb-[10px] sm:mb-0">
           <span className="text-nagative">* </span>챌린지 내용
         </Label>
         <textarea
@@ -87,7 +87,7 @@ function IdeaContentsPost() {
         />
       </div>
       <div className="flex sm:items-center justify-center my-[24px] flex-col sm:flex-row">
-        <Label size="" name="product" labelStyle="w-[8rem] mb-[10px] sm:mb-0">
+        <Label size="lg" name="product" labelStyle="w-[8rem] mb-[10px] sm:mb-0">
           챌린지 물품
         </Label>
         <InputForm

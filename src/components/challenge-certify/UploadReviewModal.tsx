@@ -147,7 +147,7 @@ const UploadReviewModal = () => {
           <div className="text-center">
             {typeof previewImg === 'string' ? (
               <div className="w-[32rem] h-[21.87rem] rounded-lg overflow-hidden relative ">
-                <Image src={previewImg} fill alt="Preview Img" className="object-cover" />
+                <Image src={previewImg} fill alt="Preview" className="object-cover" />
                 <button className="absolute top-2.5 right-[1.56rem] text-[2.5rem]" onClick={handleCancelImg}>
                   x
                 </button>

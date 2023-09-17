@@ -23,7 +23,7 @@ function Review({ slug }: DetailProps) {
   const curUser = session;
   const curUserPoint = session?.point;
 
-  const { commentsError, challengeCommentsData, hasNextPage, ref, handlePostComment } = useReview(slug, curUser?.user_id, curUserPoint ?? 0);
+  const { commentsError, challengeCommentsData, hasNextPage, ref, handlePostComment, count } = useReview(slug, curUser?.user_id, curUserPoint ?? 0);
 
   if (commentsError) {
     return <p>에러입니다.</p>;
@@ -34,7 +34,7 @@ function Review({ slug }: DetailProps) {
   }
   return (
     <div>
-      <h4 className="mb-3">댓글 {challengeCommentsData?.length}</h4>
+      <h4 className="mb-3">댓글 {count}</h4>
       <div className="max-h-[350px] overflow-auto overflow-x-hidden">
         {challengeCommentsData?.map(commentData => {
           const { id, created_at, comment, users }: IdeaComments = commentData;
@@ -48,6 +48,9 @@ function Review({ slug }: DetailProps) {
       </div>
       <form className="flex flex-row mt-7" onSubmit={handleSubmit(handlePostComment)}>
         <div className="flex justify-center w-full sm:flex-row sm:items-center">
+          <label htmlFor="comment" className="sr-only">
+            댓글내용
+          </label>
           <InputForm
             name="comment"
             placeholder="응원의 댓글을 남겨주세요. (10자 ~ 300자 이내)"

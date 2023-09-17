@@ -27,6 +27,7 @@ export default function useReview(slug: string, userId: string | undefined, curU
       }
     },
   });
+  const count = commentsData?.pages[0].count;
   const challengeCommentsData = commentsData?.pages?.map(pageData => pageData.data).flat();
 
   const { ref } = useInView({
@@ -62,5 +63,5 @@ export default function useReview(slug: string, userId: string | undefined, curU
     toast('나무 2그루가 지급되었습니다.');
   };
 
-  return { commentsError, challengeCommentsData, ref, hasNextPage, handlePostComment };
+  return { commentsError, challengeCommentsData, ref, hasNextPage, handlePostComment, count };
 }
