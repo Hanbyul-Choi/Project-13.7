@@ -19,9 +19,7 @@ type ContentProps = {
 }
 
 export default function ColumnSlide({ natureStory }: ContentProps) {
-  console.log(natureStory)
   const [selectedItem, setSelectedItem] = useState(0);
-
   const onClickItem = (i: number) => {
     if (!natureStory) return;
     setSelectedItem(i);

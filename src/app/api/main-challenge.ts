@@ -11,3 +11,13 @@ export const mainChallengeCheck = async () => {
 
   return challenge;
 };
+
+export const fetchMainChallenge = async () => {
+  const response = await fetch("http://localhost:3000/api/mainChallenge", {
+    next: {
+      revalidate: 10
+    }
+  });
+  const data = await response.json().then(data=>data.res);
+  return data
+};
