@@ -31,7 +31,7 @@ export default function JoinChallenge({ mainChallenge }: Props) {
 
   const joinChallengeCurrentPoint = () => {
     if (!session || session?.point === null || session?.point < 25) {
-      return Alert('포인트가 부족하여 신청할 수 없습니다.', '마이페이지를 통해 포인트 얻는 법을 확인해주세요!');
+      return Alert('나무가 부족하여 신청할 수 없습니다.', '마이페이지를 통해 나무 얻는 법을 확인해주세요!');
     }
     mainOpenModal();
   };
