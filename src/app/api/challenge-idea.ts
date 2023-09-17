@@ -3,7 +3,7 @@ import { supabase } from '../../../supabase/supabaseConfig';
 import type { IdeaPost } from '@/types/db.type';
 
 export const fetchSuggestions = async () => {
-  const response = await fetch("http://localhost:3000/api/suggestions", {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/suggestions`, {
     next: {
       revalidate: 5
     }
