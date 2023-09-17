@@ -71,6 +71,11 @@ const ChallengeTabContent: React.FC<ChallengeTabContentProps> = ({
   } else if (activeTab === 'joinedChallenge') {
     return (
       <div>
+        <ul className="flex justify-between items-center text-base opacity-50 px-6 sm:px-4 py-3 mb-2">
+          <li className="relative w-2/4 text-left">챌린지</li>
+          <li className="relative w-1/3 text-center">참여기간</li>
+          <li className="relative w-1/3 text-center">진행상황</li>
+        </ul>
         {userChallenges?.length !== 0 ? (
           <>
             {userChallenges?.map((item: any) => (
@@ -99,6 +104,11 @@ const ChallengeTabContent: React.FC<ChallengeTabContentProps> = ({
   } else if (activeTab === 'mySuggestion') {
     return (
       <div>
+        <ul className="flex justify-between items-center text-base opacity-50 px-6 sm:px-4 py-3 mb-2">
+          <li className="relative w-2/4 text-left">챌린지</li>
+          <li className="relative w-1/3 text-center">제안일</li>
+          <li className="relative w-1/3 text-center">바로가기</li>
+        </ul>
         {userChallengeSuggestions?.length || 0 > 0 ? (
           <>
             {userChallengeSuggestions?.map((item: any) => (
