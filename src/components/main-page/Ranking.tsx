@@ -28,7 +28,7 @@ export const getRank = (a: number): number => {
 };
 
 export default async function Ranking() {
-  const topRanker: Tables<'users'>[] = await getUsers().then(data => data.res)
+  const topRanker: Tables<'users'>[] = await getUsers()
   const colorMatch = ['text-blue bg-lightblue', 'text-green bg-lightgreen', 'text-orange bg-lightorange', 'text-sub6 bg-lightsub6', 'text-sub6 bg-lightsub6'];
   return (
     <div className="border-b-2 w-full mt-20 pb-20">

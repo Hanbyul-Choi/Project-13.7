@@ -15,7 +15,7 @@ type NatureDetailProps = {
 };
 
 export default async function NatureDetail({ postId }: NatureDetailProps) {
-  const data: Tables<'natureStory'>[] = await getNatureStory().then(data => data.res)
+  const data: Tables<'natureStory'>[] = await getNatureStory()
   const { category, content, created_at, video_url, img_url, title } = data.filter(item => item.post_id === postId)[0];
 
   return (

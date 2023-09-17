@@ -10,7 +10,7 @@ import type { Suggestion } from '@/types/db.type';
 
 
 export default async function IdeaSlide() {
-  let suggestions: Suggestion[] = await fetchSuggestions().then(data => data.res)
+  let suggestions: Suggestion[] = await fetchSuggestions()
   if (suggestions && suggestions.length > 10) {
     suggestions = suggestions.slice(0, 10);
   }

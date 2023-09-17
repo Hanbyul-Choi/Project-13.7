@@ -3,12 +3,12 @@
 import { supabase } from '../../../supabase/supabaseConfig';
 
 export const getUsers = async () => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/users`, {
+  const response = await fetch(`${process?.env?.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'}/api/users`, {
     next: {
       revalidate: 86400
     }
   });
-  const data =await response.json()
+  const data =await response.json().then(data=>data.res);
   return data
 };
 
