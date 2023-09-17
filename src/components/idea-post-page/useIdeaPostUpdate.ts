@@ -17,9 +17,6 @@ export default function useIdeaPost(
   postId: string,
   loginUser: string,
 ) {
-  // const { session } = useSessionStore();
-  // const loginUser = session?.user_id;
-
   const { Alert } = useDialog();
   const router = useRouter();
 
