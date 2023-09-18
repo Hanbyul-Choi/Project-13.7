@@ -8,6 +8,14 @@ export const postChallengeIdeaComment = async (commentData: any) => {
   return data;
 };
 
+export const updateUserPoint = async (updatedPoint: number, userId: string) => {
+  const { data, error } = await supabase.from('users').update({ point: updatedPoint }).eq('user_id', userId);
+  if (error) {
+    throw error;
+  }
+  return data;
+};
+
 export const updateChallengeIdeaComment = async ({ id, editComment }: { id: string; editComment: string }) => {
   const { error } = await supabase.from('ideaComments').update({ comment: editComment }).eq('id', id);
   if (error) {
@@ -40,5 +48,5 @@ export const getIdeaCommentInfinite = async ({ queryKey, pageParam = 1 }: any) =
   if (error) {
     throw error;
   }
-  return { data, total_pages: Math.ceil((count ?? 0) / 5), page: pageParam };
+  return { data, total_pages: Math.ceil((count ?? 0) / 5), page: pageParam, count };
 };

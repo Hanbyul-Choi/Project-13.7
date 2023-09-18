@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { userJoinChallengeCheck } from '@/app/api/join-challenge';
 import { JOIN_CHALLENGE } from '@/app/shared/queries.keys';
 import { useModalStore } from '@/store/modal.store';
-import useSessionStore from '@/store/sesson.store';
+import useSessionStore from '@/store/session.store';
 
 import JoinChallengeModal from './JoinChallengeModal';
 import { Button, useDialog } from '../common';
@@ -23,11 +23,15 @@ export default function JoinChallenge({ mainChallenge }: Props) {
   const { session } = useSessionStore();
   const { mainOpenModal, isOpenMainModal } = useModalStore(state => state);
   const { Alert } = useDialog();
-  const { data: joinChallenge } = useQuery({ queryKey: [JOIN_CHALLENGE], queryFn: () => userJoinChallengeCheck(session?.user_id!, mainChallenge?.challenge_Id!), enabled: !!session });
+  const { data: joinChallenge } = useQuery({
+    queryKey: [JOIN_CHALLENGE],
+    queryFn: () => userJoinChallengeCheck(session?.user_id!, mainChallenge?.challenge_Id!),
+    enabled: !!session,
+  });
 
   const joinChallengeCurrentPoint = () => {
     if (!session || session?.point === null || session?.point < 25) {
-      return Alert('포인트가 부족하여 신청할 수 없습니다.', '마이페이지를 통해 포인트 얻는 법을 확인해주세요!');
+      return Alert('나무가 부족하여 신청할 수 없습니다.', '마이페이지를 통해 나무 얻는 법을 확인해주세요!');
     }
     mainOpenModal();
   };

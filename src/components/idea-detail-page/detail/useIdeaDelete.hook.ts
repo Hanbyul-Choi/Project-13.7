@@ -11,7 +11,7 @@ export default function useIdeaDelete(post_id: string) {
   const router = useRouter();
 
   const handleDeleteChallengeIdeaData = async () => {
-    const confirmed = await Confirm('해당 게시글을 삭제하시겠습니까?');
+    const confirmed = await Confirm('해당 게시글을 삭제하시겠습니까?', '삭제하시면 되돌릴 수 없습니다.');
     if (confirmed) {
       deleteChallengeIdea(post_id);
       router.push(`/idea`);

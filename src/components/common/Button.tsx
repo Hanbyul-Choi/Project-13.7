@@ -11,7 +11,7 @@ type ButtonProps = {
   disabled?: boolean;
 };
 
-export const Button: React.FC<ButtonProps> = ({ children, btnType, size = 'medium', onClick, rounded, buttonStyle, disabled }) => {
+export const Button: React.FC<ButtonProps> = ({ children, btnType, size = 'medium', onClick, rounded, buttonStyle, disabled, type }) => {
   let buttonSize = '';
   let buttonType = '';
   let buttonRounded = 'rounded-lg';
@@ -64,7 +64,12 @@ export const Button: React.FC<ButtonProps> = ({ children, btnType, size = 'mediu
   }
 
   return (
-    <button onClick={onClick} disabled={disabled} className={`${buttonDefault} ${buttonSize} ${buttonRounded} ${buttonType} ${buttonStyle}`}>
+    <button
+      type={type}
+      onClick={onClick}
+      disabled={disabled}
+      className={`${buttonDefault} ${buttonSize} ${buttonRounded} ${buttonType} ${buttonStyle}`}
+    >
       {children}
     </button>
   );

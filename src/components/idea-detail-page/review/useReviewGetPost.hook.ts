@@ -1,9 +1,17 @@
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 
-import { getIdeaCommentInfinite, postChallengeIdeaComment } from '@/app/api/idea-comments';
+import { getIdeaCommentInfinite, postChallengeIdeaComment, updateUserPoint } from '@/app/api/idea-comments';
+import { IDEA_COMMENTS } from '@/app/shared/queries.keys';
+import useToast from '@/components/common/Toast/useToast';
 
-export default function useReview(slug: string, userId: string | undefined, comment: string, setComment: React.Dispatch<React.SetStateAction<string>>) {
+import type { FieldValues, SubmitHandler } from 'react-hook-form';
+interface Comment {
+  comment: string;
+}
+
+export default function useReview(slug: string, userId: string | undefined, curUserPoint: number) {
+  const { toast } = useToast();
   const {
     data: commentsData,
     isError: commentsError,
@@ -11,7 +19,7 @@ export default function useReview(slug: string, userId: string | undefined, comm
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: ['ideaComments', slug],
+    queryKey: [IDEA_COMMENTS, slug],
     queryFn: getIdeaCommentInfinite,
     getNextPageParam: lastPage => {
       if (lastPage.page < lastPage.total_pages) {
@@ -19,6 +27,7 @@ export default function useReview(slug: string, userId: string | undefined, comm
       }
     },
   });
+  const count = commentsData?.pages[0].count;
   const challengeCommentsData = commentsData?.pages?.map(pageData => pageData.data).flat();
 
   const { ref } = useInView({
@@ -32,20 +41,27 @@ export default function useReview(slug: string, userId: string | undefined, comm
   const queryClient = useQueryClient();
   const postMutation = useMutation(postChallengeIdeaComment, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['ideaComments']);
+      queryClient.invalidateQueries([IDEA_COMMENTS]);
     },
   });
 
-  const commentData = {
-    post_id: slug,
-    user_id: userId,
-    comment,
-  };
-  const handlePostComment = () => {
+  const handlePostComment: SubmitHandler<Comment | FieldValues> = async data => {
+    const { comment } = data;
+    if (comment === '') return;
+    const commentData = {
+      post_id: slug,
+      user_id: userId,
+      ...data,
+    };
+
+    const updatedPoint = curUserPoint + 2;
+
     if (!userId) return;
     postMutation.mutate(commentData);
-    setComment('');
+    updateUserPoint(updatedPoint, userId);
+
+    toast('나무 2그루가 지급되었습니다.');
   };
 
-  return { commentsError, challengeCommentsData, ref, hasNextPage, handlePostComment };
+  return { commentsError, challengeCommentsData, ref, hasNextPage, handlePostComment, count };
 }

@@ -21,7 +21,7 @@ export default function useCertify(user_id: string | undefined, challenge_id: st
 
   const onClickUploadReviewFalseConfirm = async () => {
     if (!user_id) return Alert('로그인이 필요합니다');
-    const confirmed = await Confirm('챌린지에 먼저 참여해주세요. 인증에 필요한 굿즈를 보내드립니다 :)');
+    const confirmed = await Confirm('챌린지에 먼저 참여해주세요.', '인증에 필요한 굿즈를 보내드립니다 :)');
     if (confirmed) {
       route.push('/challenge');
     } else {

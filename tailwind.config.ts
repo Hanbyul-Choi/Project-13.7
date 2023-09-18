@@ -58,6 +58,20 @@ const config: Config = {
         bold: '700',
         bolder: '800',
       },
+      keyframes: {
+        rightIn: {
+          '0%': { transform: 'translateX(0px)' },
+          '100%': { transform: 'translateX(-265px)' },
+        },
+        rightOut: {
+          '0%': { transform: 'translateX(-265px)' },
+          '100%': { transform: 'translateX(0px)' },
+        },
+        leftOut: {
+          '0%': { transform: 'translateX(0px)' },
+          '100%': { transform: 'translateX(-280px)' },
+        },
+      },
     },
   },
   plugins: [],

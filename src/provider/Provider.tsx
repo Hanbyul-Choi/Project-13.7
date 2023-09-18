@@ -7,8 +7,6 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import { OverlayProvider } from '@/components/common';
 
-
-
 type Props = {
   children: React.ReactNode;
 };

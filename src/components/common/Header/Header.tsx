@@ -14,6 +14,7 @@ import { Auth, SignOut } from '../../auth';
 
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   const params = usePathname();
 
   const { isLoaded, session } = useLogin();
@@ -28,7 +29,7 @@ export function Header() {
 
   return (
     <>
-      <div className="w-full sticky top-0 bg-white text-black text-lg z-10">
+      <div className="w-full sticky top-0 bg-white text-black text-lg z-20">
         <Layout>
           <div className="md:flex items-center justify-between hidden px-10 py-8 md:px-4">
             <div className="flex gap-8">
@@ -118,6 +119,6 @@ const navCategory = [
   },
   {
     title: '환경 이야기',
-    pathname: '/nature-story?category=all',
+    pathname: '/nature-story',
   },
 ];

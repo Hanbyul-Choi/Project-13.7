@@ -1,23 +1,29 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 
-import useSessionStore from '@/store/sesson.store';
+import { useForm } from 'react-hook-form';
+
+import InputForm from '@/components/common/InputForm';
+import useSessionStore from '@/store/session.store';
 
 import ReviewItem from './ReviewItem';
 import useReview from './useReviewGetPost.hook';
 import { Button } from '../../common';
-import { Input } from '../../common/Input';
 
 import type { DetailProps } from '@/app/idea/[slug]/page';
 import type { IdeaComments } from '@/types/db.type';
 
 function Review({ slug }: DetailProps) {
-  const [comment, setComment] = useState<string>('');
-
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const { session } = useSessionStore();
   const curUser = session;
+  const curUserPoint = session?.point;
 
-  const { commentsError, challengeCommentsData, hasNextPage, ref, handlePostComment } = useReview(slug, curUser?.user_id, comment, setComment);
+  const { commentsError, challengeCommentsData, hasNextPage, ref, handlePostComment, count } = useReview(slug, curUser?.user_id, curUserPoint ?? 0);
 
   if (commentsError) {
     return <p>에러입니다.</p>;
@@ -28,7 +34,7 @@ function Review({ slug }: DetailProps) {
   }
   return (
     <div>
-      <h4 className="mb-3">댓글 {challengeCommentsData?.length}</h4>
+      <h4 className="mb-3">댓글 {count}</h4>
       <div className="max-h-[350px] overflow-auto overflow-x-hidden">
         {challengeCommentsData?.map(commentData => {
           const { id, created_at, comment, users }: IdeaComments = commentData;
@@ -40,15 +46,24 @@ function Review({ slug }: DetailProps) {
           </p>
         )}
       </div>
-      <form
-        className="flex flex-row mt-7"
-        onSubmit={e => {
-          e.preventDefault();
-        }}
-      >
+      <form className="flex flex-row mt-7" onSubmit={handleSubmit(handlePostComment)}>
         <div className="flex justify-center w-full sm:flex-row sm:items-center">
-          <Input placeholder="응원의 댓글을 남겨주세요." type="text" _size="md" value={comment} onChange={e => setComment(e.target.value)} />
-          <Button type="submit" btnType="primary" buttonStyle="ml-[8px] sm:ml-[16px]" size="large" onClick={handlePostComment}>
+          <label htmlFor="comment" className="sr-only">
+            댓글내용
+          </label>
+          <InputForm
+            name="comment"
+            placeholder="응원의 댓글을 남겨주세요. (10자 ~ 300자 이내)"
+            type="text"
+            _size="md"
+            register={register}
+            rules={{
+              minLength: { value: 10, message: '댓글을 10자 이상 입력해주세요.' },
+              maxLength: { value: 300, message: '댓글을 300자 이하로 입력해주세요.' },
+            }}
+            errors={errors}
+          />
+          <Button type="submit" btnType="primary" buttonStyle="ml-[8px] sm:ml-[16px]" size="large">
             댓글입력
           </Button>
         </div>

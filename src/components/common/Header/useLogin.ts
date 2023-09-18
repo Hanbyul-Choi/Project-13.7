@@ -1,9 +1,9 @@
 'use client';
 import { useEffect } from 'react';
 
-import { getUserDataByToken, setUserData } from '@/app/api/auth';
+import { getUserDataByToken, setUserData } from '@/app/api/auth/auth';
 import { getUser } from '@/app/api/users';
-import useSessionStore from '@/store/sesson.store';
+import useSessionStore from '@/store/session.store';
 
 import { supabase } from '../../../../supabase/supabaseConfig';
 

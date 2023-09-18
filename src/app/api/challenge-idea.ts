@@ -1,6 +1,7 @@
 import { supabase } from '../../../supabase/supabaseConfig';
 
 import type { IdeaPost } from '@/types/db.type';
+import type { FieldValues } from 'react-hook-form';
 
 export const getSuggestions = async () => {
   const { data, error } = await supabase.from('challengeSuggestion').select(`*, users(*)`).order('liked_count', { ascending: false });
@@ -10,18 +11,26 @@ export const getSuggestions = async () => {
   return data;
 };
 
-export const postChallengeIdea = async (ideaData: IdeaPost) => {
+export const postChallengeIdea = async (ideaData: IdeaPost | FieldValues) => {
   const { error } = await supabase.from('challengeSuggestion').insert(ideaData);
   if (error) {
     throw error;
   }
 };
 
-export const updateChallengeIdea = async ({ ideaData, postId }: { ideaData: IdeaPost; postId: string }) => {
+export const updateChallengeIdea = async ({ ideaData, postId }: { ideaData: IdeaPost | FieldValues; postId: string }) => {
   const { error } = await supabase.from('challengeSuggestion').update(ideaData).eq('post_id', postId);
   if (error) {
     throw error;
   }
+};
+
+export const updateUserPointIdea = async (updatedPoint: number, loginUser: string) => {
+  const { data, error } = await supabase.from('users').update({ point: updatedPoint }).eq('user_id', loginUser);
+  if (error) {
+    throw error;
+  }
+  return data;
 };
 
 export const deleteChallengeIdea = async (slug: string) => {

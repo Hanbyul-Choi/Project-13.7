@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { updateUserProfile } from '@/app/api/mypage';
 import { Input } from '@/components/common';
-import useSessionStore from '@/store/sesson.store';
+import useSessionStore from '@/store/session.store';
 
 import { ImageUpload } from './ImageUpload';
 
@@ -34,7 +34,6 @@ export default function EditProfile({ setEditMode, userProfile, setUserProfile }
       if (!editedProfile) {
         return;
       }
-
       await updateUserProfile({ userData: editedProfile, getParamUserSession: session?.user_id });
       setEditMode(false);
       setUserProfile(editedProfile);
@@ -49,7 +48,7 @@ export default function EditProfile({ setEditMode, userProfile, setUserProfile }
 
   return (
     <>
-      <div className="text-center mb-8">
+      <div className="mb-6">
         <ImageUpload
           profileImg={userProfile?.profile_img || undefined}
           onSuccess={(imageUrl: string) => {
@@ -57,7 +56,7 @@ export default function EditProfile({ setEditMode, userProfile, setUserProfile }
           }}
         />
         <div className="space-y-1 flex flex-col my-4 items-center">
-          <div className="flex items-center gap-3 font-semibold mb-2">
+          <div className="flex items-center gap-2 font-semibold mb-2">
             <p className="w-10">이름</p>
             <Input
               type="text"
@@ -67,7 +66,7 @@ export default function EditProfile({ setEditMode, userProfile, setUserProfile }
               placeholder="이름"
             />
           </div>
-          <div className="flex items-center gap-3 font-semibold mb-2">
+          <div className="flex items-center gap-2 font-semibold mb-2">
             <p className="w-10">주소</p>
             <Input
               type="text"

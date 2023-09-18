@@ -2,22 +2,25 @@ import { useRouter } from 'next/navigation';
 import { v4 } from 'uuid';
 
 import { getChallengeIdeaImgUrl, postChallengeIdea, postChallengeIdeaImg, updateChallengeIdea } from '@/app/api/challenge-idea';
-import useSessionStore from '@/store/sesson.store';
 
 import { useDialog } from '../common';
 
 import type { Inputs } from './IdeaContentsPost';
 import type { IdeaPost } from '@/types/db.type';
-import type { SubmitHandler } from 'react-hook-form';
+import type { FieldValues, SubmitHandler } from 'react-hook-form';
 
-export default function useIdeaPost(imgFile: File | undefined, imgUrl: string, previewImg: string | ArrayBuffer | undefined, isEdit: boolean, postId: string) {
-  const { session } = useSessionStore();
-  const loginUser = session?.user_id;
-
+export default function useIdeaPost(
+  imgFile: File | undefined,
+  imgUrl: string,
+  previewImg: string | ArrayBuffer | undefined,
+  isEdit: boolean,
+  postId: string,
+  loginUser: string,
+) {
   const { Alert } = useDialog();
   const router = useRouter();
 
-  const handleGetImg: SubmitHandler<Inputs> = async data => {
+  const handleGetImg: SubmitHandler<Inputs | FieldValues> = async data => {
     const imgName = v4();
     if (imgFile) {
       postChallengeIdeaImg({ imgFile, imgName });
@@ -42,7 +45,7 @@ export default function useIdeaPost(imgFile: File | undefined, imgUrl: string, p
     handleIdeaPost(ideaData);
   };
 
-  const handleIdeaPost = (ideaData: IdeaPost) => {
+  const handleIdeaPost = (ideaData: IdeaPost | FieldValues) => {
     if (ideaData.user_id === '') {
       Alert('로그인이 필요합니다.');
     } else if (ideaData.title === '') {
@@ -53,8 +56,6 @@ export default function useIdeaPost(imgFile: File | undefined, imgUrl: string, p
       Alert('챌린지 인증 예시 사진을 업로드해주세요');
     } else if (isEdit) {
       ideaUpdate(ideaData);
-      Alert('해당 글이 정상적으로 수정되었습니다.');
-      router.push('/idea');
     } else {
       postChallengeIdea(ideaData);
       Alert('작성하신 글이 정상적으로 등록되었습니다.');
@@ -62,10 +63,12 @@ export default function useIdeaPost(imgFile: File | undefined, imgUrl: string, p
     }
   };
 
-  const ideaUpdate = (ideaData: IdeaPost) => {
+  const ideaUpdate = (ideaData: IdeaPost | FieldValues) => {
     if (postId) {
       const newUdateIdea = { ideaData, postId };
       updateChallengeIdea(newUdateIdea);
+      Alert('해당 글이 정상적으로 수정되었습니다.');
+      router.push('/idea');
     }
   };
   return { handleGetImg };

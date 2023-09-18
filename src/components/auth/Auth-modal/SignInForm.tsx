@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { getUser } from '@/app/api/users';
 import InputForm from '@/components/common/InputForm';
 import { useModalStore } from '@/store/modal.store';
-import useSessionStore from '@/store/sesson.store';
+import useSessionStore from '@/store/session.store';
 
 import { supabase } from '../../../../supabase/supabaseConfig';
 import { Button, Input, Label, useDialog } from '../../common';
