@@ -1,31 +1,18 @@
-'use client';
 import React from 'react';
 
-import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
-import { BarLoader } from 'react-spinners';
 
-import { getSuggestions } from '@/app/api/challenge-idea';
-import { CHALLENGE_SUGGESTION } from '@/app/shared/queries.keys';
+import { fetchSuggestions } from '@/app/api/challenge-idea';
 
 import Slide from './Slide';
 
-export default function IdeaSlide() {
-  let { isLoading, isError, data } = useQuery([CHALLENGE_SUGGESTION], getSuggestions);
+import type { Suggestion } from '@/types/db.type';
 
-  if (isError) {
-    return <p>에러</p>;
-  }
-  if (isLoading || !data) {
-    return (
-      <div className="w-full h-[50vh] flex justify-center items-center ">
-        <BarLoader color="#101828" height={5} width={200} />
-      </div>
-    );
-  }
 
-  if (data && data.length > 10) {
-    data = data.slice(0, 10);
+export default async function IdeaSlide() {
+  let suggestions: Suggestion[] = await fetchSuggestions()
+  if (suggestions && suggestions.length > 10) {
+    suggestions = suggestions.slice(0, 10);
   }
 
   return (
@@ -37,7 +24,7 @@ export default function IdeaSlide() {
         </Link>
       </div>
       <div className={'mt-10'}>
-        <Slide showContentNum={3} type="idea" contents={data}></Slide>
+        <Slide showContentNum={3} type="idea" contents={suggestions}></Slide>
       </div>
     </section>
   );
