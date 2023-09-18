@@ -4,7 +4,6 @@ import React from 'react';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { SessionProvider } from 'next-auth/react';
 
 import { OverlayProvider } from '@/components/common';
 
@@ -24,12 +23,10 @@ const client = new QueryClient({
 
 function Providers({ children }: Props) {
   return (
-    <SessionProvider>
-      <QueryClientProvider client={client}>
-        <OverlayProvider>{children}</OverlayProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
-    </SessionProvider>
+    <QueryClientProvider client={client}>
+      <OverlayProvider>{children}</OverlayProvider>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   );
 }
 

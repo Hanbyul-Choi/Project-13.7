@@ -26,15 +26,15 @@ export default function CertifyPage() {
   }
   return (
     <>
-      <div className="px-100w-full mx-auto md:max-w-[77rem] border-y-[1px]">
+      <div className="w-full mx-auto md:max-w-[77rem] border-y-[1px]">
         <Banner challenge="certify challenge" title="챌린지 인증하기" />
         <div
           className={`w-full md:h-[400px] h-[600px] bg-[#white] md:bg-[url('/certify-banner.png')] bg-[url('/certify-banner-mo.png')] bg-no-repeat bg-center mb-6`}
         />
       </div>
       <Layout>
-        <div className="flex flex-col pb-4 border-b-[1px] gap-4 justify-center items-center sm:flex-row sm:justify-between">
-          <div className="flex w-full flex-col items-center sm:flex-row">
+        <div className="flex flex-col pb-4 border-b-2 border-opacityblack gap-4 justify-center items-end sm:flex-row sm:justify-between">
+          <div className="flex w-full flex-col items-center sm:flex-row mt-10">
             <div className="max-w-fit mr-4 px-4 py-1 rounded bg-lightblue flex justify-center items-center text-blue text-sm">
               북극곰을 위한 챌린지
             </div>

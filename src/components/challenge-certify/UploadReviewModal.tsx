@@ -14,6 +14,7 @@ import useSessionStore from '@/store/session.store';
 import { supabase } from '../../../supabase/supabaseConfig';
 import { Button, useDialog } from '../common';
 import Modal from '../common/Modal';
+import useToast from '../common/Toast/useToast';
 import useImagePost from '../idea-post-page/useImagePost';
 
 import type { CertifyPostType } from '@/types/db.type';
@@ -21,6 +22,7 @@ import type { CertifyPostType } from '@/types/db.type';
 const UploadReviewModal = () => {
   const session = useSessionStore((state: { session: any }) => state.session);
   const { Alert } = useDialog();
+  const { toast } = useToast();
   const [instaUrl, setInstaUrl] = useState('');
   const [imgFile, setImgFile] = useState<File | undefined>(undefined);
   const [previewImg, setPreviewImg] = useState<string | ArrayBuffer | undefined>(undefined);
@@ -107,7 +109,7 @@ const UploadReviewModal = () => {
         try {
           updateChallengeStatus();
         } catch (error) {
-          console.log('챌린지 성공여부 업데이트 에러');
+          toast('챌린지 성공여부 업데이트 에러');
         }
       } else {
         Alert('인증완료', '챌린지 인증이 완료되었습니다!');
@@ -125,7 +127,7 @@ const UploadReviewModal = () => {
       .gte('reviews', 10)
       .select(`*, mainChallenge(*)`);
     if (updatedChallenge) {
-      Alert('챌린지 10회 성공! 마이페이지에서 뱃지를 확인하세요.');
+      Alert('챌린지 10회 성공!', '마이페이지에서 뱃지를 확인하세요.');
     }
   };
 

@@ -49,7 +49,6 @@ export default function SignUpForm() {
       email,
       password,
     });
-    console.log(authError);
     let uid = authData.user?.id;
     if (authError) {
       if (authError?.message === 'invalid format') {
