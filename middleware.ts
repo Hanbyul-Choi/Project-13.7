@@ -6,7 +6,6 @@ const secret = process.env.NEXT_PUBLIC_NAVER_CLIENT_SECRET;
 
 export async function middleware(req: NextRequest) {
   const session = await getToken({ req, secret });
-  console.log(session);
   if (!session) {
     return NextResponse.redirect(new URL('/', req.url));
   }

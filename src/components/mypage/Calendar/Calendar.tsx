@@ -17,10 +17,6 @@ const Calendar = ({ isPrevMonth = true, isNextMonth = true, userReviews }: Calen
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  const onClickDay = () => {
-    console.log('clicked day');
-  };
-
   const checkCertify = (day: Date) => {
     const certify = userReviews?.filter((item: any) => new Date(item.created_at).getDate() === day.getDate());
     if (!certify?.length) return <></>;
@@ -71,7 +67,7 @@ const Calendar = ({ isPrevMonth = true, isNextMonth = true, userReviews }: Calen
         );
       }
       return (
-        <td key={i} className={`${boxStyle}`} onClick={() => onClickDay()}>
+        <td key={i} className={`${boxStyle}`}>
           {day.getDate()}
           {checkCertify(day)}
         </td>

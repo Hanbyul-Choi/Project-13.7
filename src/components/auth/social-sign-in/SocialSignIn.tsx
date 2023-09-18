@@ -4,6 +4,8 @@ import React from 'react';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
+import useToast from '@/components/common/Toast/useToast';
+
 import google from '../../../../public/social-signin-icon/google.svg';
 import kakao from '../../../../public/social-signin-icon/kakao.svg';
 import { supabase } from '../../../../supabase/supabaseConfig';
@@ -19,7 +21,7 @@ interface Props {
 
 export default function SocialSignIn({ social }: Props) {
   const pathname = usePathname();
-
+  const { toast } = useToast();
   const getURL = (Pathname: string) => {
     let url = process?.env?.NEXT_PUBLIC_SITE_URL ?? process?.env?.NEXT_PUBLIC_VERCEL_URL ?? 'http://localhost:3000/';
 
@@ -40,7 +42,7 @@ export default function SocialSignIn({ social }: Props) {
       },
     });
     if (error) {
-      console.log(error);
+      toast('알 수 없는 오류가 발생했습니다.');
     }
   }
 
