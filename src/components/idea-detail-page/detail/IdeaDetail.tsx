@@ -39,7 +39,7 @@ function IdeaDetail({ item }: { item: Suggestion }) {
       <div className="mt-6 flex items-center justify-between">
         <div className="flex items-center">
           <div className="w-[55px] h-[55px] relative overflow-hidden rounded-lg mr-[16px] shadow-[0_1px_5px_0_rgba(53,60,73,0.08)]">
-            <Image src={users?.profile_img || defaultProfileImg} fill alt="Profile Image" />
+            <Image src={users?.profile_img || defaultProfileImg} fill alt="Profile" />
           </div>
           <div>
             <p className="leading-[150%] text-[#888889] mb-[4px]">
@@ -61,7 +61,7 @@ function IdeaDetail({ item }: { item: Suggestion }) {
       </div>
       <hr className="w-full my-10 border border-[#bdbdbd]" />
       <div className="w-full h-[21.87rem] relative overflow-hidden mx-auto my-10 rounded-lg sm:w-[33.37rem]">
-        <Image src={`${img_url}`} fill alt="Challenge example image" className="object-cover" />
+        <Image src={`${img_url}`} fill alt="Challenge example" className="object-cover" />
       </div>
       <div>
         <div className="flex justify-center items-center flex-col sm:flex-row">

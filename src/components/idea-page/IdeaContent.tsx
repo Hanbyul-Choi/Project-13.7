@@ -35,7 +35,7 @@ export function IdeaContent({ item }: Props) {
             style={{
               objectFit: 'cover',
             }}
-            alt="인증예시 사진"
+            alt="Preview"
           />
         </div>
         <div className="flex flex-col px-3 py-6 rounded-b-lg shadow-lg ">

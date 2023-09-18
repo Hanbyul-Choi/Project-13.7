@@ -11,7 +11,7 @@ interface InputFormProps<T extends FieldValues> extends InputHTMLAttributes<HTML
   placeholder?: string;
   register?: UseFormRegister<T>;
   errors?: FieldErrors<T>;
-  rules: Pick<RegisterOptions<T>, 'maxLength' | 'minLength' | 'validate' | 'required' | 'pattern'>;
+  rules?: Pick<RegisterOptions<T>, 'maxLength' | 'minLength' | 'validate' | 'required' | 'pattern'>;
   _size: string;
 }
 
@@ -20,13 +20,13 @@ export default function InputForm({ name, register, errors, rules, _size, type, 
   const hasError = !!(errors && errorMessages);
 
   return (
-    <div className="flex flex-col">
+    <>
       <Input name={name} _size={_size} type={type} {...props} {...(register && register(name, rules))} />
       {hasError && (
         <Label name={name} size="base" type="error">
           {errorMessages + ''}
         </Label>
       )}
-    </div>
+    </>
   );
 }

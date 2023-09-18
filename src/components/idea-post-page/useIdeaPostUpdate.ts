@@ -7,7 +7,7 @@ import { useDialog } from '../common';
 
 import type { Inputs } from './IdeaContentsPost';
 import type { IdeaPost } from '@/types/db.type';
-import type { SubmitHandler } from 'react-hook-form';
+import type { FieldValues, SubmitHandler } from 'react-hook-form';
 
 export default function useIdeaPost(
   imgFile: File | undefined,
@@ -20,7 +20,7 @@ export default function useIdeaPost(
   const { Alert } = useDialog();
   const router = useRouter();
 
-  const handleGetImg: SubmitHandler<Inputs> = async data => {
+  const handleGetImg: SubmitHandler<Inputs | FieldValues> = async data => {
     const imgName = v4();
     if (imgFile) {
       postChallengeIdeaImg({ imgFile, imgName });
@@ -45,7 +45,7 @@ export default function useIdeaPost(
     handleIdeaPost(ideaData);
   };
 
-  const handleIdeaPost = (ideaData: IdeaPost) => {
+  const handleIdeaPost = (ideaData: IdeaPost | FieldValues) => {
     if (ideaData.user_id === '') {
       Alert('로그인이 필요합니다.');
     } else if (ideaData.title === '') {
@@ -63,7 +63,7 @@ export default function useIdeaPost(
     }
   };
 
-  const ideaUpdate = (ideaData: IdeaPost) => {
+  const ideaUpdate = (ideaData: IdeaPost | FieldValues) => {
     if (postId) {
       const newUdateIdea = { ideaData, postId };
       updateChallengeIdea(newUdateIdea);

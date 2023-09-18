@@ -10,7 +10,7 @@ export const userJoinChallengeCheck = async (user_id: string | undefined, challe
     .select('*')
     .eq('user_id', user_id ?? '')
     .eq('challenge_id', challenge_id)
-    .single();
+    .maybeSingle();
 
   return data;
 };
@@ -24,9 +24,13 @@ export const updateUserPoint = async (updatedPoint: number, session: User) => {
 };
 
 export const insertJoinChallenge = async (session: User, mainChallenge: Tables<'mainChallenge'>, data: UpdateUserData) => {
-  const { error } = await supabase
-    .from('joinChallenge')
-    .insert({ user_id: session.user_id, challenge_id: mainChallenge.challenge_Id, address: data.address, name: data.name, phone: data.phone });
+  const { error } = await supabase.from('joinChallenge').insert({
+    user_id: session.user_id,
+    challenge_id: mainChallenge.challenge_Id,
+    address: data.address + ' ' + data.detailAddress,
+    name: data.name,
+    phone: data.phone,
+  });
   if (error) {
     throw error;
   }

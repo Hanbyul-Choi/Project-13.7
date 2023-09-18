@@ -22,7 +22,7 @@ function ReviewItem({ id, created_at, comment, users, user_id }: IdeaComments) {
   return (
     <div className="flex flex-row justify-start my-3 relative">
       <div className="w-[25px] h-[25px] mr-[8px] relative overflow-hidden shadow-[0_1px_5px_0_rgba(53,60,73,0.08)] rounded-lg sm:w-[55px] sm:h-[55px] sm:mr-[16px]">
-        <Image src={users?.profile_img ? users?.profile_img : defaultProfileImg} fill alt="Profile Image" className="object-cover" />
+        <Image src={users?.profile_img ? users?.profile_img : defaultProfileImg} fill alt="Profile" className="object-cover" />
       </div>
       <div className="w-full sm:w-auto">
         <div className="flex flex-row text-sm text-[#838384] leading-[150%] items-center">

@@ -1,5 +1,5 @@
+import Toast from './Toast';
 import { useOverlayContext } from '..';
-import Toast from '../Toast';
 
 export default function useToast() {
   const { mount: _mount, unmount: _unmount } = useOverlayContext();

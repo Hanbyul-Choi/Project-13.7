@@ -5,14 +5,18 @@ import { useForm } from 'react-hook-form';
 import { BarLoader } from 'react-spinners';
 
 import { getUser } from '@/app/api/users';
+import usePostCodeStore from '@/store/post-code.store';
 import useSessionStore from '@/store/session.store';
 
 import useInputRegister from './useInputRegister';
 import useJoinChallenge from './useJoinChallenge';
 import { Button, Label } from '../common';
 import Modal from '../common/Modal';
+import PostCode from '../common/PostCode/PostCode';
 
 export default function JoinChallengeModal() {
+  const [isPostCodeOpen, setIsPostCodeOpen] = useState<Boolean>(false);
+
   const {
     register,
     handleSubmit,
@@ -21,17 +25,28 @@ export default function JoinChallengeModal() {
   const { session } = useSessionStore(state => state);
 
   const { isLoading: userLoading, isError: userError, data: userInfoData } = useQuery(['user'], () => getUser(session!.user_id));
+  const { address, zoneCode } = usePostCodeStore();
 
   const [userData, setUserData] = useState<UpdateUserData>({
     address: '',
+    detailAddress: '',
     point: 0,
     rank: 0,
     phone: '',
     name: '',
+    zonecode: '',
   });
 
   useEffect(() => {
-    setUserData({ address: userInfoData?.address || '', point: 0, rank: 0, phone: userInfoData?.phone || '', name: userInfoData?.name || '' });
+    setUserData({
+      address: userInfoData?.address || '',
+      point: 0,
+      rank: 0,
+      phone: userInfoData?.phone || '',
+      name: userInfoData?.name || '',
+      detailAddress: '',
+      zonecode: '',
+    });
   }, [userInfoData]);
 
   const { debounce, handleDefaultAddress, handleCancelClick, mainChallengeLoading, mainChallengeError } = useJoinChallenge(
@@ -40,7 +55,7 @@ export default function JoinChallengeModal() {
     handleSubmit,
   );
 
-  const { nameRegister, phoneRegister, addressRegister } = useInputRegister(register);
+  const { nameRegister, phoneRegister, addressRegister, detailAddressRegister, zoneCodeRegister } = useInputRegister(register);
 
   if (userLoading || mainChallengeLoading) {
     return (
@@ -52,26 +67,23 @@ export default function JoinChallengeModal() {
   if (userError || mainChallengeError) {
     return <div>에러입니다...</div>;
   }
-
   return (
     <Modal>
       <form
         onSubmit={e => {
           e.preventDefault();
         }}
-        className="my-[30px]"
+        className="my-[30px] overflow-y-auto pr-3"
       >
         <h5 className="mb-4 sm:mb-8">신청자 정보</h5>
         <div className="flex flex-col sm:flex-row">
           <Label name="name" size="base" labelStyle="flex flex-col leading-[150%]">
             이름
             <input
-              maxLength={5}
-              readOnly={userInfoData?.name ? true : false}
               defaultValue={userData.name || ''}
-              className={`${
-                userInfoData?.name ? 'bg-[#f4f6f8;]' : 'bg-white'
-              } rounded-lg font-normal text-base border border-opacityblack outline-none w-[200px] sm:w-[9.375rem] h-[1.375rem] py-2 px-6 box-content sm:mt-[8px]`}
+              className={
+                'rounded-lg font-normal text-base border border-opacityblack outline-none w-[200px] sm:w-[9.375rem] h-[1.375rem] py-2 px-6 box-content sm:mt-[8px]'
+              }
               {...nameRegister}
             />
             {errors.name && <p>{errors.name.message}</p>}
@@ -88,18 +100,48 @@ export default function JoinChallengeModal() {
             {errors.phone && <p className="text-sm text-nagative">{errors.phone.message}</p>}
           </Label>
         </div>
-        <div className="my-5 flex flex-col sm:my-10">
+        <div className="my-5 flex flex-col w-full sm:my-10">
           <div className="mb-4 flex flex-col sm:items-center sm:flex-row sm:mb-8 ">
             <h5>배송지 정보</h5>
             <p className="text-sm sm:ml-[15px]">챌린지 관련 물품이 있을 시 배송받으실 주소를 입력해주세요.</p>
           </div>
-          <Label name="delivery" size={'base'} labelStyle="flex flex-col leading-[150%] ">
+
+          <div className="flex flex-row w-full items-end">
+            <div className="w-[20%] mr-[16px]">
+              <Label name="zipCode" size={'base'} labelStyle="flex flex-col leading-[150%] ">
+                우편번호
+              </Label>
+              <input
+                readOnly
+                defaultValue={zoneCode || ''}
+                className="bg-[#f4f6f8;] rounded-lg font-normal text-base border border-opacityblack outline-none ml-0 w-full h-10 py-2 px-6 box-border sm:mt-[8px]"
+                {...zoneCodeRegister}
+              />
+            </div>
+            <div className="w-[64%]">
+              <Label name="address" size={'base'} labelStyle="flex flex-col leading-[150%] ">
+                주소
+              </Label>
+              <input
+                readOnly
+                defaultValue={address || ''}
+                className="bg-[#f4f6f8;] rounded-lg font-normal text-base border border-opacityblack outline-none ml-0 w-full h-10 py-2 px-6 box-border sm:mt-[8px]"
+                {...addressRegister}
+              />
+            </div>
+            <button onClick={() => setIsPostCodeOpen(true)} className="py-2 px-4 h-10 bg-[#d3d3d3] ml-2 rounded-lg">
+              검색
+            </button>
+          </div>
+          {isPostCodeOpen && <PostCode setIsPostCodeOpen={setIsPostCodeOpen} />}
+          <Label name="detailAddress" size={'base'} labelStyle="flex flex-col leading-[150%] ">
             상세 주소
           </Label>
+
           <textarea
             defaultValue={userData.address || ''}
-            className="rounded-lg font-normal text-base border border-opacityblack outline-none my-[8px] w-[200px] h-[40px] py-2 px-6 box-content resize-none sm:w-[23.56rem] sm:h-[1.5rem]"
-            {...addressRegister}
+            className="rounded-lg font-normal text-base border border-opacityblack outline-none my-[8px] w-full box-border h-[2.6rem] py-2 px-6 resize-none"
+            {...detailAddressRegister}
           />
           {errors.address && <p className="text-sm text-nagative">{errors.address.message}</p>}
           <div className="flex text-sm">
@@ -152,4 +194,6 @@ export type UpdateUserData = {
   point: number;
   phone: string | null;
   name: string | null;
+  detailAddress: string;
+  zonecode: string | null;
 };
