@@ -18,8 +18,7 @@ export interface DetailProps {
 }
 
 export default function Page({ params: { slug } }: Props) {
-  //const suggestions: Suggestion[] = await fetchSuggestions().then(data => data.res)
-  //const filteredData = suggestions.find(idea => idea.post_id === slug);
+
 
   const { data } = useQuery([CHALLENGE_SUGGESTION], getSuggestions);
 

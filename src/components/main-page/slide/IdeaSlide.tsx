@@ -2,7 +2,7 @@ import React from 'react';
 
 import Link from 'next/link';
 
-import { fetchSuggestions } from '@/app/api/challenge-idea';
+import { getSuggestions } from '@/app/api/challenge-idea';
 
 import Slide from './Slide';
 
@@ -10,7 +10,7 @@ import type { Suggestion } from '@/types/db.type';
 
 
 export default async function IdeaSlide() {
-  let suggestions: Suggestion[] = await fetchSuggestions()
+  let suggestions: Suggestion[] = await getSuggestions()
   if (suggestions && suggestions.length > 10) {
     suggestions = suggestions.slice(0, 10);
   }
