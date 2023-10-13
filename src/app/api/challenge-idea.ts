@@ -3,14 +3,7 @@ import { supabase } from '../../../supabase/supabaseConfig';
 import type { IdeaPost } from '@/types/db.type';
 import type { FieldValues } from 'react-hook-form';
 
-export const fetchSuggestions = async () => {
-  const response = await fetch(`${process?.env?.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'}/api/suggestions`, {
-    next: {
-      revalidate: 5
-    }
-  });
-  return response.json().then(data=>data.res)
-}
+
 
 export const getSuggestions = async () => {
   const { data, error } = await supabase.from('challengeSuggestion').select(`*, users(*)`).order('liked_count', { ascending: false });

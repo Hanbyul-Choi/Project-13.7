@@ -4,7 +4,6 @@ import React from 'react';
 import { getUsers } from '@/app/api/users';
 
 import type { AnimalMap } from '@/types/db.type';
-import type { Tables } from '@/types/supabase.type';
 
 
 export const animals: AnimalMap = {
@@ -28,7 +27,8 @@ export const getRank = (a: number): number => {
 };
 
 export default async function Ranking() {
-  const topRanker: Tables<'users'>[] = await getUsers()
+  const topRanker = await getUsers();
+
   const colorMatch = ['text-blue bg-lightblue', 'text-green bg-lightgreen', 'text-orange bg-lightorange', 'text-sub6 bg-lightsub6', 'text-sub6 bg-lightsub6'];
   return (
     <div className="border-b-2 w-full mt-20 pb-20">
