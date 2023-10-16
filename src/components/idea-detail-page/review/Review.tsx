@@ -18,12 +18,18 @@ function Review({ slug }: DetailProps) {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm();
   const { session } = useSessionStore();
   const curUser = session;
   const curUserPoint = session?.point;
 
-  const { commentsError, challengeCommentsData, hasNextPage, ref, handlePostComment, count } = useReview(slug, curUser?.user_id, curUserPoint ?? 0);
+  const { commentsError, challengeCommentsData, hasNextPage, ref, handlePostComment, count } = useReview(
+    slug,
+    curUser?.user_id,
+    curUserPoint ?? 0,
+    setValue,
+  );
 
   if (commentsError) {
     return <p>에러입니다.</p>;
