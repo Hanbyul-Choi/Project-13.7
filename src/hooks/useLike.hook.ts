@@ -15,7 +15,7 @@ export default function useLike(item: Suggestion, type: 'list' | 'detail') {
   const { session } = useSessionStore();
   const { sortWay } = useSortWayStore();
   const curUserId = session?.user_id;
-  let timerId: any = null;
+  let timerId: null | NodeJS.Timeout = null;
 
   const checkLiked = () => {
     if (!curUserId) return false;
@@ -40,12 +40,17 @@ export default function useLike(item: Suggestion, type: 'list' | 'detail') {
         if (type === 'detail') {
           await queryClient.cancelQueries({ queryKey: [CHALLENGE_SUGGESTION] });
           prevIdea = await queryClient.getQueryData([CHALLENGE_SUGGESTION]);
+
           const updatedIdea = prevIdea?.map((idea: Suggestion) => {
             if (post_id === idea.post_id) {
+              console.log('before', idea.liked_users);
+              console.log('after', newLikedUsers);
+
               return { ...idea, liked_users: newLikedUsers, liked_count: newLikedUsers.length };
             }
             return idea;
           });
+
           queryClient.setQueryData([CHALLENGE_SUGGESTION], updatedIdea);
         } else if (type === 'list') {
           await queryClient.cancelQueries({ queryKey: [CHALLENGE_SUGGESTION, sortWay] });
@@ -69,6 +74,7 @@ export default function useLike(item: Suggestion, type: 'list' | 'detail') {
       },
       onError: (_, __, context) => {
         if (context === undefined) return;
+        console.log('onError');
         queryClient.setQueryData([CHALLENGE_SUGGESTION, sortWay], context.prevIdea);
         queryClient.setQueryData([CHALLENGE_SUGGESTION], context.prevIdea);
       },
