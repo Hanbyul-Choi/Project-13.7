@@ -33,13 +33,13 @@ export default function BadgesList() {
   }
 
   return (
-    <div className="flex flex-col justify-center my-10">
-      <p className="text-black font-semibold text-lg">획득한 뱃지</p>
-      <div className="flex flex-wrap justify-start gap-2 pr-2 pt-2 mt-2">
-        <Image className="max-w-1/3 max-h-1/3" src={defaultProfileImg} alt={'badge image'} width={100} height={100} />
+    <div className="flex flex-col my-8">
+      <p className="text-black font-semibold text-lg mb-4">획득한 뱃지</p>
+      <div className="columns-3 gap-5 gap-y-8 ">
+        <Image className="w-full mb-6" src={defaultProfileImg} alt={'badge image'} width={100} height={100} />
         {userBadges?.map(item => (
           <div key={item.join_id}>
-            <Image className="max-w-1/3 max-h-1/3" src={item.mainChallenge?.badgeUrl || 'Badge Image'} alt={'badge image'} width={100} height={100} />
+            <Image className="w-full mb-6" src={item.mainChallenge?.badgeUrl || 'Badge Image'} alt={'badge image'} width={100} height={100} />
           </div>
         ))}
       </div>

@@ -110,7 +110,7 @@ const UploadReviewModal = () => {
         try {
           updateChallengeStatus();
         } catch (error) {
-          console.log('챌린지 성공여부 업데이트 에러');
+          toast('챌린지 성공여부 업데이트 에러');
         }
       } else {
         Alert('인증완료', '챌린지 인증이 완료되었습니다!');
@@ -128,7 +128,7 @@ const UploadReviewModal = () => {
       .gte('reviews', 10)
       .select(`*, mainChallenge(*)`);
     if (updatedChallenge) {
-      Alert('챌린지 10회 성공! 마이페이지에서 뱃지를 확인하세요.');
+      Alert('챌린지 10회 성공!', '마이페이지에서 뱃지를 확인하세요.');
     }
   };
 

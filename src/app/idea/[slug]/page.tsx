@@ -18,6 +18,8 @@ export interface DetailProps {
 }
 
 export default function Page({ params: { slug } }: Props) {
+
+
   const { data } = useQuery([CHALLENGE_SUGGESTION], getSuggestions);
 
   if (!data) {

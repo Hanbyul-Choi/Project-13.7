@@ -1,8 +1,6 @@
 'use client';
 import React from 'react';
 
-import { signOut } from 'next-auth/react';
-
 import useSessionStore from '@/store/session.store';
 
 import { supabase } from '../../../supabase/supabaseConfig';
@@ -17,7 +15,6 @@ export const SignOut = () => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     await Alert('로그아웃이 완료되었습니다.');
-    await signOut({ callbackUrl: '/' });
     signOutStore();
   };
 

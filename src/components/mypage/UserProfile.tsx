@@ -10,6 +10,7 @@ import useSessionStore from '@/store/session.store';
 
 import BadgesList from './BadgesList';
 import EditProfile from './EditProfile';
+import PointTree from './PointTree';
 import RankingGuide from './RankingGuide';
 
 import type { User } from '@/types/db.type';
@@ -31,6 +32,9 @@ export default function UserProfile() {
     fetchUserProfile();
   }, [session?.user_id]);
 
+  const curUserTrees = userProfile?.point ?? 0;
+  const userId = session?.user_id;
+
   const handleEditClick = () => {
     setEditMode(true);
   };
@@ -46,10 +50,12 @@ export default function UserProfile() {
   return (
     <>
       {editMode ? (
-        <EditProfile setEditMode={setEditMode} userProfile={userProfile} setUserProfile={setUserProfile} />
+        <>
+          <EditProfile setEditMode={setEditMode} userProfile={userProfile} setUserProfile={setUserProfile} />
+        </>
       ) : (
         <>
-          <div className="text-center m-4">
+          <div className="mb-6">
             <Image
               src={userProfile?.profile_img || profileDefault}
               alt="profileDefaultImg"
@@ -57,30 +63,26 @@ export default function UserProfile() {
               height={100}
               className="w-32 h-32 flex justify-center overflow-hidden object-cover rounded-md mx-auto m-2"
             />
-          </div>
-          <div className="flex justify-center items-center gap-0.5 p-2">
-            <p className="font-semibold text-lg">{userProfile?.nickname}</p>
-            <RankingGuide />
-          </div>
-          <p className="text-sm opacity-50 flex justify-center gap-1 items-center">
-            <AiFillEnvironment size={15} /> {userProfile?.address}
-          </p>
-          <div className="flex justify-center items-center my-3">
-            <button
-              className="border-sub5 text-sub6 px-4 py-1 gap-2 border rounded-md text-sm mb-2 flex justify-center items-center"
-              onClick={handleEditClick}
-            >
-              프로필 수정
-            </button>
-          </div>
-          <BadgesList />
-          <div className="text-lg flex justify-center items-baseline gap-1 mt-8">
-            <p>현재 나무 총</p>
-            <p className="text-xl align-text-bottom font-semibold">{userProfile?.point}</p>
-            <p>그루</p>
+            <div className="flex justify-center items-center gap-0.5 p-2">
+              <p className="font-semibold text-lg">{userProfile?.nickname}</p>
+              <RankingGuide />
+            </div>
+            <p className="text-sm opacity-50 flex justify-center gap-1 items-center">
+              <AiFillEnvironment size={15} /> {userProfile?.address}
+            </p>
+            <div className="flex justify-center items-center my-3">
+              <button
+                className="border-sub5 text-sub6 px-4 py-1 gap-2 border rounded-md text-sm mb-2 flex justify-center items-center"
+                onClick={handleEditClick}
+              >
+                프로필 수정
+              </button>
+            </div>
           </div>
         </>
       )}
+      <BadgesList />
+      <PointTree curUserTrees={curUserTrees} userId={userId} />
     </>
   );
 }

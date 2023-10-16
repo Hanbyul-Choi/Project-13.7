@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
 
@@ -19,12 +19,26 @@ export default function JoinedChallenge() {
     setActiveTab(tab);
   };
 
-  const { data: userChallenges } = useQuery({ queryKey: [USER_CHALLENGES], queryFn: () => getCurUserChallenges(session?.user_id) });
-  const { data: userReviews } = useQuery({ queryKey: [USER_REVIEWS], queryFn: () => getCurUserReviews(session?.user_id) });
-  const { data: userChallengeSuggestions } = useQuery({
+  const { data: userChallenges, refetch: refetchUserChallenges } = useQuery({
+    queryKey: [USER_CHALLENGES],
+    queryFn: () => getCurUserChallenges(session?.user_id),
+  });
+  const { data: userReviews, refetch: refetchUserReviews } = useQuery({
+    queryKey: [USER_REVIEWS],
+    queryFn: () => getCurUserReviews(session?.user_id),
+  });
+  const { data: userChallengeSuggestions, refetch: refetchUserChallengeSuggestions } = useQuery({
     queryKey: [CHALLENGE_SUGGESTION],
     queryFn: () => getUserChallengeSuggestions(session?.user_id),
   });
+
+  useEffect(() => {
+    if (session?.user_id) {
+      refetchUserChallenges();
+      refetchUserReviews();
+      refetchUserChallengeSuggestions();
+    }
+  }, [session?.user_id, refetchUserChallenges, refetchUserReviews, refetchUserChallengeSuggestions]);
 
   return (
     <div className="md:p-6 md:mt-3 w-full lg:w-2/3">

@@ -3,6 +3,8 @@ import { supabase } from '../../../supabase/supabaseConfig';
 import type { IdeaPost } from '@/types/db.type';
 import type { FieldValues } from 'react-hook-form';
 
+
+
 export const getSuggestions = async () => {
   const { data, error } = await supabase.from('challengeSuggestion').select(`*, users(*)`).order('liked_count', { ascending: false });
   if (error) {
