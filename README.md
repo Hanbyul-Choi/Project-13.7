@@ -14,8 +14,7 @@
 2. [배포 주소](#배포-주소)
 3. [구현기능 및 기술스택](#구현기능)
 4. [데이터 관계구조 db schema diagram](#데이터-관계구조-db-schema-diagram)
-5. [공통 컴포넌트 소개 & 주의사항](#공통-컴포넌트-소개)
-6. [프로젝트 시연 영상](#프로젝트-시연-영상)
+5. [프로젝트 시연 영상](#프로젝트-시연-영상)
 
 <br>
 
@@ -76,3 +75,4 @@ https://project137.life/
 ![KakaoTalk_20230918_161531105_01](https://github.com/kimseulgi-creator/genesis/assets/78592995/0e007c22-ae0d-4634-bccb-bd3be04c6fc8)
 
 ![KakaoTalk_20230918_161531105_02](https://github.com/kimseulgi-creator/genesis/assets/78592995/fe650bfd-1600-4911-8f79-00992d56f509)
+
