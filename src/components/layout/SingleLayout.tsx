@@ -7,7 +7,7 @@ type SingleLayoutProps = {
   size?: boolean;
 };
 
-const SingleLayout: React.FC<SingleLayoutProps> = ({ title, children, animal }) => {
+const SingleLayout = ({ title, children, animal }: SingleLayoutProps) => {
   // const sizeControl = size ? '' : 'h-[calc(100vh-96px)] items-center';
 
   return (

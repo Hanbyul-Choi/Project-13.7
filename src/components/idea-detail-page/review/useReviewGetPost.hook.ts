@@ -5,12 +5,12 @@ import { getIdeaCommentInfinite, postChallengeIdeaComment, updateUserPoint } fro
 import { IDEA_COMMENTS } from '@/app/shared/queries.keys';
 import useToast from '@/components/common/Toast/useToast';
 
-import type { FieldValues, SubmitHandler } from 'react-hook-form';
+import type { FieldValues, SubmitHandler, UseFormSetValue } from 'react-hook-form';
 interface Comment {
   comment: string;
 }
 
-export default function useReview(slug: string, userId: string | undefined, curUserPoint: number) {
+export default function useReview(slug: string, userId: string | undefined, curUserPoint: number, setValue: UseFormSetValue<FieldValues>) {
   const { toast } = useToast();
   const {
     data: commentsData,
@@ -58,8 +58,10 @@ export default function useReview(slug: string, userId: string | undefined, curU
 
     if (!userId) return;
     postMutation.mutate(commentData);
-    updateUserPoint(updatedPoint, userId);
 
+    setValue('comment', '');
+
+    updateUserPoint(updatedPoint, userId);
     toast('나무 2그루가 지급되었습니다.');
   };
 

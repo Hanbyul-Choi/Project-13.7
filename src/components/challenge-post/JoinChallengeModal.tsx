@@ -21,6 +21,7 @@ export default function JoinChallengeModal() {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<UpdateUserData>({ mode: 'onChange' });
   const { session } = useSessionStore(state => state);
 
@@ -44,10 +45,13 @@ export default function JoinChallengeModal() {
       rank: 0,
       phone: userInfoData?.phone || '',
       name: userInfoData?.name || '',
-      detailAddress: '',
-      zonecode: '',
+      detailAddress: userInfoData?.detailAddress || '',
+      zonecode: userInfoData?.zonecode || '',
     });
-  }, [userInfoData]);
+  }, [userInfoData, address, zoneCode]);
+  useEffect(() => {
+    setValue('address', address);
+  }, [address]);
 
   const { debounce, handleDefaultAddress, handleCancelClick, mainChallengeLoading, mainChallengeError } = useJoinChallenge(
     session,
@@ -67,6 +71,7 @@ export default function JoinChallengeModal() {
   if (userError || mainChallengeError) {
     return <div>에러입니다...</div>;
   }
+
   return (
     <Modal>
       <form
@@ -113,7 +118,7 @@ export default function JoinChallengeModal() {
               </Label>
               <input
                 readOnly
-                defaultValue={zoneCode || ''}
+                defaultValue={userData.zonecode || ''}
                 className="bg-[#f4f6f8;] rounded-lg font-normal text-base border border-opacityblack outline-none ml-0 w-full h-10 py-2 px-6 box-border sm:mt-[8px]"
                 {...zoneCodeRegister}
               />
@@ -124,7 +129,7 @@ export default function JoinChallengeModal() {
               </Label>
               <input
                 readOnly
-                defaultValue={address || ''}
+                defaultValue={userData.address || ''}
                 className="bg-[#f4f6f8;] rounded-lg font-normal text-base border border-opacityblack outline-none ml-0 w-full h-10 py-2 px-6 box-border sm:mt-[8px]"
                 {...addressRegister}
               />
@@ -139,7 +144,7 @@ export default function JoinChallengeModal() {
           </Label>
 
           <textarea
-            defaultValue={userData.address || ''}
+            defaultValue={userData.detailAddress || ''}
             className="rounded-lg font-normal text-base border border-opacityblack outline-none my-[8px] w-full box-border h-[2.6rem] py-2 px-6 resize-none"
             {...detailAddressRegister}
           />

@@ -9,7 +9,7 @@ type ModalProps = {
   children: React.ReactNode;
 };
 
-const Modal: React.FC<ModalProps> = ({ children }) => {
+const Modal = ({ children }: ModalProps) => {
   const [isCSR, setIsCSR] = useState<boolean>(false);
   const { isOpen, closeModal, isOpenMainModal, mainCloseModal, isOpenSubModal, subCloseModal, isOpenSub2Modal, sub2CloseModal } = useModalStore(
     state => state,
