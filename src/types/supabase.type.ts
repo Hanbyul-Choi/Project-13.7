@@ -294,6 +294,7 @@ export interface Database {
         Row: {
           address: string | null;
           created_at: string;
+          detailAddress: string | null;
           email: string;
           name: string | null;
           nickname: string | null;
@@ -302,28 +303,35 @@ export interface Database {
           profile_img: string | null;
           rank: number;
           user_id: string;
+          zonecode: string | null;
         };
         Insert: {
           address?: string | null;
           created_at?: string;
+          detailAddress?: string | null;
           email: string;
+          name?: string | null;
           nickname?: string | null;
           phone?: string | null;
           point?: number;
           profile_img?: string | null;
           rank?: number;
           user_id: string;
+          zonecode?: string | null;
         };
         Update: {
           address?: string | null;
           created_at?: string;
+          detailAddress?: string | null;
           email?: string;
+          name?: string | null;
           nickname?: string | null;
           phone?: string | null;
           point?: number;
           profile_img?: string | null;
           rank?: number;
           user_id?: string;
+          zonecode?: string | null;
         };
         Relationships: [
           {

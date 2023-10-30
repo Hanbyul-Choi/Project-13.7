@@ -11,7 +11,7 @@ export default function useSlideThrottle():[number, () => void, (direction: stri
       setThrottle(true);
       setTimeout(async () => {
         setThrottle(false);
-      }, 1000);
+      }, 500);
     }
   };
 

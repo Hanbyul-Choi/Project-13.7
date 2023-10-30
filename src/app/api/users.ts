@@ -1,3 +1,4 @@
+
 import { supabase } from '../../../supabase/supabaseConfig';
 
 export const getUsers = async () => {

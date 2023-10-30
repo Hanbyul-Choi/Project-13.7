@@ -26,7 +26,7 @@ function Toast({ text, unmount }: TostProps) {
     return () => {
       clearTimeout(timeoutId), clearTimeout(toastUnmount);
     };
-  }, []);
+  }, [unmount]);
 
   return (
     <div
