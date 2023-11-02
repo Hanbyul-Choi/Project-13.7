@@ -33,7 +33,7 @@ export default function useJoinChallenge(
     setIsDefaultAddress(!isDefaultAddress);
   };
 
-  let timerId: any = null;
+  let timerId: NodeJS.Timeout | null = null;
   useEffect(() => {
     return () => {
       if (timerId) {
