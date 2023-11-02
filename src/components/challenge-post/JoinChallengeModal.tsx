@@ -48,10 +48,14 @@ export default function JoinChallengeModal() {
       detailAddress: userInfoData?.detailAddress || '',
       zonecode: userInfoData?.zonecode || '',
     });
-  }, [userInfoData, address, zoneCode]);
+    setValue('zonecode', userData.zonecode);
+    setValue('address', userData.address);
+  }, [userInfoData, setValue, userData.address, userData.zonecode]);
+
   useEffect(() => {
     setValue('address', address);
-  }, [address]);
+    setValue('zonecode', zoneCode);
+  }, [address, zoneCode, setValue]);
 
   const { debounce, handleDefaultAddress, handleCancelClick, mainChallengeLoading, mainChallengeError } = useJoinChallenge(
     session,
@@ -113,7 +117,7 @@ export default function JoinChallengeModal() {
 
           <div className="flex flex-row w-full items-end">
             <div className="w-[20%] mr-[16px]">
-              <Label name="zipCode" size={'base'} labelStyle="flex flex-col leading-[150%] ">
+              <Label name="zonecode" size={'base'} labelStyle="flex flex-col leading-[150%] ">
                 우편번호
               </Label>
               <input
