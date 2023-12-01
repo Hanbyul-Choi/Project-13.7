@@ -1,9 +1,7 @@
 import { supabase } from '../../../supabase/supabaseConfig';
 
-import type { IdeaPost } from '@/types/db.type';
+import type { IdeaPost, Suggestion } from '@/types/db.type';
 import type { FieldValues } from 'react-hook-form';
-
-
 
 export const getSuggestions = async () => {
   const { data, error } = await supabase.from('challengeSuggestion').select(`*, users(*)`).order('liked_count', { ascending: false });
@@ -64,7 +62,7 @@ export const getIdeaInfinite = async ({ queryKey, pageParam = 1 }: any) => {
   const [_, sort] = queryKey;
   const pageToFetch = pageParam * 7 + (pageParam - 1);
 
-  let sortedData: any = [];
+  let sortedData: Suggestion[] = [];
   if (sort === '최신순') {
     const { data, error } = await supabase
       .from('challengeSuggestion')
