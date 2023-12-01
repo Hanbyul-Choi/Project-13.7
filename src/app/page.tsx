@@ -9,10 +9,8 @@ import { getNatureStory } from './api/nature-story';
 
 import type { Tables } from '@/types/supabase.type';
 
-
-
 export default async function Main() {
-  const natureStory: Tables<'natureStory'>[] = await getNatureStory()
+  const natureStory: Tables<'natureStory'>[] = await getNatureStory();
   return (
     <div className="flex flex-col justify-center items-center">
       <TotalTreeNumber />

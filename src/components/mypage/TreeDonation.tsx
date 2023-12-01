@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { AiOutlineClose } from 'react-icons/ai';
 
-import { getTotalNumberDonation, postDonationHistory, udpateUserPoint, updateTotalNumberDonation } from '@/app/api/mypage';
+import { getTotalNumberDonation, postDonationHistory, updateTotalNumberDonation, updateUserPoint } from '@/app/api/mypage';
 import { TOTAL_DONATION } from '@/app/shared/queries.keys';
 import { useModalStore } from '@/store/modal.store';
 
@@ -34,11 +34,11 @@ const TreeDonation = ({ curUserTrees, userId }: TreeDonationProps) => {
 
   const { data: curTotalTrees } = useQuery([TOTAL_DONATION], getTotalNumberDonation) as { data: number };
 
-  const plusButtonHanlder = () => {
+  const plusButtonHandler = () => {
     const newPlusCount = count + 1;
     setCount(newPlusCount);
   };
-  const minusButtonHanlder = () => {
+  const minusButtonHandler = () => {
     const newMinusCount = count - 1 >= 0 ? count - 1 : 0;
     setCount(newMinusCount);
   };
@@ -49,7 +49,7 @@ const TreeDonation = ({ curUserTrees, userId }: TreeDonationProps) => {
 
     if (count > 0 && count < curUserTrees) {
       await updateTotalNumberDonation(updatedTotalTrees);
-      await udpateUserPoint(updatedUserTrees, userId);
+      await updateUserPoint(updatedUserTrees, userId);
       await postDonationHistory(donationData);
 
       await Alert(`지금까지 모인 나무 총 ${updatedTotalTrees} 그루`, '후원이 완료되었습니다.');
@@ -83,10 +83,10 @@ const TreeDonation = ({ curUserTrees, userId }: TreeDonationProps) => {
                 <h4>{count}</h4>
               </div>
               <div className="flex gap-2">
-                <Button onClick={minusButtonHanlder} btnType={'borderBlack'} size="small">
+                <Button onClick={minusButtonHandler} btnType={'borderBlack'} size="small">
                   -
                 </Button>
-                <Button onClick={plusButtonHanlder} btnType={'black'} size="small">
+                <Button onClick={plusButtonHandler} btnType={'black'} size="small">
                   +
                 </Button>
               </div>
