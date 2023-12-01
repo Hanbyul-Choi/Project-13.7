@@ -41,6 +41,7 @@ export default function useJoinChallenge(
       }
     };
   }, []);
+
   const debounce = (delay: number) => {
     if (timerId) {
       clearTimeout(timerId);
